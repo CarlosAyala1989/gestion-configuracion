@@ -1,0 +1,136 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]: SGCSW
+        - generic [ref=e6]: Sistema de Gestion de Configuracion
+      - navigation [ref=e7]:
+        - generic [ref=e8]:
+          - generic [ref=e9]: Operacion
+          - link "Mi Panel de Trabajo" [ref=e11] [cursor=pointer]:
+            - /url: /dashboard
+            - img [ref=e12]
+            - generic [ref=e17]: Mi Panel de Trabajo
+        - generic [ref=e18]:
+          - generic [ref=e19]: Boards
+          - generic [ref=e20]:
+            - link "Backlog" [ref=e21] [cursor=pointer]:
+              - /url: /boards/backlog
+              - img [ref=e22]
+              - generic [ref=e25]: Backlog
+            - link "Metodologia" [ref=e26] [cursor=pointer]:
+              - /url: /boards/metodologia
+              - img [ref=e27]
+              - generic [ref=e32]: Metodologia
+            - link "Reportes diarios" [ref=e33] [cursor=pointer]:
+              - /url: /boards/reportes-diarios
+              - img [ref=e34]
+              - generic [ref=e39]: Reportes diarios
+        - generic [ref=e40]:
+          - generic [ref=e41]: Integraciones
+          - link "GitHub" [ref=e43] [cursor=pointer]:
+            - /url: /github/workspace
+            - img [ref=e44]
+            - generic [ref=e48]: GitHub
+        - generic [ref=e49]:
+          - generic [ref=e50]: Configuracion
+          - generic [ref=e51]:
+            - link "Repositorio ECS" [ref=e52] [cursor=pointer]:
+              - /url: /configuracion/ecs
+              - img [ref=e53]
+              - generic [ref=e56]: Repositorio ECS
+            - link "Versiones" [ref=e57] [cursor=pointer]:
+              - /url: /configuracion/versiones
+              - img [ref=e58]
+              - generic [ref=e62]: Versiones
+            - link "Bloqueos" [ref=e63] [cursor=pointer]:
+              - /url: /configuracion/bloqueos
+              - img [ref=e64]
+              - generic [ref=e68]: Bloqueos
+            - link "Bibliotecas" [ref=e69] [cursor=pointer]:
+              - /url: /configuracion/bibliotecas
+              - img [ref=e70]
+              - generic [ref=e72]: Bibliotecas
+            - link "Lineas base" [ref=e73] [cursor=pointer]:
+              - /url: /configuracion/lineas-base
+              - img [ref=e74]
+              - generic [ref=e79]: Lineas base
+            - link "Trazabilidad" [ref=e80] [cursor=pointer]:
+              - /url: /configuracion/trazabilidad
+              - img [ref=e81]
+              - generic [ref=e86]: Trazabilidad
+        - generic [ref=e87]:
+          - generic [ref=e88]: Reportes
+          - link "Reportes" [ref=e90] [cursor=pointer]:
+            - /url: /reportes
+            - img [ref=e91]
+            - generic [ref=e94]: Reportes
+      - generic [ref=e95]:
+        - generic [ref=e96]: Administrador de Configuracion / Bibliotecario
+        - generic [ref=e97]: MANUAL-001 - Portal SGCSW Manual
+        - generic [ref=e98]: bibliotecario@gmail.com
+    - main [ref=e99]:
+      - generic [ref=e101]:
+        - generic [ref=e102]:
+          - generic [ref=e103]: Bibliotecario Demo
+          - generic [ref=e104]: Administrador de Configuracion / Bibliotecario en MANUAL-001
+        - generic [ref=e105]:
+          - link "Cambiar proyecto" [ref=e106] [cursor=pointer]:
+            - /url: /seleccionar-proyecto
+            - img [ref=e107]
+            - text: Cambiar proyecto
+          - button "Salir" [ref=e118] [cursor=pointer]:
+            - img [ref=e119]
+            - text: Salir
+      - generic [ref=e122]:
+        - generic [ref=e124]:
+          - heading "Gestion de lineas base" [level=1] [ref=e125]
+          - paragraph [ref=e126]: Congelamiento de versiones exactas de ECS
+        - generic [ref=e127]:
+          - generic [ref=e128]:
+            - heading "Crear linea base" [level=2] [ref=e130]
+            - generic [ref=e131]:
+              - generic [ref=e132]:
+                - generic [ref=e133]: Proyecto *
+                - combobox "Proyecto *" [ref=e134]:
+                  - option "Seleccionar"
+                  - option "MANUAL-001 - Portal SGCSW Manual" [selected]
+              - generic [ref=e135]:
+                - generic [ref=e136]: Codigo *
+                - textbox "Codigo *" [ref=e137]:
+                  - /placeholder: LB-2026-01
+              - generic [ref=e138]:
+                - generic [ref=e139]: Nombre *
+                - textbox "Nombre *" [ref=e140]
+              - generic [ref=e141]:
+                - generic [ref=e142]: Hito
+                - textbox "Hito" [ref=e143]
+              - generic [ref=e144]:
+                - generic [ref=e145]: Descripcion
+                - textbox "Descripcion" [ref=e146]
+              - generic [ref=e147]:
+                - generic [ref=e148]: Versiones exactas *
+                - listbox "Versiones exactas *" [ref=e149]:
+                  - option "MFA-QA-UNIT-001 v1.0.0" [ref=e150]
+                  - option "MFA-CO-AUTH-001 v1.0.0" [ref=e151]
+                  - option "MFA-DI-SEQ-001 v1.0.0" [ref=e152]
+                  - option "MFA-DI-CLS-001 v1.0.0" [ref=e153]
+                  - option "MFA-DI-SAD-001 v1.0.0" [ref=e154]
+                  - option "MFA-AN-CU-001 v1.0.0" [ref=e155]
+                  - option "MFA-AN-SRS-001 v1.0.0" [ref=e156]
+                  - option "MFA-AN-ENT-001 v1.0.0" [ref=e157]
+              - button "Congelar linea base" [ref=e158] [cursor=pointer]
+          - generic [ref=e159]:
+            - heading "Lineas base" [level=2] [ref=e161]
+            - table [ref=e163]:
+              - rowgroup [ref=e164]:
+                - row "Codigo Proyecto Nombre Estado ECS incluidos" [ref=e165]:
+                  - columnheader "Codigo" [ref=e166]
+                  - columnheader "Proyecto" [ref=e167]
+                  - columnheader "Nombre" [ref=e168]
+                  - columnheader "Estado" [ref=e169]
+                  - columnheader "ECS incluidos" [ref=e170]
+              - rowgroup
+  - button "Open Next.js Dev Tools" [ref=e176] [cursor=pointer]:
+    - img [ref=e177]
+  - alert [ref=e180]

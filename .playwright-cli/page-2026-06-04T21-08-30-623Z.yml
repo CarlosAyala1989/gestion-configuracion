@@ -1,0 +1,41 @@
+- generic [ref=e1]:
+  - button "Open Next.js Dev Tools" [ref=e447] [cursor=pointer]:
+    - generic [ref=e450]:
+      - text: Rendering
+      - generic [ref=e451]:
+        - generic [ref=e452]: .
+        - generic [ref=e453]: .
+        - generic [ref=e454]: .
+  - alert [ref=e180]
+  - main [ref=e403]:
+    - generic [ref=e404]:
+      - generic [ref=e405]:
+        - generic [ref=e406]:
+          - img [ref=e408]
+          - heading "Seleccion de proyecto y rol" [level=1] [ref=e418]
+          - paragraph [ref=e419]: Lider Tecnico Demo - lidertecnico@gmail.com
+        - generic [ref=e420]:
+          - generic [ref=e421]: "Rol base: Lider Tecnico / Analista"
+          - button "Salir" [ref=e423] [cursor=pointer]
+      - generic [ref=e424]:
+        - generic [ref=e425]:
+          - generic [ref=e426]:
+            - heading "Acceso global" [level=2] [ref=e427]
+            - paragraph [ref=e428]: Disponible para administradores del sistema.
+          - generic [ref=e429]: Sin acceso global para este usuario.
+        - generic [ref=e430]:
+          - generic [ref=e431]:
+            - heading "Proyectos asignados" [level=2] [ref=e432]
+            - paragraph [ref=e433]: Cada proyecto aplica su propio rol y menu.
+          - generic [ref=e435]:
+            - generic [ref=e436]:
+              - generic [ref=e437]:
+                - generic [ref=e438]: MANUAL-001
+                - generic [ref=e439]: Portal SGCSW Manual
+              - generic [ref=e440]: Activo
+            - generic [ref=e441]:
+              - generic [ref=e442]: Lider Tecnico / Analista
+              - generic [ref=e443]: 6 permisos habilitados
+            - button "Entrar" [active] [ref=e444] [cursor=pointer]:
+              - text: Entrar
+              - img [ref=e445]

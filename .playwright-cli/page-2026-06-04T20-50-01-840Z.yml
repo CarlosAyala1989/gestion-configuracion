@@ -1,0 +1,115 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]: SGCSW
+        - generic [ref=e6]: Sistema de Gestion de Configuracion
+      - navigation [ref=e7]:
+        - generic [ref=e8]:
+          - generic [ref=e9]: Operacion
+          - link "Mi Panel de Trabajo" [ref=e11] [cursor=pointer]:
+            - /url: /dashboard
+            - img [ref=e12]
+            - generic [ref=e17]: Mi Panel de Trabajo
+        - generic [ref=e18]:
+          - generic [ref=e19]: Boards
+          - generic [ref=e20]:
+            - link "Backlog" [ref=e21] [cursor=pointer]:
+              - /url: /boards/backlog
+              - img [ref=e22]
+              - generic [ref=e25]: Backlog
+            - link "Reportes diarios" [ref=e26] [cursor=pointer]:
+              - /url: /boards/reportes-diarios
+              - img [ref=e27]
+              - generic [ref=e32]: Reportes diarios
+        - generic [ref=e33]:
+          - generic [ref=e34]: Integraciones
+          - link "GitHub" [ref=e36] [cursor=pointer]:
+            - /url: /github/workspace
+            - img [ref=e37]
+            - generic [ref=e41]: GitHub
+        - generic [ref=e42]:
+          - generic [ref=e43]: Configuracion
+          - link "Trazabilidad" [ref=e45] [cursor=pointer]:
+            - /url: /configuracion/trazabilidad
+            - img [ref=e46]
+            - generic [ref=e51]: Trazabilidad
+        - generic [ref=e52]:
+          - generic [ref=e53]: Cambios
+          - link "Solicitudes" [ref=e55] [cursor=pointer]:
+            - /url: /cambios/solicitudes
+            - img [ref=e56]
+            - generic [ref=e59]: Solicitudes
+        - generic [ref=e60]:
+          - generic [ref=e61]: Calidad
+          - link "UAT" [ref=e63] [cursor=pointer]:
+            - /url: /qa/uat
+            - img [ref=e64]
+            - generic [ref=e67]: UAT
+        - generic [ref=e68]:
+          - generic [ref=e69]: Soporte
+          - link "Incidencias" [ref=e71] [cursor=pointer]:
+            - /url: /soporte/incidencias
+            - img [ref=e72]
+            - generic [ref=e75]: Incidencias
+      - generic [ref=e76]:
+        - generic [ref=e77]: Solicitante / Cliente / Usuario Final
+        - generic [ref=e78]: MANUAL-001 - Portal SGCSW Manual
+        - generic [ref=e79]: solicitante@gmail.com
+    - main [ref=e80]:
+      - generic [ref=e82]:
+        - generic [ref=e83]:
+          - generic [ref=e84]: Solicitante Demo
+          - generic [ref=e85]: Solicitante / Cliente / Usuario Final en MANUAL-001
+        - generic [ref=e86]:
+          - link "Cambiar proyecto" [ref=e87] [cursor=pointer]:
+            - /url: /seleccionar-proyecto
+            - img [ref=e88]
+            - text: Cambiar proyecto
+          - button "Salir" [ref=e99] [cursor=pointer]:
+            - img [ref=e100]
+            - text: Salir
+      - generic [ref=e103]:
+        - generic [ref=e105]:
+          - heading "UAT" [level=1] [ref=e106]
+          - paragraph [ref=e107]: Observaciones o acta de aceptacion firmada
+        - generic [ref=e108]:
+          - generic [ref=e109]:
+            - heading "Registrar UAT" [level=2] [ref=e111]
+            - generic [ref=e112]:
+              - generic [ref=e113]:
+                - generic [ref=e114]: Solicitud *
+                - combobox "Solicitud *" [ref=e115]:
+                  - option "Seleccionar" [selected]
+                  - option "SC-0001 - Implementar autenticacion MFA con documentacion RUP"
+              - generic [ref=e116]:
+                - generic [ref=e117]: Orden
+                - combobox "Orden" [ref=e118]:
+                  - option "Seleccionar" [selected]
+                  - option "OC-0001 - Implementar autenticacion MFA con documentacion RUP"
+              - generic [ref=e119]:
+                - generic [ref=e120]: Resultado *
+                - combobox "Resultado *" [ref=e121]:
+                  - option "Seleccionar" [selected]
+                  - option "OK"
+                  - option "No OK"
+              - generic [ref=e122]:
+                - generic [ref=e123]: Observaciones
+                - textbox "Observaciones" [ref=e124]
+              - generic [ref=e125]:
+                - generic [ref=e126]: Acta de aceptacion
+                - button "Acta de aceptacion" [ref=e127]
+              - button "Registrar UAT" [ref=e128] [cursor=pointer]
+          - generic [ref=e129]:
+            - heading "Historial UAT" [level=2] [ref=e131]
+            - table [ref=e133]:
+              - rowgroup [ref=e134]:
+                - row "Solicitud Resultado Solicitante Acta Observaciones" [ref=e135]:
+                  - columnheader "Solicitud" [ref=e136]
+                  - columnheader "Resultado" [ref=e137]
+                  - columnheader "Solicitante" [ref=e138]
+                  - columnheader "Acta" [ref=e139]
+                  - columnheader "Observaciones" [ref=e140]
+              - rowgroup
+  - button "Open Next.js Dev Tools" [ref=e146] [cursor=pointer]:
+    - img [ref=e147]

@@ -1,0 +1,4 @@
+Solicitud SC-0001
+Titulo: Implementar autenticacion MFA con documentacion RUP
+Estado final: Cerrada
+Fecha: 2026-06-04T21:04:07.427Z

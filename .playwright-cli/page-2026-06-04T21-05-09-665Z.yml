@@ -1,0 +1,36 @@
+- generic [active] [ref=e1]:
+  - button "Open Next.js Dev Tools" [ref=e224] [cursor=pointer]:
+    - img [ref=e225]
+  - alert [ref=e228]
+  - main [ref=e272]:
+    - generic [ref=e273]:
+      - generic [ref=e274]:
+        - generic [ref=e275]:
+          - img [ref=e277]
+          - heading "Seleccion de proyecto y rol" [level=1] [ref=e287]
+          - paragraph [ref=e288]: Bibliotecario Demo - bibliotecario@gmail.com
+        - generic [ref=e289]:
+          - generic [ref=e290]: "Rol base: Administrador de Configuracion / Bibliotecario"
+          - button "Salir" [ref=e292] [cursor=pointer]
+      - generic [ref=e293]:
+        - generic [ref=e294]:
+          - generic [ref=e295]:
+            - heading "Acceso global" [level=2] [ref=e296]
+            - paragraph [ref=e297]: Disponible para administradores del sistema.
+          - generic [ref=e298]: Sin acceso global para este usuario.
+        - generic [ref=e299]:
+          - generic [ref=e300]:
+            - heading "Proyectos asignados" [level=2] [ref=e301]
+            - paragraph [ref=e302]: Cada proyecto aplica su propio rol y menu.
+          - generic [ref=e304]:
+            - generic [ref=e305]:
+              - generic [ref=e306]:
+                - generic [ref=e307]: MANUAL-001
+                - generic [ref=e308]: Portal SGCSW Manual
+              - generic [ref=e309]: Activo
+            - generic [ref=e310]:
+              - generic [ref=e311]: Administrador de Configuracion / Bibliotecario
+              - generic [ref=e312]: 11 permisos habilitados
+            - button "Entrar" [ref=e313] [cursor=pointer]:
+              - text: Entrar
+              - img [ref=e314]

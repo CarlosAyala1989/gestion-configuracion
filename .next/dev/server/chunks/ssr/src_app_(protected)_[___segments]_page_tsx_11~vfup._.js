@@ -168,6 +168,21 @@ const routeMeta = {
         subtitle: "Vistas filtrables por proyecto, estado, fecha y responsable"
     }
 };
+async function runLimited(tasks, limit = 4) {
+    const results = [];
+    let nextIndex = 0;
+    async function worker() {
+        while(nextIndex < tasks.length){
+            const currentIndex = nextIndex;
+            nextIndex += 1;
+            results[currentIndex] = await tasks[currentIndex]();
+        }
+    }
+    await Promise.all(Array.from({
+        length: Math.min(limit, tasks.length)
+    }, worker));
+    return results;
+}
 async function getData(user) {
     const projectId = user.projectId ?? undefined;
     const userWhere = projectId ? {
@@ -199,523 +214,523 @@ async function getData(user) {
             projectId
         }
     } : undefined;
-    const [users, roles, permissions, projects, projectUsers, libraries, items, versions, locks, transfers, baselines, incidents, changes, impactAssessments, technicalApprovals, ccbReviews, orders, unitTests, qaTests, defects, uatTests, releases, auditLogs, integrityAlerts, traceabilityLinks, methodologyPhases, projectActivities, sprints, workItems, artifactRequirements, artifactVersions, dailyWorkLogs, notifications] = await Promise.all([
-        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].user.findMany({
-            include: {
-                role: true,
-                projectUsers: {
-                    include: {
-                        project: true,
-                        role: true
-                    }
-                }
-            },
-            orderBy: {
-                createdAt: "desc"
-            },
-            where: userWhere
-        }),
-        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].role.findMany({
-            include: {
-                rolePermissions: {
-                    include: {
-                        permission: true
-                    }
-                }
-            },
-            orderBy: {
-                name: "asc"
-            }
-        }),
-        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].permission.findMany({
-            orderBy: [
-                {
-                    module: "asc"
-                },
-                {
-                    action: "asc"
-                }
-            ]
-        }),
-        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].project.findMany({
-            include: {
-                manager: true
-            },
-            orderBy: {
-                createdAt: "desc"
-            },
-            where: projectWhere
-        }),
-        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].projectUser.findMany({
-            include: {
-                project: true,
-                user: {
-                    include: {
-                        role: true
-                    }
-                },
-                role: true
-            },
-            orderBy: {
-                createdAt: "desc"
-            },
-            where: scopedProjectWhere
-        }),
-        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].library.findMany({
-            include: {
-                project: true
-            },
-            orderBy: [
-                {
-                    projectId: "asc"
-                },
-                {
-                    type: "asc"
-                }
-            ],
-            where: scopedProjectWhere
-        }),
-        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].configurationItem.findMany({
-            include: {
-                project: true,
-                library: true,
-                responsible: true
-            },
-            orderBy: {
-                createdAt: "desc"
-            },
-            where: scopedProjectWhere
-        }),
-        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].configurationItemVersion.findMany({
-            include: {
-                item: true,
-                createdBy: true,
-                changeRequest: true,
-                changeOrder: true
-            },
-            orderBy: {
-                createdAt: "desc"
-            },
-            where: itemProjectWhere
-        }),
-        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].configurationItemLock.findMany({
-            include: {
-                item: true,
-                user: true,
-                forcedBy: true
-            },
-            orderBy: {
-                lockedAt: "desc"
-            },
-            where: itemProjectWhere
-        }),
-        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].libraryTransfer.findMany({
-            include: {
-                item: true,
-                fromLibrary: true,
-                toLibrary: true,
-                user: true
-            },
-            orderBy: {
-                createdAt: "desc"
-            },
-            where: itemProjectWhere
-        }),
-        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].baseline.findMany({
-            include: {
-                project: true,
-                items: {
-                    include: {
-                        item: true,
-                        itemVersion: true
-                    }
-                }
-            },
-            orderBy: {
-                createdAt: "desc"
-            },
-            where: scopedProjectWhere
-        }),
-        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].incident.findMany({
-            include: {
-                project: true,
-                reportedBy: true,
-                assignedTo: true,
-                affectedItem: true
-            },
-            orderBy: {
-                createdAt: "desc"
-            },
-            where: scopedProjectWhere
-        }),
-        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].changeRequest.findMany({
-            include: {
-                project: true,
-                requester: true,
-                alignedBy: true,
-                originIncident: true,
-                affectedItems: {
-                    include: {
-                        item: true
-                    }
-                },
-                impactAssessment: true,
-                technicalApproval: true,
-                ccbReviews: {
-                    include: {
-                        resolution: true,
-                        votes: {
-                            include: {
-                                voter: true
-                            }
+    const [users, roles, permissions, projects, projectUsers, libraries, items, versions, locks, transfers, baselines, incidents, changes, impactAssessments, technicalApprovals, ccbReviews, orders, unitTests, qaTests, defects, uatTests, releases, auditLogs, integrityAlerts, traceabilityLinks, methodologyPhases, projectActivities, sprints, workItems, artifactRequirements, artifactVersions, dailyWorkLogs, notifications] = await runLimited([
+        ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].user.findMany({
+                include: {
+                    role: true,
+                    projectUsers: {
+                        include: {
+                            project: true,
+                            role: true
                         }
                     }
                 },
-                changeOrder: true,
-                acceptanceRecords: true,
-                releases: true
-            },
-            orderBy: {
-                createdAt: "desc"
-            },
-            where: scopedProjectWhere
-        }),
-        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].impactAssessment.findMany({
-            include: {
-                changeRequest: true,
-                assessedBy: true
-            },
-            orderBy: {
-                createdAt: "desc"
-            },
-            where: changeProjectWhere
-        }),
-        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].technicalApproval.findMany({
-            include: {
-                changeRequest: true,
-                reviewer: true
-            },
-            orderBy: {
-                createdAt: "desc"
-            },
-            where: changeProjectWhere
-        }),
-        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].ccbReview.findMany({
-            include: {
-                changeRequest: true,
-                resolution: true,
-                votes: {
-                    include: {
-                        voter: true
-                    }
-                }
-            },
-            orderBy: {
-                createdAt: "desc"
-            },
-            where: changeProjectWhere
-        }),
-        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].changeOrder.findMany({
-            include: {
-                project: true,
-                changeRequest: true,
-                developer: true,
-                assignments: {
-                    include: {
-                        user: true
-                    }
-                },
-                unitTests: true,
-                qaTests: true,
-                defects: true,
-                releases: true
-            },
-            orderBy: {
-                createdAt: "desc"
-            },
-            where: scopedProjectWhere
-        }),
-        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].unitTest.findMany({
-            include: {
-                changeOrder: true,
-                executedBy: true,
-                itemVersion: true
-            },
-            orderBy: {
-                executedAt: "desc"
-            },
-            where: orderProjectWhere
-        }),
-        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].qaTest.findMany({
-            include: {
-                changeOrder: true,
-                executedBy: true,
-                defects: true
-            },
-            orderBy: {
-                executedAt: "desc"
-            },
-            where: orderProjectWhere
-        }),
-        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].defect.findMany({
-            include: {
-                changeOrder: true,
-                qaTest: true,
-                item: true,
-                itemVersion: true,
-                responsible: true
-            },
-            orderBy: {
-                createdAt: "desc"
-            },
-            where: orderProjectWhere
-        }),
-        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].uatTest.findMany({
-            include: {
-                changeRequest: true,
-                changeOrder: true,
-                executedBy: true,
-                acceptance: true
-            },
-            orderBy: {
-                executedAt: "desc"
-            },
-            where: changeProjectWhere
-        }),
-        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].release.findMany({
-            include: {
-                project: true,
-                changeRequest: true,
-                changeOrder: true,
-                responsible: true,
-                logs: true
-            },
-            orderBy: {
-                createdAt: "desc"
-            },
-            where: scopedProjectWhere
-        }),
-        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].auditLog.findMany({
-            include: {
-                user: true
-            },
-            orderBy: {
-                createdAt: "desc"
-            },
-            take: 100
-        }),
-        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].integrityAlert.findMany({
-            include: {
-                project: true,
-                item: true
-            },
-            orderBy: {
-                createdAt: "desc"
-            },
-            where: scopedProjectWhere
-        }),
-        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].traceabilityLink.findMany({
-            include: {
-                project: true,
-                createdBy: true
-            },
-            orderBy: {
-                createdAt: "desc"
-            },
-            take: 100,
-            where: scopedProjectWhere
-        }),
-        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].methodologyPhase.findMany({
-            include: {
-                project: true,
-                owner: true,
-                activities: {
-                    include: {
-                        responsible: true,
-                        workItems: true
-                    }
-                }
-            },
-            orderBy: [
-                {
-                    sortOrder: "asc"
-                },
-                {
-                    createdAt: "asc"
-                }
-            ],
-            where: scopedProjectWhere
-        }),
-        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].projectActivity.findMany({
-            include: {
-                project: true,
-                phase: true,
-                responsible: true,
-                workItems: true,
-                dailyWorkLogs: {
-                    include: {
-                        user: true
-                    },
-                    orderBy: {
-                        createdAt: "desc"
-                    },
-                    take: 3
-                }
-            },
-            orderBy: [
-                {
-                    startDate: "asc"
-                },
-                {
-                    endDate: "asc"
-                }
-            ],
-            where: scopedProjectWhere
-        }),
-        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].projectSprint.findMany({
-            include: {
-                project: true,
-                workItems: {
-                    include: {
-                        assignedTo: true
-                    }
-                }
-            },
-            orderBy: [
-                {
-                    startDate: "desc"
-                },
-                {
-                    endDate: "desc"
-                }
-            ],
-            where: scopedProjectWhere
-        }),
-        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].workItem.findMany({
-            include: {
-                project: true,
-                createdBy: true,
-                assignedTo: true,
-                sprint: true,
-                activity: {
-                    include: {
-                        phase: true
-                    }
-                },
-                changeRequest: true,
-                changeOrder: true,
-                outgoingLinks: {
-                    include: {
-                        targetWorkItem: true,
-                        createdBy: true
-                    },
-                    orderBy: {
-                        createdAt: "desc"
-                    }
-                },
-                incomingLinks: {
-                    include: {
-                        sourceWorkItem: true
-                    },
-                    orderBy: {
-                        createdAt: "desc"
-                    }
-                }
-            },
-            orderBy: {
-                updatedAt: "desc"
-            },
-            where: scopedProjectWhere
-        }),
-        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].workItemArtifactRequirement.findMany({
-            include: {
-                workItem: {
-                    include: {
-                        project: true,
-                        assignedTo: true,
-                        changeOrder: true,
-                        changeRequest: true
-                    }
-                },
-                reviewedBy: true,
-                versions: {
-                    include: {
-                        item: true,
-                        itemVersion: true,
-                        submittedBy: true
-                    },
-                    orderBy: {
-                        submittedAt: "desc"
-                    }
-                }
-            },
-            orderBy: [
-                {
-                    lifecycleStage: "asc"
-                },
-                {
-                    sortOrder: "asc"
-                },
-                {
-                    createdAt: "asc"
-                }
-            ],
-            where: projectId ? {
-                workItem: {
-                    projectId
-                }
-            } : undefined
-        }),
-        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].workItemArtifactVersion.findMany({
-            include: {
-                workItem: {
-                    include: {
-                        project: true
-                    }
-                },
-                artifactRequirement: true,
-                item: true,
-                itemVersion: true,
-                changeRequest: true,
-                changeOrder: true,
-                submittedBy: true
-            },
-            orderBy: {
-                submittedAt: "desc"
-            },
-            where: projectId ? {
-                workItem: {
-                    projectId
-                }
-            } : undefined
-        }),
-        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].dailyWorkLog.findMany({
-            include: {
-                project: true,
-                user: true,
-                workItem: true,
-                changeOrder: true,
-                activity: true
-            },
-            orderBy: [
-                {
-                    logDate: "desc"
-                },
-                {
+                orderBy: {
                     createdAt: "desc"
+                },
+                where: userWhere
+            }),
+        ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].role.findMany({
+                include: {
+                    rolePermissions: {
+                        include: {
+                            permission: true
+                        }
+                    }
+                },
+                orderBy: {
+                    name: "asc"
                 }
-            ],
-            where: scopedProjectWhere
-        }),
-        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].notification.findMany({
-            where: {
-                userId: user.id
-            },
-            orderBy: {
-                createdAt: "desc"
-            },
-            take: 8
-        })
+            }),
+        ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].permission.findMany({
+                orderBy: [
+                    {
+                        module: "asc"
+                    },
+                    {
+                        action: "asc"
+                    }
+                ]
+            }),
+        ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].project.findMany({
+                include: {
+                    manager: true
+                },
+                orderBy: {
+                    createdAt: "desc"
+                },
+                where: projectWhere
+            }),
+        ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].projectUser.findMany({
+                include: {
+                    project: true,
+                    user: {
+                        include: {
+                            role: true
+                        }
+                    },
+                    role: true
+                },
+                orderBy: {
+                    createdAt: "desc"
+                },
+                where: scopedProjectWhere
+            }),
+        ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].library.findMany({
+                include: {
+                    project: true
+                },
+                orderBy: [
+                    {
+                        projectId: "asc"
+                    },
+                    {
+                        type: "asc"
+                    }
+                ],
+                where: scopedProjectWhere
+            }),
+        ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].configurationItem.findMany({
+                include: {
+                    project: true,
+                    library: true,
+                    responsible: true
+                },
+                orderBy: {
+                    createdAt: "desc"
+                },
+                where: scopedProjectWhere
+            }),
+        ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].configurationItemVersion.findMany({
+                include: {
+                    item: true,
+                    createdBy: true,
+                    changeRequest: true,
+                    changeOrder: true
+                },
+                orderBy: {
+                    createdAt: "desc"
+                },
+                where: itemProjectWhere
+            }),
+        ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].configurationItemLock.findMany({
+                include: {
+                    item: true,
+                    user: true,
+                    forcedBy: true
+                },
+                orderBy: {
+                    lockedAt: "desc"
+                },
+                where: itemProjectWhere
+            }),
+        ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].libraryTransfer.findMany({
+                include: {
+                    item: true,
+                    fromLibrary: true,
+                    toLibrary: true,
+                    user: true
+                },
+                orderBy: {
+                    createdAt: "desc"
+                },
+                where: itemProjectWhere
+            }),
+        ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].baseline.findMany({
+                include: {
+                    project: true,
+                    items: {
+                        include: {
+                            item: true,
+                            itemVersion: true
+                        }
+                    }
+                },
+                orderBy: {
+                    createdAt: "desc"
+                },
+                where: scopedProjectWhere
+            }),
+        ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].incident.findMany({
+                include: {
+                    project: true,
+                    reportedBy: true,
+                    assignedTo: true,
+                    affectedItem: true
+                },
+                orderBy: {
+                    createdAt: "desc"
+                },
+                where: scopedProjectWhere
+            }),
+        ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].changeRequest.findMany({
+                include: {
+                    project: true,
+                    requester: true,
+                    alignedBy: true,
+                    originIncident: true,
+                    affectedItems: {
+                        include: {
+                            item: true
+                        }
+                    },
+                    impactAssessment: true,
+                    technicalApproval: true,
+                    ccbReviews: {
+                        include: {
+                            resolution: true,
+                            votes: {
+                                include: {
+                                    voter: true
+                                }
+                            }
+                        }
+                    },
+                    changeOrder: true,
+                    acceptanceRecords: true,
+                    releases: true
+                },
+                orderBy: {
+                    createdAt: "desc"
+                },
+                where: scopedProjectWhere
+            }),
+        ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].impactAssessment.findMany({
+                include: {
+                    changeRequest: true,
+                    assessedBy: true
+                },
+                orderBy: {
+                    createdAt: "desc"
+                },
+                where: changeProjectWhere
+            }),
+        ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].technicalApproval.findMany({
+                include: {
+                    changeRequest: true,
+                    reviewer: true
+                },
+                orderBy: {
+                    createdAt: "desc"
+                },
+                where: changeProjectWhere
+            }),
+        ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].ccbReview.findMany({
+                include: {
+                    changeRequest: true,
+                    resolution: true,
+                    votes: {
+                        include: {
+                            voter: true
+                        }
+                    }
+                },
+                orderBy: {
+                    createdAt: "desc"
+                },
+                where: changeProjectWhere
+            }),
+        ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].changeOrder.findMany({
+                include: {
+                    project: true,
+                    changeRequest: true,
+                    developer: true,
+                    assignments: {
+                        include: {
+                            user: true
+                        }
+                    },
+                    unitTests: true,
+                    qaTests: true,
+                    defects: true,
+                    releases: true
+                },
+                orderBy: {
+                    createdAt: "desc"
+                },
+                where: scopedProjectWhere
+            }),
+        ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].unitTest.findMany({
+                include: {
+                    changeOrder: true,
+                    executedBy: true,
+                    itemVersion: true
+                },
+                orderBy: {
+                    executedAt: "desc"
+                },
+                where: orderProjectWhere
+            }),
+        ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].qaTest.findMany({
+                include: {
+                    changeOrder: true,
+                    executedBy: true,
+                    defects: true
+                },
+                orderBy: {
+                    executedAt: "desc"
+                },
+                where: orderProjectWhere
+            }),
+        ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].defect.findMany({
+                include: {
+                    changeOrder: true,
+                    qaTest: true,
+                    item: true,
+                    itemVersion: true,
+                    responsible: true
+                },
+                orderBy: {
+                    createdAt: "desc"
+                },
+                where: orderProjectWhere
+            }),
+        ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].uatTest.findMany({
+                include: {
+                    changeRequest: true,
+                    changeOrder: true,
+                    executedBy: true,
+                    acceptance: true
+                },
+                orderBy: {
+                    executedAt: "desc"
+                },
+                where: changeProjectWhere
+            }),
+        ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].release.findMany({
+                include: {
+                    project: true,
+                    changeRequest: true,
+                    changeOrder: true,
+                    responsible: true,
+                    logs: true
+                },
+                orderBy: {
+                    createdAt: "desc"
+                },
+                where: scopedProjectWhere
+            }),
+        ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].auditLog.findMany({
+                include: {
+                    user: true
+                },
+                orderBy: {
+                    createdAt: "desc"
+                },
+                take: 100
+            }),
+        ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].integrityAlert.findMany({
+                include: {
+                    project: true,
+                    item: true
+                },
+                orderBy: {
+                    createdAt: "desc"
+                },
+                where: scopedProjectWhere
+            }),
+        ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].traceabilityLink.findMany({
+                include: {
+                    project: true,
+                    createdBy: true
+                },
+                orderBy: {
+                    createdAt: "desc"
+                },
+                take: 100,
+                where: scopedProjectWhere
+            }),
+        ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].methodologyPhase.findMany({
+                include: {
+                    project: true,
+                    owner: true,
+                    activities: {
+                        include: {
+                            responsible: true,
+                            workItems: true
+                        }
+                    }
+                },
+                orderBy: [
+                    {
+                        sortOrder: "asc"
+                    },
+                    {
+                        createdAt: "asc"
+                    }
+                ],
+                where: scopedProjectWhere
+            }),
+        ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].projectActivity.findMany({
+                include: {
+                    project: true,
+                    phase: true,
+                    responsible: true,
+                    workItems: true,
+                    dailyWorkLogs: {
+                        include: {
+                            user: true
+                        },
+                        orderBy: {
+                            createdAt: "desc"
+                        },
+                        take: 3
+                    }
+                },
+                orderBy: [
+                    {
+                        startDate: "asc"
+                    },
+                    {
+                        endDate: "asc"
+                    }
+                ],
+                where: scopedProjectWhere
+            }),
+        ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].projectSprint.findMany({
+                include: {
+                    project: true,
+                    workItems: {
+                        include: {
+                            assignedTo: true
+                        }
+                    }
+                },
+                orderBy: [
+                    {
+                        startDate: "desc"
+                    },
+                    {
+                        endDate: "desc"
+                    }
+                ],
+                where: scopedProjectWhere
+            }),
+        ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].workItem.findMany({
+                include: {
+                    project: true,
+                    createdBy: true,
+                    assignedTo: true,
+                    sprint: true,
+                    activity: {
+                        include: {
+                            phase: true
+                        }
+                    },
+                    changeRequest: true,
+                    changeOrder: true,
+                    outgoingLinks: {
+                        include: {
+                            targetWorkItem: true,
+                            createdBy: true
+                        },
+                        orderBy: {
+                            createdAt: "desc"
+                        }
+                    },
+                    incomingLinks: {
+                        include: {
+                            sourceWorkItem: true
+                        },
+                        orderBy: {
+                            createdAt: "desc"
+                        }
+                    }
+                },
+                orderBy: {
+                    updatedAt: "desc"
+                },
+                where: scopedProjectWhere
+            }),
+        ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].workItemArtifactRequirement.findMany({
+                include: {
+                    workItem: {
+                        include: {
+                            project: true,
+                            assignedTo: true,
+                            changeOrder: true,
+                            changeRequest: true
+                        }
+                    },
+                    reviewedBy: true,
+                    versions: {
+                        include: {
+                            item: true,
+                            itemVersion: true,
+                            submittedBy: true
+                        },
+                        orderBy: {
+                            submittedAt: "desc"
+                        }
+                    }
+                },
+                orderBy: [
+                    {
+                        lifecycleStage: "asc"
+                    },
+                    {
+                        sortOrder: "asc"
+                    },
+                    {
+                        createdAt: "asc"
+                    }
+                ],
+                where: projectId ? {
+                    workItem: {
+                        projectId
+                    }
+                } : undefined
+            }),
+        ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].workItemArtifactVersion.findMany({
+                include: {
+                    workItem: {
+                        include: {
+                            project: true
+                        }
+                    },
+                    artifactRequirement: true,
+                    item: true,
+                    itemVersion: true,
+                    changeRequest: true,
+                    changeOrder: true,
+                    submittedBy: true
+                },
+                orderBy: {
+                    submittedAt: "desc"
+                },
+                where: projectId ? {
+                    workItem: {
+                        projectId
+                    }
+                } : undefined
+            }),
+        ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].dailyWorkLog.findMany({
+                include: {
+                    project: true,
+                    user: true,
+                    workItem: true,
+                    changeOrder: true,
+                    activity: true
+                },
+                orderBy: [
+                    {
+                        logDate: "desc"
+                    },
+                    {
+                        createdAt: "desc"
+                    }
+                ],
+                where: scopedProjectWhere
+            }),
+        ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].notification.findMany({
+                where: {
+                    userId: user.id
+                },
+                orderBy: {
+                    createdAt: "desc"
+                },
+                take: 8
+            })
     ]);
     return {
         currentProjectId: projectId ?? null,
@@ -761,7 +776,7 @@ function HiddenPath({ path }) {
         value: path
     }, void 0, false, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 305,
+        lineNumber: 324,
         columnNumber: 10
     }, this);
 }
@@ -776,26 +791,26 @@ function Message({ params }) {
                 className: "mt-0.5 h-4 w-4 shrink-0"
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 314,
+                lineNumber: 333,
                 columnNumber: 16
             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle2$3e$__["CheckCircle2"], {
                 className: "mt-0.5 h-4 w-4 shrink-0"
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 314,
+                lineNumber: 333,
                 columnNumber: 72
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                 children: error ?? ok
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 315,
+                lineNumber: 334,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 313,
+        lineNumber: 332,
         columnNumber: 5
     }, this);
 }
@@ -811,14 +826,14 @@ function Select({ name, children, required, defaultValue }) {
                 children: "Seleccionar"
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 333,
+                lineNumber: 352,
                 columnNumber: 7
             }, this),
             children
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 332,
+        lineNumber: 351,
         columnNumber: 5
     }, this);
 }
@@ -832,7 +847,7 @@ function ProjectOptions({ projects }) {
             ]
         }, project.id, true, {
             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-            lineNumber: 341,
+            lineNumber: 360,
             columnNumber: 5
         }, this));
 }
@@ -856,7 +871,7 @@ function UserOptions({ users, roleSlug, projectId }) {
             ]
         }, user.id, true, {
             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-            lineNumber: 358,
+            lineNumber: 377,
             columnNumber: 14
         }, this);
     });
@@ -871,7 +886,7 @@ function ItemOptions({ items }) {
             ]
         }, item.id, true, {
             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-            lineNumber: 363,
+            lineNumber: 382,
             columnNumber: 30
         }, this));
 }
@@ -885,7 +900,7 @@ function ChangeOptions({ changes, statuses }) {
             ]
         }, change.id, true, {
             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-            lineNumber: 369,
+            lineNumber: 388,
             columnNumber: 22
         }, this));
 }
@@ -899,7 +914,7 @@ function OrderOptions({ orders, statuses }) {
             ]
         }, order.id, true, {
             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-            lineNumber: 375,
+            lineNumber: 394,
             columnNumber: 21
         }, this));
 }
@@ -913,7 +928,7 @@ function PhaseOptions({ phases, projectId }) {
             ]
         }, phase.id, true, {
             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-            lineNumber: 381,
+            lineNumber: 400,
             columnNumber: 21
         }, this));
 }
@@ -927,7 +942,7 @@ function ActivityOptions({ activities, projectId }) {
             ]
         }, activity.id, true, {
             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-            lineNumber: 387,
+            lineNumber: 406,
             columnNumber: 24
         }, this));
 }
@@ -941,7 +956,7 @@ function SprintOptions({ sprints, projectId }) {
             ]
         }, sprint.id, true, {
             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-            lineNumber: 393,
+            lineNumber: 412,
             columnNumber: 22
         }, this));
 }
@@ -955,7 +970,7 @@ function WorkItemOptions({ workItems, excludeId }) {
             ]
         }, item.id, true, {
             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-            lineNumber: 399,
+            lineNumber: 418,
             columnNumber: 20
         }, this));
 }
@@ -971,7 +986,7 @@ function ArtifactRequirementOptions({ requirements, workItemId }) {
             ]
         }, requirement.id, true, {
             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-            lineNumber: 406,
+            lineNumber: 425,
             columnNumber: 7
         }, this));
 }
@@ -1014,25 +1029,25 @@ function Filters({ projects, params, path }) {
                             children: "Todos"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 450,
+                            lineNumber: 469,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(ProjectOptions, {
                             projects: projects
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 451,
+                            lineNumber: 470,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 449,
+                    lineNumber: 468,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 448,
+                lineNumber: 467,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -1044,12 +1059,12 @@ function Filters({ projects, params, path }) {
                     placeholder: "Estado"
                 }, void 0, false, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 455,
+                    lineNumber: 474,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 454,
+                lineNumber: 473,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -1061,12 +1076,12 @@ function Filters({ projects, params, path }) {
                     placeholder: "Texto"
                 }, void 0, false, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 458,
+                    lineNumber: 477,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 457,
+                lineNumber: 476,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
@@ -1076,20 +1091,20 @@ function Filters({ projects, params, path }) {
                         className: "h-4 w-4"
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 460,
+                        lineNumber: 479,
                         columnNumber: 35
                     }, this),
                     "Filtrar"
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 460,
+                lineNumber: 479,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 447,
+        lineNumber: 466,
         columnNumber: 5
     }, this);
 }
@@ -1164,7 +1179,7 @@ function Dashboard({ data }) {
                                 children: label
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 509,
+                                lineNumber: 528,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1172,18 +1187,18 @@ function Dashboard({ data }) {
                                 children: value
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 510,
+                                lineNumber: 529,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, label, true, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 508,
+                        lineNumber: 527,
                         columnNumber: 11
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 506,
+                lineNumber: 525,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1206,7 +1221,7 @@ function Dashboard({ data }) {
                                             children: assignment.user.name
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 519,
+                                            lineNumber: 538,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1214,7 +1229,7 @@ function Dashboard({ data }) {
                                             children: assignment.role.name
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 520,
+                                            lineNumber: 539,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1222,7 +1237,7 @@ function Dashboard({ data }) {
                                             children: active
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 521,
+                                            lineNumber: 540,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1230,7 +1245,7 @@ function Dashboard({ data }) {
                                             children: closed
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 522,
+                                            lineNumber: 541,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1238,23 +1253,23 @@ function Dashboard({ data }) {
                                             children: hours.toFixed(1)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 523,
+                                            lineNumber: 542,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, assignment.id, true, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 518,
+                                    lineNumber: 537,
                                     columnNumber: 15
                                 }, this))
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 516,
+                            lineNumber: 535,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 515,
+                        lineNumber: 534,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Panel"], {
@@ -1265,7 +1280,7 @@ function Dashboard({ data }) {
                                 children: "Sin notificaciones pendientes."
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 530,
+                                lineNumber: 549,
                                 columnNumber: 48
                             }, this) : data.notifications.map((notification)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$react$2d$server$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {
                                     className: "rounded-md border border-slate-200 p-3 text-sm hover:bg-slate-50",
@@ -1276,7 +1291,7 @@ function Dashboard({ data }) {
                                             children: notification.title
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 532,
+                                            lineNumber: 551,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1284,29 +1299,29 @@ function Dashboard({ data }) {
                                             children: notification.message
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 533,
+                                            lineNumber: 552,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, notification.id, true, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 531,
+                                    lineNumber: 550,
                                     columnNumber: 15
                                 }, this))
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 529,
+                            lineNumber: 548,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 528,
+                        lineNumber: 547,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 514,
+                lineNumber: 533,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1323,7 +1338,7 @@ function Dashboard({ data }) {
                                             value: entry.state
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 544,
+                                            lineNumber: 563,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1331,23 +1346,23 @@ function Dashboard({ data }) {
                                             children: entry.count
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 545,
+                                            lineNumber: 564,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, entry.state, true, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 543,
+                                    lineNumber: 562,
                                     columnNumber: 15
                                 }, this))
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 541,
+                            lineNumber: 560,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 540,
+                        lineNumber: 559,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Panel"], {
@@ -1366,7 +1381,7 @@ function Dashboard({ data }) {
                                             children: activity.title
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 554,
+                                            lineNumber: 573,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1374,7 +1389,7 @@ function Dashboard({ data }) {
                                             children: activity.responsible.name
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 555,
+                                            lineNumber: 574,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1382,7 +1397,7 @@ function Dashboard({ data }) {
                                             children: formatDate(activity.endDate)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 556,
+                                            lineNumber: 575,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1391,40 +1406,40 @@ function Dashboard({ data }) {
                                                 value: activityCompliance(activity)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 557,
+                                                lineNumber: 576,
                                                 columnNumber: 43
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 557,
+                                            lineNumber: 576,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, activity.id, true, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 553,
+                                    lineNumber: 572,
                                     columnNumber: 15
                                 }, this))
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 551,
+                            lineNumber: 570,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 550,
+                        lineNumber: 569,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 539,
+                lineNumber: 558,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 505,
+        lineNumber: 524,
         columnNumber: 5
     }, this);
 }
@@ -1446,7 +1461,7 @@ function UsersModule({ data, path }) {
                                     path: path
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 578,
+                                    lineNumber: 597,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -1458,12 +1473,12 @@ function UsersModule({ data, path }) {
                                         required: true
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 579,
+                                        lineNumber: 598,
                                         columnNumber: 44
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 579,
+                                    lineNumber: 598,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -1476,12 +1491,12 @@ function UsersModule({ data, path }) {
                                         type: "email"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 580,
+                                        lineNumber: 599,
                                         columnNumber: 43
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 580,
+                                    lineNumber: 599,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -1494,12 +1509,12 @@ function UsersModule({ data, path }) {
                                         type: "password"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 581,
+                                        lineNumber: 600,
                                         columnNumber: 48
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 581,
+                                    lineNumber: 600,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -1513,17 +1528,17 @@ function UsersModule({ data, path }) {
                                                 children: role.name
                                             }, role.id, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 582,
+                                                lineNumber: 601,
                                                 columnNumber: 151
                                             }, this))
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 582,
+                                        lineNumber: 601,
                                         columnNumber: 46
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 582,
+                                    lineNumber: 601,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -1535,12 +1550,12 @@ function UsersModule({ data, path }) {
                                         type: "password"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 583,
+                                        lineNumber: 602,
                                         columnNumber: 50
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 583,
+                                    lineNumber: 602,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
@@ -1549,25 +1564,25 @@ function UsersModule({ data, path }) {
                                             className: "h-4 w-4"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 584,
+                                            lineNumber: 603,
                                             columnNumber: 21
                                         }, this),
                                         "Crear usuario"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 584,
+                                    lineNumber: 603,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 577,
+                            lineNumber: 596,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 576,
+                        lineNumber: 595,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Panel"], {
@@ -1589,7 +1604,7 @@ function UsersModule({ data, path }) {
                                             children: user.name
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 591,
+                                            lineNumber: 610,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1597,7 +1612,7 @@ function UsersModule({ data, path }) {
                                             children: user.email
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 592,
+                                            lineNumber: 611,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1605,7 +1620,7 @@ function UsersModule({ data, path }) {
                                             children: user.role.name
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 593,
+                                            lineNumber: 612,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1613,7 +1628,7 @@ function UsersModule({ data, path }) {
                                             children: userProjectRoles(user)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 594,
+                                            lineNumber: 613,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1621,7 +1636,7 @@ function UsersModule({ data, path }) {
                                             children: user.githubTokenLast4 ? `****${user.githubTokenLast4}` : "-"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 595,
+                                            lineNumber: 614,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1630,12 +1645,12 @@ function UsersModule({ data, path }) {
                                                 value: user.status
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 596,
+                                                lineNumber: 615,
                                                 columnNumber: 43
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 596,
+                                            lineNumber: 615,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1647,7 +1662,7 @@ function UsersModule({ data, path }) {
                                                         path: path
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                        lineNumber: 599,
+                                                        lineNumber: 618,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1656,7 +1671,7 @@ function UsersModule({ data, path }) {
                                                         value: user.id
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                        lineNumber: 600,
+                                                        lineNumber: 619,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1665,7 +1680,7 @@ function UsersModule({ data, path }) {
                                                         value: user.status === "ACTIVE" ? "INACTIVE" : "ACTIVE"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                        lineNumber: 601,
+                                                        lineNumber: 620,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
@@ -1673,40 +1688,40 @@ function UsersModule({ data, path }) {
                                                         children: user.status === "ACTIVE" ? "Desactivar" : "Activar"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                        lineNumber: 602,
+                                                        lineNumber: 621,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 598,
+                                                lineNumber: 617,
                                                 columnNumber: 19
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 597,
+                                            lineNumber: 616,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, user.id, true, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 590,
+                                    lineNumber: 609,
                                     columnNumber: 15
                                 }, this))
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 588,
+                            lineNumber: 607,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 587,
+                        lineNumber: 606,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 575,
+                lineNumber: 594,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Panel"], {
@@ -1721,7 +1736,7 @@ function UsersModule({ data, path }) {
                                 path: path
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 613,
+                                lineNumber: 632,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -1734,17 +1749,17 @@ function UsersModule({ data, path }) {
                                         projects: data.projects
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 614,
+                                        lineNumber: 633,
                                         columnNumber: 78
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 614,
+                                    lineNumber: 633,
                                     columnNumber: 44
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 614,
+                                lineNumber: 633,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -1758,17 +1773,17 @@ function UsersModule({ data, path }) {
                                         projectId: data.currentProjectId
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 615,
+                                        lineNumber: 634,
                                         columnNumber: 74
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 615,
+                                    lineNumber: 634,
                                     columnNumber: 43
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 615,
+                                lineNumber: 634,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -1782,17 +1797,17 @@ function UsersModule({ data, path }) {
                                             children: role.name
                                         }, role.id, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 616,
+                                            lineNumber: 635,
                                             columnNumber: 156
                                         }, this))
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 616,
+                                    lineNumber: 635,
                                     columnNumber: 51
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 616,
+                                lineNumber: 635,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -1803,12 +1818,12 @@ function UsersModule({ data, path }) {
                                     placeholder: "Equipo, guardia o responsabilidad"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 617,
+                                    lineNumber: 636,
                                     columnNumber: 31
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 617,
+                                lineNumber: 636,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1819,25 +1834,25 @@ function UsersModule({ data, path }) {
                                             className: "h-4 w-4"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 618,
+                                            lineNumber: 637,
                                             columnNumber: 51
                                         }, this),
                                         "Asignar"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 618,
+                                    lineNumber: 637,
                                     columnNumber: 43
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 618,
+                                lineNumber: 637,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 612,
+                        lineNumber: 631,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["DataTable"], {
@@ -1856,7 +1871,7 @@ function UsersModule({ data, path }) {
                                         children: assignment.project.code
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 623,
+                                        lineNumber: 642,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1864,7 +1879,7 @@ function UsersModule({ data, path }) {
                                         children: assignment.user.name
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 624,
+                                        lineNumber: 643,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1872,7 +1887,7 @@ function UsersModule({ data, path }) {
                                         children: assignment.role.name
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 625,
+                                        lineNumber: 644,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1880,7 +1895,7 @@ function UsersModule({ data, path }) {
                                         children: assignment.user.role.name
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 626,
+                                        lineNumber: 645,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1889,12 +1904,12 @@ function UsersModule({ data, path }) {
                                             value: assignment.active ? "ACTIVE" : "INACTIVE"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 627,
+                                            lineNumber: 646,
                                             columnNumber: 41
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 627,
+                                        lineNumber: 646,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1906,7 +1921,7 @@ function UsersModule({ data, path }) {
                                                     path: path
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                    lineNumber: 630,
+                                                    lineNumber: 649,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1915,7 +1930,7 @@ function UsersModule({ data, path }) {
                                                     value: assignment.id
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                    lineNumber: 631,
+                                                    lineNumber: 650,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1924,7 +1939,7 @@ function UsersModule({ data, path }) {
                                                     value: assignment.active ? "false" : "true"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                    lineNumber: 632,
+                                                    lineNumber: 651,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
@@ -1932,41 +1947,41 @@ function UsersModule({ data, path }) {
                                                     children: assignment.active ? "Desactivar" : "Activar"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                    lineNumber: 633,
+                                                    lineNumber: 652,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 629,
+                                            lineNumber: 648,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 628,
+                                        lineNumber: 647,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, assignment.id, true, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 622,
+                                lineNumber: 641,
                                 columnNumber: 13
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 620,
+                        lineNumber: 639,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 611,
+                lineNumber: 630,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 574,
+        lineNumber: 593,
         columnNumber: 5
     }, this);
 }
@@ -1984,7 +1999,7 @@ function RolesModule({ data, path }) {
                             path: path
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 649,
+                            lineNumber: 668,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -1997,12 +2012,12 @@ function RolesModule({ data, path }) {
                                 required: true
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 650,
+                                lineNumber: 669,
                                 columnNumber: 40
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 650,
+                            lineNumber: 669,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -2014,12 +2029,12 @@ function RolesModule({ data, path }) {
                                 required: true
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 651,
+                                lineNumber: 670,
                                 columnNumber: 42
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 651,
+                            lineNumber: 670,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -2029,12 +2044,12 @@ function RolesModule({ data, path }) {
                                 name: "description"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 652,
+                                lineNumber: 671,
                                 columnNumber: 38
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 652,
+                            lineNumber: 671,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -2048,35 +2063,35 @@ function RolesModule({ data, path }) {
                                         children: permission.code
                                     }, permission.id, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 655,
+                                        lineNumber: 674,
                                         columnNumber: 53
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 654,
+                                lineNumber: 673,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 653,
+                            lineNumber: 672,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
                             children: "Crear rol"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 658,
+                            lineNumber: 677,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 648,
+                    lineNumber: 667,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 647,
+                lineNumber: 666,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Panel"], {
@@ -2096,7 +2111,7 @@ function RolesModule({ data, path }) {
                                     children: role.name
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 665,
+                                    lineNumber: 684,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -2104,7 +2119,7 @@ function RolesModule({ data, path }) {
                                     children: role.rolePermissions.map((rp)=>rp.permission.code).join(", ") || "-"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 666,
+                                    lineNumber: 685,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -2112,7 +2127,7 @@ function RolesModule({ data, path }) {
                                     children: role.isSystem ? "Si" : "No"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 667,
+                                    lineNumber: 686,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -2121,12 +2136,12 @@ function RolesModule({ data, path }) {
                                         value: role.active ? "ACTIVE" : "INACTIVE"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 668,
+                                        lineNumber: 687,
                                         columnNumber: 41
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 668,
+                                    lineNumber: 687,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -2138,7 +2153,7 @@ function RolesModule({ data, path }) {
                                                 path: path
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 672,
+                                                lineNumber: 691,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2147,7 +2162,7 @@ function RolesModule({ data, path }) {
                                                 value: role.id
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 673,
+                                                lineNumber: 692,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2156,7 +2171,7 @@ function RolesModule({ data, path }) {
                                                 value: role.active ? "false" : "true"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 674,
+                                                lineNumber: 693,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
@@ -2164,40 +2179,40 @@ function RolesModule({ data, path }) {
                                                 children: role.active ? "Desactivar" : "Activar"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 675,
+                                                lineNumber: 694,
                                                 columnNumber: 21
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 671,
+                                        lineNumber: 690,
                                         columnNumber: 19
                                     }, this) : "-"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 669,
+                                    lineNumber: 688,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, role.id, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 664,
+                            lineNumber: 683,
                             columnNumber: 13
                         }, this))
                 }, void 0, false, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 662,
+                    lineNumber: 681,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 661,
+                lineNumber: 680,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 646,
+        lineNumber: 665,
         columnNumber: 5
     }, this);
 }
@@ -2215,7 +2230,7 @@ function ProjectsModule({ data, path }) {
                             path: path
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 692,
+                            lineNumber: 711,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -2227,12 +2242,12 @@ function ProjectsModule({ data, path }) {
                                 required: true
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 693,
+                                lineNumber: 712,
                                 columnNumber: 42
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 693,
+                            lineNumber: 712,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -2244,12 +2259,12 @@ function ProjectsModule({ data, path }) {
                                 required: true
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 694,
+                                lineNumber: 713,
                                 columnNumber: 42
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 694,
+                            lineNumber: 713,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -2264,17 +2279,17 @@ function ProjectsModule({ data, path }) {
                                     roleSlug: "JEFE_PROYECTO"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 695,
+                                    lineNumber: 714,
                                     columnNumber: 86
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 695,
+                                lineNumber: 714,
                                 columnNumber: 52
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 695,
+                            lineNumber: 714,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -2284,12 +2299,12 @@ function ProjectsModule({ data, path }) {
                                 name: "description"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 696,
+                                lineNumber: 715,
                                 columnNumber: 38
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 696,
+                            lineNumber: 715,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -2299,12 +2314,12 @@ function ProjectsModule({ data, path }) {
                                 name: "githubOwner"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 697,
+                                lineNumber: 716,
                                 columnNumber: 39
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 697,
+                            lineNumber: 716,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -2314,12 +2329,12 @@ function ProjectsModule({ data, path }) {
                                 name: "githubRepo"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 698,
+                                lineNumber: 717,
                                 columnNumber: 38
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 698,
+                            lineNumber: 717,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -2334,7 +2349,7 @@ function ProjectsModule({ data, path }) {
                                         children: "Privado"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 701,
+                                        lineNumber: 720,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -2342,18 +2357,18 @@ function ProjectsModule({ data, path }) {
                                         children: "Publico"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 702,
+                                        lineNumber: 721,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 700,
+                                lineNumber: 719,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 699,
+                            lineNumber: 718,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -2366,14 +2381,14 @@ function ProjectsModule({ data, path }) {
                                     value: "on"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 705,
+                                    lineNumber: 724,
                                     columnNumber: 76
                                 }, this),
                                 " Inicializar con README"
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 705,
+                            lineNumber: 724,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -2384,32 +2399,32 @@ function ProjectsModule({ data, path }) {
                                     type: "checkbox"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 706,
+                                    lineNumber: 725,
                                     columnNumber: 76
                                 }, this),
                                 " Crear repositorio GitHub al guardar"
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 706,
+                            lineNumber: 725,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
                             children: "Crear proyecto"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 707,
+                            lineNumber: 726,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 691,
+                    lineNumber: 710,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 690,
+                lineNumber: 709,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Panel"], {
@@ -2430,7 +2445,7 @@ function ProjectsModule({ data, path }) {
                                     children: project.code
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 714,
+                                    lineNumber: 733,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -2438,7 +2453,7 @@ function ProjectsModule({ data, path }) {
                                     children: project.name
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 715,
+                                    lineNumber: 734,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -2446,7 +2461,7 @@ function ProjectsModule({ data, path }) {
                                     children: project.manager.name
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 716,
+                                    lineNumber: 735,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -2454,7 +2469,7 @@ function ProjectsModule({ data, path }) {
                                     children: project.githubOwner && project.githubRepo ? `${project.githubOwner}/${project.githubRepo}` : "-"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 717,
+                                    lineNumber: 736,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -2463,12 +2478,12 @@ function ProjectsModule({ data, path }) {
                                         value: project.status
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 718,
+                                        lineNumber: 737,
                                         columnNumber: 41
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 718,
+                                    lineNumber: 737,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -2481,7 +2496,7 @@ function ProjectsModule({ data, path }) {
                                                 path: path
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 721,
+                                                lineNumber: 740,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2490,7 +2505,7 @@ function ProjectsModule({ data, path }) {
                                                 value: project.id
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 722,
+                                                lineNumber: 741,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -2503,7 +2518,7 @@ function ProjectsModule({ data, path }) {
                                                         children: "Activo"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                        lineNumber: 724,
+                                                        lineNumber: 743,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -2511,7 +2526,7 @@ function ProjectsModule({ data, path }) {
                                                         children: "Pausado"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                        lineNumber: 725,
+                                                        lineNumber: 744,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -2519,13 +2534,13 @@ function ProjectsModule({ data, path }) {
                                                         children: "Cerrado"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                        lineNumber: 726,
+                                                        lineNumber: 745,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 723,
+                                                lineNumber: 742,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
@@ -2533,40 +2548,40 @@ function ProjectsModule({ data, path }) {
                                                 children: "Guardar"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 728,
+                                                lineNumber: 747,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 720,
+                                        lineNumber: 739,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 719,
+                                    lineNumber: 738,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, project.id, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 713,
+                            lineNumber: 732,
                             columnNumber: 13
                         }, this))
                 }, void 0, false, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 711,
+                    lineNumber: 730,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 710,
+                lineNumber: 729,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 689,
+        lineNumber: 708,
         columnNumber: 5
     }, this);
 }
@@ -2586,7 +2601,7 @@ function GithubWorkspaceModule({ data, path }) {
                             value: tokenReady ? "ACTIVE" : "PENDING"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 747,
+                            lineNumber: 766,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2594,18 +2609,18 @@ function GithubWorkspaceModule({ data, path }) {
                             children: tokenReady ? "Workspace GitHub configurado para todos los usuarios." : "Falta configurar GITHUB_WORKSPACE_TOKEN en el entorno."
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 748,
+                            lineNumber: 767,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 746,
+                    lineNumber: 765,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 745,
+                lineNumber: 764,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2621,7 +2636,7 @@ function GithubWorkspaceModule({ data, path }) {
                                     path: path
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 757,
+                                    lineNumber: 776,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -2634,17 +2649,17 @@ function GithubWorkspaceModule({ data, path }) {
                                             projects: data.projects
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 758,
+                                            lineNumber: 777,
                                             columnNumber: 80
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 758,
+                                        lineNumber: 777,
                                         columnNumber: 46
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 758,
+                                    lineNumber: 777,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -2655,12 +2670,12 @@ function GithubWorkspaceModule({ data, path }) {
                                         placeholder: "mi-org"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 759,
+                                        lineNumber: 778,
                                         columnNumber: 49
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 759,
+                                    lineNumber: 778,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -2671,12 +2686,12 @@ function GithubWorkspaceModule({ data, path }) {
                                         placeholder: "sgcsw-core"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 760,
+                                        lineNumber: 779,
                                         columnNumber: 40
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 760,
+                                    lineNumber: 779,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -2686,12 +2701,12 @@ function GithubWorkspaceModule({ data, path }) {
                                         name: "description"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 761,
+                                        lineNumber: 780,
                                         columnNumber: 40
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 761,
+                                    lineNumber: 780,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -2706,7 +2721,7 @@ function GithubWorkspaceModule({ data, path }) {
                                                 children: "Privado"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 764,
+                                                lineNumber: 783,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -2714,18 +2729,18 @@ function GithubWorkspaceModule({ data, path }) {
                                                 children: "Publico"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 765,
+                                                lineNumber: 784,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 763,
+                                        lineNumber: 782,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 762,
+                                    lineNumber: 781,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -2737,14 +2752,14 @@ function GithubWorkspaceModule({ data, path }) {
                                             type: "checkbox"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 768,
+                                            lineNumber: 787,
                                             columnNumber: 78
                                         }, this),
                                         " Inicializar con README"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 768,
+                                    lineNumber: 787,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
@@ -2753,25 +2768,25 @@ function GithubWorkspaceModule({ data, path }) {
                                             className: "h-4 w-4"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 769,
+                                            lineNumber: 788,
                                             columnNumber: 21
                                         }, this),
                                         "Crear o vincular"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 769,
+                                    lineNumber: 788,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 756,
+                            lineNumber: 775,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 755,
+                        lineNumber: 774,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Panel"], {
@@ -2784,7 +2799,7 @@ function GithubWorkspaceModule({ data, path }) {
                                     path: path
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 775,
+                                    lineNumber: 794,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -2797,17 +2812,17 @@ function GithubWorkspaceModule({ data, path }) {
                                             projects: data.projects
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 776,
+                                            lineNumber: 795,
                                             columnNumber: 80
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 776,
+                                        lineNumber: 795,
                                         columnNumber: 46
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 776,
+                                    lineNumber: 795,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -2820,12 +2835,12 @@ function GithubWorkspaceModule({ data, path }) {
                                         required: true
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 777,
+                                        lineNumber: 796,
                                         columnNumber: 48
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 777,
+                                    lineNumber: 796,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -2836,12 +2851,12 @@ function GithubWorkspaceModule({ data, path }) {
                                         placeholder: "main"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 778,
+                                        lineNumber: 797,
                                         columnNumber: 38
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 778,
+                                    lineNumber: 797,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
@@ -2850,25 +2865,25 @@ function GithubWorkspaceModule({ data, path }) {
                                             className: "h-4 w-4"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 779,
+                                            lineNumber: 798,
                                             columnNumber: 21
                                         }, this),
                                         "Crear rama"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 779,
+                                    lineNumber: 798,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 774,
+                            lineNumber: 793,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 773,
+                        lineNumber: 792,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Panel"], {
@@ -2881,7 +2896,7 @@ function GithubWorkspaceModule({ data, path }) {
                                     path: path
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 785,
+                                    lineNumber: 804,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -2894,17 +2909,17 @@ function GithubWorkspaceModule({ data, path }) {
                                             projects: data.projects
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 786,
+                                            lineNumber: 805,
                                             columnNumber: 80
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 786,
+                                        lineNumber: 805,
                                         columnNumber: 46
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 786,
+                                    lineNumber: 805,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -2916,12 +2931,12 @@ function GithubWorkspaceModule({ data, path }) {
                                         required: true
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 787,
+                                        lineNumber: 806,
                                         columnNumber: 44
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 787,
+                                    lineNumber: 806,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -2934,12 +2949,12 @@ function GithubWorkspaceModule({ data, path }) {
                                         required: true
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 788,
+                                        lineNumber: 807,
                                         columnNumber: 49
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 788,
+                                    lineNumber: 807,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -2950,12 +2965,12 @@ function GithubWorkspaceModule({ data, path }) {
                                         placeholder: "main"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 789,
+                                        lineNumber: 808,
                                         columnNumber: 41
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 789,
+                                    lineNumber: 808,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -2965,12 +2980,12 @@ function GithubWorkspaceModule({ data, path }) {
                                         name: "body"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 790,
+                                        lineNumber: 809,
                                         columnNumber: 40
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 790,
+                                    lineNumber: 809,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
@@ -2979,25 +2994,25 @@ function GithubWorkspaceModule({ data, path }) {
                                             className: "h-4 w-4"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 791,
+                                            lineNumber: 810,
                                             columnNumber: 21
                                         }, this),
                                         "Crear PR"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 791,
+                                    lineNumber: 810,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 784,
+                            lineNumber: 803,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 783,
+                        lineNumber: 802,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Panel"], {
@@ -3013,7 +3028,7 @@ function GithubWorkspaceModule({ data, path }) {
                                             path: path
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 798,
+                                            lineNumber: 817,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -3026,17 +3041,17 @@ function GithubWorkspaceModule({ data, path }) {
                                                     projects: data.projects
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                    lineNumber: 799,
+                                                    lineNumber: 818,
                                                     columnNumber: 82
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 799,
+                                                lineNumber: 818,
                                                 columnNumber: 48
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 799,
+                                            lineNumber: 818,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -3049,12 +3064,12 @@ function GithubWorkspaceModule({ data, path }) {
                                                 required: true
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 800,
+                                                lineNumber: 819,
                                                 columnNumber: 43
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 800,
+                                            lineNumber: 819,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -3066,12 +3081,12 @@ function GithubWorkspaceModule({ data, path }) {
                                                 required: true
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 801,
+                                                lineNumber: 820,
                                                 columnNumber: 50
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 801,
+                                            lineNumber: 820,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
@@ -3079,13 +3094,13 @@ function GithubWorkspaceModule({ data, path }) {
                                             children: "Crear tag"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 802,
+                                            lineNumber: 821,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 797,
+                                    lineNumber: 816,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -3096,7 +3111,7 @@ function GithubWorkspaceModule({ data, path }) {
                                             path: path
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 805,
+                                            lineNumber: 824,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -3109,17 +3124,17 @@ function GithubWorkspaceModule({ data, path }) {
                                                     projects: data.projects
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                    lineNumber: 806,
+                                                    lineNumber: 825,
                                                     columnNumber: 82
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 806,
+                                                lineNumber: 825,
                                                 columnNumber: 48
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 806,
+                                            lineNumber: 825,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -3131,12 +3146,12 @@ function GithubWorkspaceModule({ data, path }) {
                                                 required: true
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 807,
+                                                lineNumber: 826,
                                                 columnNumber: 52
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 807,
+                                            lineNumber: 826,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -3146,12 +3161,12 @@ function GithubWorkspaceModule({ data, path }) {
                                                 name: "body"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 808,
+                                                lineNumber: 827,
                                                 columnNumber: 38
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 808,
+                                            lineNumber: 827,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
@@ -3159,30 +3174,30 @@ function GithubWorkspaceModule({ data, path }) {
                                             children: "Crear issue"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 809,
+                                            lineNumber: 828,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 804,
+                                    lineNumber: 823,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 796,
+                            lineNumber: 815,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 795,
+                        lineNumber: 814,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 754,
+                lineNumber: 773,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Panel"], {
@@ -3196,7 +3211,7 @@ function GithubWorkspaceModule({ data, path }) {
                             path: path
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 817,
+                            lineNumber: 836,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -3209,17 +3224,17 @@ function GithubWorkspaceModule({ data, path }) {
                                     projects: data.projects
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 818,
+                                    lineNumber: 837,
                                     columnNumber: 78
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 818,
+                                lineNumber: 837,
                                 columnNumber: 44
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 818,
+                            lineNumber: 837,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -3233,12 +3248,12 @@ function GithubWorkspaceModule({ data, path }) {
                                 required: true
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 819,
+                                lineNumber: 838,
                                 columnNumber: 47
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 819,
+                            lineNumber: 838,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -3250,30 +3265,30 @@ function GithubWorkspaceModule({ data, path }) {
                                 type: "password"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 820,
+                                lineNumber: 839,
                                 columnNumber: 33
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 820,
+                            lineNumber: 839,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
                             children: "Registrar webhook"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 821,
+                            lineNumber: 840,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 816,
+                    lineNumber: 835,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 815,
+                lineNumber: 834,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Panel"], {
@@ -3296,7 +3311,7 @@ function GithubWorkspaceModule({ data, path }) {
                                         children: project.code
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 832,
+                                        lineNumber: 851,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -3314,18 +3329,18 @@ function GithubWorkspaceModule({ data, path }) {
                                                     className: "h-3 w-3"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                    lineNumber: 834,
+                                                    lineNumber: 853,
                                                     columnNumber: 206
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 834,
+                                            lineNumber: 853,
                                             columnNumber: 30
                                         }, this) : "-"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 833,
+                                        lineNumber: 852,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -3338,12 +3353,12 @@ function GithubWorkspaceModule({ data, path }) {
                                             children: order.gitBranch
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 837,
+                                            lineNumber: 856,
                                             columnNumber: 64
                                         }, this) : order.gitBranch ?? "-"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 836,
+                                        lineNumber: 855,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -3356,12 +3371,12 @@ function GithubWorkspaceModule({ data, path }) {
                                             children: order.gitCommit?.slice(0, 10)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 840,
+                                            lineNumber: 859,
                                             columnNumber: 64
                                         }, this) : order.gitCommit?.slice(0, 10) ?? "-"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 839,
+                                        lineNumber: 858,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -3370,18 +3385,18 @@ function GithubWorkspaceModule({ data, path }) {
                                             value: order.status
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 842,
+                                            lineNumber: 861,
                                             columnNumber: 43
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 842,
+                                        lineNumber: 861,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, `${project.id}-${order.id}`, true, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 831,
+                                lineNumber: 850,
                                 columnNumber: 15
                             }, this)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
                             children: [
@@ -3390,7 +3405,7 @@ function GithubWorkspaceModule({ data, path }) {
                                     children: project.code
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 846,
+                                    lineNumber: 865,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -3408,18 +3423,18 @@ function GithubWorkspaceModule({ data, path }) {
                                                 className: "h-3 w-3"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 847,
+                                                lineNumber: 866,
                                                 columnNumber: 230
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 847,
+                                        lineNumber: 866,
                                         columnNumber: 54
                                     }, this) : "-"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 847,
+                                    lineNumber: 866,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -3427,7 +3442,7 @@ function GithubWorkspaceModule({ data, path }) {
                                     children: "-"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 848,
+                                    lineNumber: 867,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -3435,7 +3450,7 @@ function GithubWorkspaceModule({ data, path }) {
                                     children: "-"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 849,
+                                    lineNumber: 868,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -3444,35 +3459,35 @@ function GithubWorkspaceModule({ data, path }) {
                                         value: project.status
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 850,
+                                        lineNumber: 869,
                                         columnNumber: 43
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 850,
+                                    lineNumber: 869,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, project.id, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 845,
+                            lineNumber: 864,
                             columnNumber: 15
                         }, this);
                     })
                 }, void 0, false, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 826,
+                    lineNumber: 845,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 825,
+                lineNumber: 844,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 744,
+        lineNumber: 763,
         columnNumber: 5
     }, this);
 }
@@ -3495,7 +3510,7 @@ function EcsModule({ data, path, params }) {
                             path: path
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 866,
+                            lineNumber: 885,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -3508,17 +3523,17 @@ function EcsModule({ data, path, params }) {
                                     projects: data.projects
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 867,
+                                    lineNumber: 886,
                                     columnNumber: 78
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 867,
+                                lineNumber: 886,
                                 columnNumber: 44
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 867,
+                            lineNumber: 886,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -3536,17 +3551,17 @@ function EcsModule({ data, path, params }) {
                                         ]
                                     }, library.id, true, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 868,
+                                        lineNumber: 887,
                                         columnNumber: 113
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 868,
+                                lineNumber: 887,
                                 columnNumber: 46
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 868,
+                            lineNumber: 887,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -3559,12 +3574,12 @@ function EcsModule({ data, path, params }) {
                                 required: true
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 869,
+                                lineNumber: 888,
                                 columnNumber: 42
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 869,
+                            lineNumber: 888,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -3576,12 +3591,12 @@ function EcsModule({ data, path, params }) {
                                 required: true
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 870,
+                                lineNumber: 889,
                                 columnNumber: 42
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 870,
+                            lineNumber: 889,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -3602,17 +3617,17 @@ function EcsModule({ data, path, params }) {
                                         children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$labels$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["labelFor"])(type)
                                     }, type, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 872,
+                                        lineNumber: 891,
                                         columnNumber: 123
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 872,
+                                lineNumber: 891,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 871,
+                            lineNumber: 890,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -3623,12 +3638,12 @@ function EcsModule({ data, path, params }) {
                                 placeholder: "1.0.0"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 874,
+                                lineNumber: 893,
                                 columnNumber: 42
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 874,
+                            lineNumber: 893,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -3639,17 +3654,17 @@ function EcsModule({ data, path, params }) {
                                     workItems: data.workItems
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 875,
+                                    lineNumber: 894,
                                     columnNumber: 62
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 875,
+                                lineNumber: 894,
                                 columnNumber: 36
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 875,
+                            lineNumber: 894,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -3660,17 +3675,17 @@ function EcsModule({ data, path, params }) {
                                     requirements: data.artifactRequirements
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 876,
+                                    lineNumber: 895,
                                     columnNumber: 83
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 876,
+                                lineNumber: 895,
                                 columnNumber: 46
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 876,
+                            lineNumber: 895,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -3681,17 +3696,17 @@ function EcsModule({ data, path, params }) {
                                     changes: data.changes
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 877,
+                                    lineNumber: 896,
                                     columnNumber: 67
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 877,
+                                lineNumber: 896,
                                 columnNumber: 36
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 877,
+                            lineNumber: 896,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -3702,17 +3717,17 @@ function EcsModule({ data, path, params }) {
                                     orders: data.orders
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 878,
+                                    lineNumber: 897,
                                     columnNumber: 61
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 878,
+                                lineNumber: 897,
                                 columnNumber: 32
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 878,
+                            lineNumber: 897,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -3726,17 +3741,17 @@ function EcsModule({ data, path, params }) {
                                     projectId: data.currentProjectId
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 879,
+                                    lineNumber: 898,
                                     columnNumber: 85
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 879,
+                                lineNumber: 898,
                                 columnNumber: 47
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 879,
+                            lineNumber: 898,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -3748,12 +3763,12 @@ function EcsModule({ data, path, params }) {
                                 required: true
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 880,
+                                lineNumber: 899,
                                 columnNumber: 47
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 880,
+                            lineNumber: 899,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -3764,12 +3779,12 @@ function EcsModule({ data, path, params }) {
                                 placeholder: "lenguaje=TypeScript; capa=backend"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 881,
+                                lineNumber: 900,
                                 columnNumber: 36
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 881,
+                            lineNumber: 900,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -3782,30 +3797,30 @@ function EcsModule({ data, path, params }) {
                                 type: "file"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 882,
+                                lineNumber: 901,
                                 columnNumber: 43
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 882,
+                            lineNumber: 901,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
                             children: "Registrar ECS"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 883,
+                            lineNumber: 902,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 865,
+                    lineNumber: 884,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 864,
+                lineNumber: 883,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3816,7 +3831,7 @@ function EcsModule({ data, path, params }) {
                         path: path
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 887,
+                        lineNumber: 906,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Panel"], {
@@ -3838,7 +3853,7 @@ function EcsModule({ data, path, params }) {
                                             children: item.code
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 892,
+                                            lineNumber: 911,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -3846,7 +3861,7 @@ function EcsModule({ data, path, params }) {
                                             children: item.name
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 893,
+                                            lineNumber: 912,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -3854,7 +3869,7 @@ function EcsModule({ data, path, params }) {
                                             children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$labels$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["labelFor"])(item.type)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 894,
+                                            lineNumber: 913,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -3862,7 +3877,7 @@ function EcsModule({ data, path, params }) {
                                             children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$labels$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["labelFor"])(item.library.type)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 895,
+                                            lineNumber: 914,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -3870,7 +3885,7 @@ function EcsModule({ data, path, params }) {
                                             children: item.currentVersion
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 896,
+                                            lineNumber: 915,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -3881,7 +3896,7 @@ function EcsModule({ data, path, params }) {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 897,
+                                            lineNumber: 916,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -3890,40 +3905,40 @@ function EcsModule({ data, path, params }) {
                                                 value: item.status
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 898,
+                                                lineNumber: 917,
                                                 columnNumber: 43
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 898,
+                                            lineNumber: 917,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, item.id, true, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 891,
+                                    lineNumber: 910,
                                     columnNumber: 15
                                 }, this))
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 889,
+                            lineNumber: 908,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 888,
+                        lineNumber: 907,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 886,
+                lineNumber: 905,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 863,
+        lineNumber: 882,
         columnNumber: 5
     }, this);
 }
@@ -3944,7 +3959,7 @@ function VersionsModule({ data, path }) {
                                     path: path
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 914,
+                                    lineNumber: 933,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -3957,17 +3972,17 @@ function VersionsModule({ data, path }) {
                                             items: data.items
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 915,
+                                            lineNumber: 934,
                                             columnNumber: 72
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 915,
+                                        lineNumber: 934,
                                         columnNumber: 41
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 915,
+                                    lineNumber: 934,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -3977,30 +3992,30 @@ function VersionsModule({ data, path }) {
                                         name: "reason"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 916,
+                                        lineNumber: 935,
                                         columnNumber: 35
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 916,
+                                    lineNumber: 935,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
                                     children: "Bloquear"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 917,
+                                    lineNumber: 936,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 913,
+                            lineNumber: 932,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 912,
+                        lineNumber: 931,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Panel"], {
@@ -4013,7 +4028,7 @@ function VersionsModule({ data, path }) {
                                     path: path
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 922,
+                                    lineNumber: 941,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4029,17 +4044,17 @@ function VersionsModule({ data, path }) {
                                                     items: data.items
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                    lineNumber: 924,
+                                                    lineNumber: 943,
                                                     columnNumber: 74
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 924,
+                                                lineNumber: 943,
                                                 columnNumber: 43
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 924,
+                                            lineNumber: 943,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -4052,12 +4067,12 @@ function VersionsModule({ data, path }) {
                                                 required: true
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 925,
+                                                lineNumber: 944,
                                                 columnNumber: 47
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 925,
+                                            lineNumber: 944,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -4068,17 +4083,17 @@ function VersionsModule({ data, path }) {
                                                     workItems: data.workItems
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                    lineNumber: 926,
+                                                    lineNumber: 945,
                                                     columnNumber: 66
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 926,
+                                                lineNumber: 945,
                                                 columnNumber: 40
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 926,
+                                            lineNumber: 945,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -4089,17 +4104,17 @@ function VersionsModule({ data, path }) {
                                                     requirements: data.artifactRequirements
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                    lineNumber: 927,
+                                                    lineNumber: 946,
                                                     columnNumber: 87
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 927,
+                                                lineNumber: 946,
                                                 columnNumber: 50
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 927,
+                                            lineNumber: 946,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -4110,17 +4125,17 @@ function VersionsModule({ data, path }) {
                                                     changes: data.changes
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                    lineNumber: 928,
+                                                    lineNumber: 947,
                                                     columnNumber: 71
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 928,
+                                                lineNumber: 947,
                                                 columnNumber: 40
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 928,
+                                            lineNumber: 947,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -4131,17 +4146,17 @@ function VersionsModule({ data, path }) {
                                                     orders: data.orders
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                    lineNumber: 929,
+                                                    lineNumber: 948,
                                                     columnNumber: 65
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 929,
+                                                lineNumber: 948,
                                                 columnNumber: 36
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 929,
+                                            lineNumber: 948,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -4151,12 +4166,12 @@ function VersionsModule({ data, path }) {
                                                 name: "gitBranch"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 930,
+                                                lineNumber: 949,
                                                 columnNumber: 39
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 930,
+                                            lineNumber: 949,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -4166,12 +4181,12 @@ function VersionsModule({ data, path }) {
                                                 name: "gitCommit"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 931,
+                                                lineNumber: 950,
                                                 columnNumber: 37
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 931,
+                                            lineNumber: 950,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -4181,12 +4196,12 @@ function VersionsModule({ data, path }) {
                                                 name: "gitPushRef"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 932,
+                                                lineNumber: 951,
                                                 columnNumber: 39
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 932,
+                                            lineNumber: 951,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -4199,18 +4214,18 @@ function VersionsModule({ data, path }) {
                                                 type: "file"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 933,
+                                                lineNumber: 952,
                                                 columnNumber: 47
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 933,
+                                            lineNumber: 952,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 923,
+                                    lineNumber: 942,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -4222,36 +4237,36 @@ function VersionsModule({ data, path }) {
                                         required: true
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 935,
+                                        lineNumber: 954,
                                         columnNumber: 48
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 935,
+                                    lineNumber: 954,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
                                     children: "Registrar check-in"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 936,
+                                    lineNumber: 955,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 921,
+                            lineNumber: 940,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 920,
+                        lineNumber: 939,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 911,
+                lineNumber: 930,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Panel"], {
@@ -4273,7 +4288,7 @@ function VersionsModule({ data, path }) {
                                     children: version.item.code
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 944,
+                                    lineNumber: 963,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -4281,7 +4296,7 @@ function VersionsModule({ data, path }) {
                                     children: version.version
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 945,
+                                    lineNumber: 964,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -4289,7 +4304,7 @@ function VersionsModule({ data, path }) {
                                     children: version.comment
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 946,
+                                    lineNumber: 965,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -4297,7 +4312,7 @@ function VersionsModule({ data, path }) {
                                     children: version.createdBy.name
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 947,
+                                    lineNumber: 966,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -4305,7 +4320,7 @@ function VersionsModule({ data, path }) {
                                     children: version.gitBranch ?? "-"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 948,
+                                    lineNumber: 967,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -4313,7 +4328,7 @@ function VersionsModule({ data, path }) {
                                     children: version.gitCommit ?? "-"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 949,
+                                    lineNumber: 968,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -4324,29 +4339,29 @@ function VersionsModule({ data, path }) {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 950,
+                                    lineNumber: 969,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, version.id, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 943,
+                            lineNumber: 962,
                             columnNumber: 13
                         }, this))
                 }, void 0, false, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 941,
+                    lineNumber: 960,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 940,
+                lineNumber: 959,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 910,
+        lineNumber: 929,
         columnNumber: 5
     }, this);
 }
@@ -4358,7 +4373,7 @@ function LocksModule({ data, path }) {
             children: "No hay bloqueos activos."
         }, void 0, false, {
             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-            lineNumber: 963,
+            lineNumber: 982,
             columnNumber: 30
         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["DataTable"], {
             headers: [
@@ -4375,7 +4390,7 @@ function LocksModule({ data, path }) {
                             children: lock.item.code
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 967,
+                            lineNumber: 986,
                             columnNumber: 15
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -4383,7 +4398,7 @@ function LocksModule({ data, path }) {
                             children: lock.user.name
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 968,
+                            lineNumber: 987,
                             columnNumber: 15
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -4391,7 +4406,7 @@ function LocksModule({ data, path }) {
                             children: lock.lockedAt.toLocaleString("es-PE")
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 969,
+                            lineNumber: 988,
                             columnNumber: 15
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -4400,12 +4415,12 @@ function LocksModule({ data, path }) {
                                 value: lock.status
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 970,
+                                lineNumber: 989,
                                 columnNumber: 41
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 970,
+                            lineNumber: 989,
                             columnNumber: 15
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -4418,7 +4433,7 @@ function LocksModule({ data, path }) {
                                         path: path
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 973,
+                                        lineNumber: 992,
                                         columnNumber: 19
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -4427,7 +4442,7 @@ function LocksModule({ data, path }) {
                                         value: lock.id
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 974,
+                                        lineNumber: 993,
                                         columnNumber: 19
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -4437,7 +4452,7 @@ function LocksModule({ data, path }) {
                                         required: true
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 975,
+                                        lineNumber: 994,
                                         columnNumber: 19
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
@@ -4445,34 +4460,34 @@ function LocksModule({ data, path }) {
                                         children: "Force unlock"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 976,
+                                        lineNumber: 995,
                                         columnNumber: 19
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 972,
+                                lineNumber: 991,
                                 columnNumber: 17
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 971,
+                            lineNumber: 990,
                             columnNumber: 15
                         }, this)
                     ]
                 }, lock.id, true, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 966,
+                    lineNumber: 985,
                     columnNumber: 13
                 }, this))
         }, void 0, false, {
             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-            lineNumber: 964,
+            lineNumber: 983,
             columnNumber: 9
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 962,
+        lineNumber: 981,
         columnNumber: 5
     }, this);
 }
@@ -4490,7 +4505,7 @@ function LibrariesModule({ data, path }) {
                             path: path
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 992,
+                            lineNumber: 1011,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -4503,17 +4518,17 @@ function LibrariesModule({ data, path }) {
                                     items: data.items
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 993,
+                                    lineNumber: 1012,
                                     columnNumber: 70
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 993,
+                                lineNumber: 1012,
                                 columnNumber: 39
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 993,
+                            lineNumber: 1012,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -4531,17 +4546,17 @@ function LibrariesModule({ data, path }) {
                                         ]
                                     }, library.id, true, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 994,
+                                        lineNumber: 1013,
                                         columnNumber: 123
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 994,
+                                lineNumber: 1013,
                                 columnNumber: 54
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 994,
+                            lineNumber: 1013,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -4553,30 +4568,30 @@ function LibrariesModule({ data, path }) {
                                 required: true
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 995,
+                                lineNumber: 1014,
                                 columnNumber: 42
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 995,
+                            lineNumber: 1014,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
                             children: "Transferir ECS"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 996,
+                            lineNumber: 1015,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 991,
+                    lineNumber: 1010,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 990,
+                lineNumber: 1009,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Panel"], {
@@ -4597,7 +4612,7 @@ function LibrariesModule({ data, path }) {
                                     children: transfer.item.code
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1003,
+                                    lineNumber: 1022,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -4605,7 +4620,7 @@ function LibrariesModule({ data, path }) {
                                     children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$labels$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["labelFor"])(transfer.fromLibrary.type)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1004,
+                                    lineNumber: 1023,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -4613,7 +4628,7 @@ function LibrariesModule({ data, path }) {
                                     children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$labels$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["labelFor"])(transfer.toLibrary.type)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1005,
+                                    lineNumber: 1024,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -4621,7 +4636,7 @@ function LibrariesModule({ data, path }) {
                                     children: transfer.user.name
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1006,
+                                    lineNumber: 1025,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -4629,7 +4644,7 @@ function LibrariesModule({ data, path }) {
                                     children: transfer.reason
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1007,
+                                    lineNumber: 1026,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -4638,34 +4653,34 @@ function LibrariesModule({ data, path }) {
                                         value: transfer.status
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1008,
+                                        lineNumber: 1027,
                                         columnNumber: 41
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1008,
+                                    lineNumber: 1027,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, transfer.id, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1002,
+                            lineNumber: 1021,
                             columnNumber: 13
                         }, this))
                 }, void 0, false, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 1000,
+                    lineNumber: 1019,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 999,
+                lineNumber: 1018,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 989,
+        lineNumber: 1008,
         columnNumber: 5
     }, this);
 }
@@ -4683,7 +4698,7 @@ function BaselinesModule({ data, path }) {
                             path: path
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1022,
+                            lineNumber: 1041,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -4696,17 +4711,17 @@ function BaselinesModule({ data, path }) {
                                     projects: data.projects
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1023,
+                                    lineNumber: 1042,
                                     columnNumber: 78
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1023,
+                                lineNumber: 1042,
                                 columnNumber: 44
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1023,
+                            lineNumber: 1042,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -4719,12 +4734,12 @@ function BaselinesModule({ data, path }) {
                                 required: true
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1024,
+                                lineNumber: 1043,
                                 columnNumber: 42
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1024,
+                            lineNumber: 1043,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -4736,12 +4751,12 @@ function BaselinesModule({ data, path }) {
                                 required: true
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1025,
+                                lineNumber: 1044,
                                 columnNumber: 42
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1025,
+                            lineNumber: 1044,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -4751,12 +4766,12 @@ function BaselinesModule({ data, path }) {
                                 name: "milestone"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1026,
+                                lineNumber: 1045,
                                 columnNumber: 31
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1026,
+                            lineNumber: 1045,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -4766,12 +4781,12 @@ function BaselinesModule({ data, path }) {
                                 name: "description"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1027,
+                                lineNumber: 1046,
                                 columnNumber: 38
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1027,
+                            lineNumber: 1046,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -4791,35 +4806,35 @@ function BaselinesModule({ data, path }) {
                                         ]
                                     }, version.id, true, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1030,
+                                        lineNumber: 1049,
                                         columnNumber: 47
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1029,
+                                lineNumber: 1048,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1028,
+                            lineNumber: 1047,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
                             children: "Congelar linea base"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1033,
+                            lineNumber: 1052,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 1021,
+                    lineNumber: 1040,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 1020,
+                lineNumber: 1039,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Panel"], {
@@ -4839,7 +4854,7 @@ function BaselinesModule({ data, path }) {
                                     children: baseline.code
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1040,
+                                    lineNumber: 1059,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -4847,7 +4862,7 @@ function BaselinesModule({ data, path }) {
                                     children: baseline.project.code
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1041,
+                                    lineNumber: 1060,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -4855,7 +4870,7 @@ function BaselinesModule({ data, path }) {
                                     children: baseline.name
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1042,
+                                    lineNumber: 1061,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -4864,12 +4879,12 @@ function BaselinesModule({ data, path }) {
                                         value: baseline.status
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1043,
+                                        lineNumber: 1062,
                                         columnNumber: 41
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1043,
+                                    lineNumber: 1062,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -4877,29 +4892,29 @@ function BaselinesModule({ data, path }) {
                                     children: baseline.items.map((item)=>`${item.item.code} v${item.versionLabel}`).join(", ")
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1044,
+                                    lineNumber: 1063,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, baseline.id, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1039,
+                            lineNumber: 1058,
                             columnNumber: 13
                         }, this))
                 }, void 0, false, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 1037,
+                    lineNumber: 1056,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 1036,
+                lineNumber: 1055,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 1019,
+        lineNumber: 1038,
         columnNumber: 5
     }, this);
 }
@@ -4922,7 +4937,7 @@ function IncidentsModule({ data, path, params }) {
                             path: path
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1059,
+                            lineNumber: 1078,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -4935,17 +4950,17 @@ function IncidentsModule({ data, path, params }) {
                                     projects: data.projects
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1060,
+                                    lineNumber: 1079,
                                     columnNumber: 78
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1060,
+                                lineNumber: 1079,
                                 columnNumber: 44
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1060,
+                            lineNumber: 1079,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -4957,12 +4972,12 @@ function IncidentsModule({ data, path, params }) {
                                 required: true
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1061,
+                                lineNumber: 1080,
                                 columnNumber: 42
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1061,
+                            lineNumber: 1080,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -4981,17 +4996,17 @@ function IncidentsModule({ data, path, params }) {
                                         children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$labels$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["labelFor"])(s)
                                     }, s, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1062,
+                                        lineNumber: 1081,
                                         columnNumber: 128
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1062,
+                                lineNumber: 1081,
                                 columnNumber: 45
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1062,
+                            lineNumber: 1081,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -5002,17 +5017,17 @@ function IncidentsModule({ data, path, params }) {
                                     items: data.items
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1063,
+                                    lineNumber: 1082,
                                     columnNumber: 69
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1063,
+                                lineNumber: 1082,
                                 columnNumber: 39
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1063,
+                            lineNumber: 1082,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -5024,17 +5039,17 @@ function IncidentsModule({ data, path, params }) {
                                     projectId: data.currentProjectId
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1064,
+                                    lineNumber: 1083,
                                     columnNumber: 66
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1064,
+                                lineNumber: 1083,
                                 columnNumber: 38
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1064,
+                            lineNumber: 1083,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -5046,12 +5061,12 @@ function IncidentsModule({ data, path, params }) {
                                 required: true
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1065,
+                                lineNumber: 1084,
                                 columnNumber: 47
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1065,
+                            lineNumber: 1084,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -5063,30 +5078,30 @@ function IncidentsModule({ data, path, params }) {
                                 required: true
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1066,
+                                lineNumber: 1085,
                                 columnNumber: 57
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1066,
+                            lineNumber: 1085,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
                             children: "Registrar incidencia"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1067,
+                            lineNumber: 1086,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 1058,
+                    lineNumber: 1077,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 1057,
+                lineNumber: 1076,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5097,7 +5112,7 @@ function IncidentsModule({ data, path, params }) {
                         path: path
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 1071,
+                        lineNumber: 1090,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Panel"], {
@@ -5119,7 +5134,7 @@ function IncidentsModule({ data, path, params }) {
                                             children: incident.ticketId
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1076,
+                                            lineNumber: 1095,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -5127,7 +5142,7 @@ function IncidentsModule({ data, path, params }) {
                                             children: incident.project.code
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1077,
+                                            lineNumber: 1096,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -5135,7 +5150,7 @@ function IncidentsModule({ data, path, params }) {
                                             children: incident.title
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1078,
+                                            lineNumber: 1097,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -5144,12 +5159,12 @@ function IncidentsModule({ data, path, params }) {
                                                 value: incident.severity
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1079,
+                                                lineNumber: 1098,
                                                 columnNumber: 43
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1079,
+                                            lineNumber: 1098,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -5157,7 +5172,7 @@ function IncidentsModule({ data, path, params }) {
                                             children: incident.affectedItem?.code ?? "-"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1080,
+                                            lineNumber: 1099,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -5165,7 +5180,7 @@ function IncidentsModule({ data, path, params }) {
                                             children: incident.assignedTo?.name ?? "-"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1081,
+                                            lineNumber: 1100,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -5178,7 +5193,7 @@ function IncidentsModule({ data, path, params }) {
                                                         path: path
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                        lineNumber: 1084,
+                                                        lineNumber: 1103,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -5187,7 +5202,7 @@ function IncidentsModule({ data, path, params }) {
                                                         value: incident.id
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                        lineNumber: 1085,
+                                                        lineNumber: 1104,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -5206,12 +5221,12 @@ function IncidentsModule({ data, path, params }) {
                                                                 children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$labels$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["labelFor"])(status)
                                                             }, status, false, {
                                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                                lineNumber: 1087,
+                                                                lineNumber: 1106,
                                                                 columnNumber: 119
                                                             }, this))
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                        lineNumber: 1086,
+                                                        lineNumber: 1105,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
@@ -5219,46 +5234,46 @@ function IncidentsModule({ data, path, params }) {
                                                         children: "Guardar"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                        lineNumber: 1089,
+                                                        lineNumber: 1108,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1083,
+                                                lineNumber: 1102,
                                                 columnNumber: 19
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1082,
+                                            lineNumber: 1101,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, incident.id, true, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1075,
+                                    lineNumber: 1094,
                                     columnNumber: 15
                                 }, this))
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1073,
+                            lineNumber: 1092,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 1072,
+                        lineNumber: 1091,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 1070,
+                lineNumber: 1089,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 1056,
+        lineNumber: 1075,
         columnNumber: 5
     }, this);
 }
@@ -5284,7 +5299,7 @@ function ChangesModule({ data, path, params }) {
                                     path: path
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1108,
+                                    lineNumber: 1127,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -5297,17 +5312,17 @@ function ChangesModule({ data, path, params }) {
                                             projects: data.projects
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1109,
+                                            lineNumber: 1128,
                                             columnNumber: 80
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1109,
+                                        lineNumber: 1128,
                                         columnNumber: 46
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1109,
+                                    lineNumber: 1128,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -5319,12 +5334,12 @@ function ChangesModule({ data, path, params }) {
                                         required: true
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1110,
+                                        lineNumber: 1129,
                                         columnNumber: 44
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1110,
+                                    lineNumber: 1129,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -5343,17 +5358,17 @@ function ChangesModule({ data, path, params }) {
                                                 children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$labels$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["labelFor"])(s)
                                             }, s, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1111,
+                                                lineNumber: 1130,
                                                 columnNumber: 130
                                             }, this))
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1111,
+                                        lineNumber: 1130,
                                         columnNumber: 47
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1111,
+                                    lineNumber: 1130,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -5369,17 +5384,17 @@ function ChangesModule({ data, path, params }) {
                                                 ]
                                             }, i.id, true, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1112,
+                                                lineNumber: 1131,
                                                 columnNumber: 105
                                             }, this))
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1112,
+                                        lineNumber: 1131,
                                         columnNumber: 46
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1112,
+                                    lineNumber: 1131,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -5390,17 +5405,17 @@ function ChangesModule({ data, path, params }) {
                                             items: data.items
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1113,
+                                            lineNumber: 1132,
                                             columnNumber: 71
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1113,
+                                        lineNumber: 1132,
                                         columnNumber: 41
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1113,
+                                    lineNumber: 1132,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -5412,12 +5427,12 @@ function ChangesModule({ data, path, params }) {
                                         required: true
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1114,
+                                        lineNumber: 1133,
                                         columnNumber: 49
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1114,
+                                    lineNumber: 1133,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -5429,30 +5444,30 @@ function ChangesModule({ data, path, params }) {
                                         required: true
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1115,
+                                        lineNumber: 1134,
                                         columnNumber: 51
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1115,
+                                    lineNumber: 1134,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
                                     children: "Registrar solicitud"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1116,
+                                    lineNumber: 1135,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1107,
+                            lineNumber: 1126,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 1106,
+                        lineNumber: 1125,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5463,7 +5478,7 @@ function ChangesModule({ data, path, params }) {
                                 path: path
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1120,
+                                lineNumber: 1139,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Panel"], {
@@ -5484,7 +5499,7 @@ function ChangesModule({ data, path, params }) {
                                                     children: change.ticketId
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                    lineNumber: 1125,
+                                                    lineNumber: 1144,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -5492,7 +5507,7 @@ function ChangesModule({ data, path, params }) {
                                                     children: change.project.code
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                    lineNumber: 1126,
+                                                    lineNumber: 1145,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -5500,7 +5515,7 @@ function ChangesModule({ data, path, params }) {
                                                     children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$labels$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["labelFor"])(change.type)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                    lineNumber: 1127,
+                                                    lineNumber: 1146,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -5509,12 +5524,12 @@ function ChangesModule({ data, path, params }) {
                                                         value: change.priority
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                        lineNumber: 1128,
+                                                        lineNumber: 1147,
                                                         columnNumber: 45
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                    lineNumber: 1128,
+                                                    lineNumber: 1147,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -5523,12 +5538,12 @@ function ChangesModule({ data, path, params }) {
                                                         value: change.status
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                        lineNumber: 1129,
+                                                        lineNumber: 1148,
                                                         columnNumber: 45
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                    lineNumber: 1129,
+                                                    lineNumber: 1148,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -5536,35 +5551,35 @@ function ChangesModule({ data, path, params }) {
                                                     children: change.affectedItems.map((link)=>link.item.code).join(", ") || "-"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                    lineNumber: 1130,
+                                                    lineNumber: 1149,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, change.id, true, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1124,
+                                            lineNumber: 1143,
                                             columnNumber: 17
                                         }, this))
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1122,
+                                    lineNumber: 1141,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1121,
+                                lineNumber: 1140,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 1119,
+                        lineNumber: 1138,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 1105,
+                lineNumber: 1124,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Panel"], {
@@ -5588,7 +5603,7 @@ function ChangesModule({ data, path, params }) {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1141,
+                                    lineNumber: 1160,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -5597,12 +5612,12 @@ function ChangesModule({ data, path, params }) {
                                         value: change.status
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1142,
+                                        lineNumber: 1161,
                                         columnNumber: 41
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1142,
+                                    lineNumber: 1161,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -5615,7 +5630,7 @@ function ChangesModule({ data, path, params }) {
                                                 path: path
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1145,
+                                                lineNumber: 1164,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -5624,7 +5639,7 @@ function ChangesModule({ data, path, params }) {
                                                 value: change.id
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1146,
+                                                lineNumber: 1165,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -5637,7 +5652,7 @@ function ChangesModule({ data, path, params }) {
                                                         children: "Alineada"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                        lineNumber: 1148,
+                                                        lineNumber: 1167,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -5645,13 +5660,13 @@ function ChangesModule({ data, path, params }) {
                                                         children: "No alineada"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                        lineNumber: 1149,
+                                                        lineNumber: 1168,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1147,
+                                                lineNumber: 1166,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -5660,7 +5675,7 @@ function ChangesModule({ data, path, params }) {
                                                 placeholder: "Motivo si rechaza"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1151,
+                                                lineNumber: 1170,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
@@ -5668,18 +5683,18 @@ function ChangesModule({ data, path, params }) {
                                                 children: "Validar"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1152,
+                                                lineNumber: 1171,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1144,
+                                        lineNumber: 1163,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1143,
+                                    lineNumber: 1162,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -5692,7 +5707,7 @@ function ChangesModule({ data, path, params }) {
                                                 path: path
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1157,
+                                                lineNumber: 1176,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -5701,7 +5716,7 @@ function ChangesModule({ data, path, params }) {
                                                 value: change.id
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1158,
+                                                lineNumber: 1177,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -5711,7 +5726,7 @@ function ChangesModule({ data, path, params }) {
                                                 required: true
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1159,
+                                                lineNumber: 1178,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
@@ -5719,18 +5734,18 @@ function ChangesModule({ data, path, params }) {
                                                 children: "Observar"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1160,
+                                                lineNumber: 1179,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1156,
+                                        lineNumber: 1175,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1155,
+                                    lineNumber: 1174,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -5743,7 +5758,7 @@ function ChangesModule({ data, path, params }) {
                                                 path: path
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1166,
+                                                lineNumber: 1185,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -5752,7 +5767,7 @@ function ChangesModule({ data, path, params }) {
                                                 value: change.id
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1167,
+                                                lineNumber: 1186,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -5762,7 +5777,7 @@ function ChangesModule({ data, path, params }) {
                                                 required: true
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1168,
+                                                lineNumber: 1187,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
@@ -5772,7 +5787,7 @@ function ChangesModule({ data, path, params }) {
                                                 required: true
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1169,
+                                                lineNumber: 1188,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
@@ -5782,7 +5797,7 @@ function ChangesModule({ data, path, params }) {
                                                 required: true
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1170,
+                                                lineNumber: 1189,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -5799,52 +5814,52 @@ function ChangesModule({ data, path, params }) {
                                                         children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$labels$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["labelFor"])(s)
                                                     }, s, false, {
                                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                        lineNumber: 1172,
+                                                        lineNumber: 1191,
                                                         columnNumber: 73
                                                     }, this))
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1171,
+                                                lineNumber: 1190,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
                                                 children: "Reenviar"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1174,
+                                                lineNumber: 1193,
                                                 columnNumber: 21
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1165,
+                                        lineNumber: 1184,
                                         columnNumber: 19
                                     }, this) : "-"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1163,
+                                    lineNumber: 1182,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, change.id, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1140,
+                            lineNumber: 1159,
                             columnNumber: 13
                         }, this))
                 }, void 0, false, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 1138,
+                    lineNumber: 1157,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 1137,
+                lineNumber: 1156,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 1104,
+        lineNumber: 1123,
         columnNumber: 5
     }, this);
 }
@@ -5862,7 +5877,7 @@ function ImpactModule({ data, path }) {
                             path: path
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1191,
+                            lineNumber: 1210,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -5879,17 +5894,17 @@ function ImpactModule({ data, path }) {
                                     ]
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1192,
+                                    lineNumber: 1211,
                                     columnNumber: 97
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1192,
+                                lineNumber: 1211,
                                 columnNumber: 57
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1192,
+                            lineNumber: 1211,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5907,12 +5922,12 @@ function ImpactModule({ data, path }) {
                                         type: "number"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1194,
+                                        lineNumber: 1213,
                                         columnNumber: 52
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1194,
+                                    lineNumber: 1213,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -5926,18 +5941,18 @@ function ImpactModule({ data, path }) {
                                         type: "number"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1195,
+                                        lineNumber: 1214,
                                         columnNumber: 53
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1195,
+                                    lineNumber: 1214,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1193,
+                            lineNumber: 1212,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -5948,14 +5963,14 @@ function ImpactModule({ data, path }) {
                                     type: "checkbox"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1197,
+                                    lineNumber: 1216,
                                     columnNumber: 76
                                 }, this),
                                 " Alto impacto"
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1197,
+                            lineNumber: 1216,
                             columnNumber: 11
                         }, this),
                         [
@@ -5976,12 +5991,12 @@ function ImpactModule({ data, path }) {
                                     required: true
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1200,
+                                    lineNumber: 1219,
                                     columnNumber: 61
                                 }, this)
                             }, name, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1200,
+                                lineNumber: 1219,
                                 columnNumber: 20
                             }, this);
                         }),
@@ -5989,18 +6004,18 @@ function ImpactModule({ data, path }) {
                             children: "Derivar aprobacion"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1202,
+                            lineNumber: 1221,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 1190,
+                    lineNumber: 1209,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 1189,
+                lineNumber: 1208,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Panel"], {
@@ -6020,7 +6035,7 @@ function ImpactModule({ data, path }) {
                                     children: assessment.changeRequest.ticketId
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1209,
+                                    lineNumber: 1228,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -6028,7 +6043,7 @@ function ImpactModule({ data, path }) {
                                     children: String(assessment.costEstimated)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1210,
+                                    lineNumber: 1229,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -6036,7 +6051,7 @@ function ImpactModule({ data, path }) {
                                     children: assessment.timeEstimatedHours
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1211,
+                                    lineNumber: 1230,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -6044,7 +6059,7 @@ function ImpactModule({ data, path }) {
                                     children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$labels$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["labelFor"])(assessment.route)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1212,
+                                    lineNumber: 1231,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -6052,29 +6067,29 @@ function ImpactModule({ data, path }) {
                                     children: assessment.highImpact ? "Si" : "No"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1213,
+                                    lineNumber: 1232,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, assessment.id, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1208,
+                            lineNumber: 1227,
                             columnNumber: 13
                         }, this))
                 }, void 0, false, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 1206,
+                    lineNumber: 1225,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 1205,
+                lineNumber: 1224,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 1188,
+        lineNumber: 1207,
         columnNumber: 5
     }, this);
 }
@@ -6086,7 +6101,7 @@ function TechnicalApprovalModule({ data, path }) {
             children: "No hay solicitudes en aprobacion rapida."
         }, void 0, false, {
             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-            lineNumber: 1226,
+            lineNumber: 1245,
             columnNumber: 31
         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["DataTable"], {
             headers: [
@@ -6105,7 +6120,7 @@ function TechnicalApprovalModule({ data, path }) {
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1230,
+                            lineNumber: 1249,
                             columnNumber: 15
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -6113,7 +6128,7 @@ function TechnicalApprovalModule({ data, path }) {
                             children: change.impactAssessment?.risks ?? "-"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1231,
+                            lineNumber: 1250,
                             columnNumber: 15
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -6126,7 +6141,7 @@ function TechnicalApprovalModule({ data, path }) {
                                         path: path
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1234,
+                                        lineNumber: 1253,
                                         columnNumber: 19
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -6135,7 +6150,7 @@ function TechnicalApprovalModule({ data, path }) {
                                         value: change.id
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1235,
+                                        lineNumber: 1254,
                                         columnNumber: 19
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -6148,7 +6163,7 @@ function TechnicalApprovalModule({ data, path }) {
                                                 children: "Aprobar"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1237,
+                                                lineNumber: 1256,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -6156,13 +6171,13 @@ function TechnicalApprovalModule({ data, path }) {
                                                 children: "Rechazar"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1238,
+                                                lineNumber: 1257,
                                                 columnNumber: 21
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1236,
+                                        lineNumber: 1255,
                                         columnNumber: 19
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -6171,41 +6186,41 @@ function TechnicalApprovalModule({ data, path }) {
                                         placeholder: "Motivo obligatorio si rechaza"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1240,
+                                        lineNumber: 1259,
                                         columnNumber: 19
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
                                         children: "Registrar decision"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1241,
+                                        lineNumber: 1260,
                                         columnNumber: 19
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1233,
+                                lineNumber: 1252,
                                 columnNumber: 17
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1232,
+                            lineNumber: 1251,
                             columnNumber: 15
                         }, this)
                     ]
                 }, change.id, true, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 1229,
+                    lineNumber: 1248,
                     columnNumber: 13
                 }, this))
         }, void 0, false, {
             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-            lineNumber: 1227,
+            lineNumber: 1246,
             columnNumber: 9
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 1225,
+        lineNumber: 1244,
         columnNumber: 5
     }, this);
 }
@@ -6230,7 +6245,7 @@ function CcbModule({ data, path }) {
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1258,
+                            lineNumber: 1277,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -6239,12 +6254,12 @@ function CcbModule({ data, path }) {
                                 value: review.changeRequest.status
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1259,
+                                lineNumber: 1278,
                                 columnNumber: 39
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1259,
+                            lineNumber: 1278,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -6252,7 +6267,7 @@ function CcbModule({ data, path }) {
                             children: review.votes.map((vote)=>`${vote.voter.name}: ${(0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$labels$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["labelFor"])(vote.decision)}`).join(", ") || "-"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1260,
+                            lineNumber: 1279,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -6265,7 +6280,7 @@ function CcbModule({ data, path }) {
                                         path: path
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1263,
+                                        lineNumber: 1282,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -6274,7 +6289,7 @@ function CcbModule({ data, path }) {
                                         value: review.id
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1264,
+                                        lineNumber: 1283,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -6287,7 +6302,7 @@ function CcbModule({ data, path }) {
                                                 children: "Aprobar"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1266,
+                                                lineNumber: 1285,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -6295,7 +6310,7 @@ function CcbModule({ data, path }) {
                                                 children: "Rechazar"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1267,
+                                                lineNumber: 1286,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -6303,13 +6318,13 @@ function CcbModule({ data, path }) {
                                                 children: "Aplazar"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1268,
+                                                lineNumber: 1287,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1265,
+                                        lineNumber: 1284,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
@@ -6319,7 +6334,7 @@ function CcbModule({ data, path }) {
                                         required: true
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1270,
+                                        lineNumber: 1289,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -6328,41 +6343,41 @@ function CcbModule({ data, path }) {
                                         placeholder: "Voto o comentario"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1271,
+                                        lineNumber: 1290,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
                                         children: "Emitir resolucion"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1272,
+                                        lineNumber: 1291,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1262,
+                                lineNumber: 1281,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1261,
+                            lineNumber: 1280,
                             columnNumber: 13
                         }, this)
                     ]
                 }, review.id, true, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 1257,
+                    lineNumber: 1276,
                     columnNumber: 11
                 }, this))
         }, void 0, false, {
             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-            lineNumber: 1255,
+            lineNumber: 1274,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 1254,
+        lineNumber: 1273,
         columnNumber: 5
     }, this);
 }
@@ -6380,7 +6395,7 @@ function OrdersModule({ data, path }) {
                             path: path
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1287,
+                            lineNumber: 1306,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -6396,17 +6411,17 @@ function OrdersModule({ data, path }) {
                                     ]
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1288,
+                                    lineNumber: 1307,
                                     columnNumber: 85
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1288,
+                                lineNumber: 1307,
                                 columnNumber: 45
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1288,
+                            lineNumber: 1307,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -6421,17 +6436,17 @@ function OrdersModule({ data, path }) {
                                     roleSlug: "DESARROLLADOR"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1289,
+                                    lineNumber: 1308,
                                     columnNumber: 85
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1289,
+                                lineNumber: 1308,
                                 columnNumber: 49
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1289,
+                            lineNumber: 1308,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -6450,17 +6465,17 @@ function OrdersModule({ data, path }) {
                                         children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$labels$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["labelFor"])(s)
                                     }, s, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1290,
+                                        lineNumber: 1309,
                                         columnNumber: 128
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1290,
+                                lineNumber: 1309,
                                 columnNumber: 45
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1290,
+                            lineNumber: 1309,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -6471,12 +6486,12 @@ function OrdersModule({ data, path }) {
                                 type: "date"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1291,
+                                lineNumber: 1310,
                                 columnNumber: 39
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1291,
+                            lineNumber: 1310,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -6487,12 +6502,12 @@ function OrdersModule({ data, path }) {
                                 type: "number"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1292,
+                                lineNumber: 1311,
                                 columnNumber: 42
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1292,
+                            lineNumber: 1311,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -6504,12 +6519,12 @@ function OrdersModule({ data, path }) {
                                 required: true
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1293,
+                                lineNumber: 1312,
                                 columnNumber: 55
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1293,
+                            lineNumber: 1312,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -6521,30 +6536,30 @@ function OrdersModule({ data, path }) {
                                 required: true
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1294,
+                                lineNumber: 1313,
                                 columnNumber: 44
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1294,
+                            lineNumber: 1313,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
                             children: "Crear orden"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1295,
+                            lineNumber: 1314,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 1286,
+                    lineNumber: 1305,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 1285,
+                lineNumber: 1304,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Panel"], {
@@ -6564,7 +6579,7 @@ function OrdersModule({ data, path }) {
                                     children: order.code
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1302,
+                                    lineNumber: 1321,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -6572,7 +6587,7 @@ function OrdersModule({ data, path }) {
                                     children: order.changeRequest.ticketId
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1303,
+                                    lineNumber: 1322,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -6580,7 +6595,7 @@ function OrdersModule({ data, path }) {
                                     children: order.developer?.name ?? "-"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1304,
+                                    lineNumber: 1323,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -6589,12 +6604,12 @@ function OrdersModule({ data, path }) {
                                         value: order.priority
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1305,
+                                        lineNumber: 1324,
                                         columnNumber: 41
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1305,
+                                    lineNumber: 1324,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -6603,34 +6618,34 @@ function OrdersModule({ data, path }) {
                                         value: order.status
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1306,
+                                        lineNumber: 1325,
                                         columnNumber: 41
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1306,
+                                    lineNumber: 1325,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, order.id, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1301,
+                            lineNumber: 1320,
                             columnNumber: 13
                         }, this))
                 }, void 0, false, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 1299,
+                    lineNumber: 1318,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 1298,
+                lineNumber: 1317,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 1284,
+        lineNumber: 1303,
         columnNumber: 5
     }, this);
 }
@@ -6652,7 +6667,7 @@ function DeveloperOrdersModule({ data, path }) {
                             children: order.code
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1321,
+                            lineNumber: 1340,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -6660,7 +6675,7 @@ function DeveloperOrdersModule({ data, path }) {
                             children: order.changeRequest.title
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1322,
+                            lineNumber: 1341,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -6668,7 +6683,7 @@ function DeveloperOrdersModule({ data, path }) {
                             children: order.gitBranch ?? "-"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1323,
+                            lineNumber: 1342,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -6677,12 +6692,12 @@ function DeveloperOrdersModule({ data, path }) {
                                 value: order.status
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1324,
+                                lineNumber: 1343,
                                 columnNumber: 39
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1324,
+                            lineNumber: 1343,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -6695,7 +6710,7 @@ function DeveloperOrdersModule({ data, path }) {
                                         path: path
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1327,
+                                        lineNumber: 1346,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -6704,7 +6719,7 @@ function DeveloperOrdersModule({ data, path }) {
                                         value: order.id
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1328,
+                                        lineNumber: 1347,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -6715,7 +6730,7 @@ function DeveloperOrdersModule({ data, path }) {
                                         required: true
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1329,
+                                        lineNumber: 1348,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -6724,7 +6739,7 @@ function DeveloperOrdersModule({ data, path }) {
                                         placeholder: "main"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1330,
+                                        lineNumber: 1349,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -6736,14 +6751,14 @@ function DeveloperOrdersModule({ data, path }) {
                                                 type: "checkbox"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1331,
+                                                lineNumber: 1350,
                                                 columnNumber: 82
                                             }, this),
                                             " Crear rama en GitHub"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1331,
+                                        lineNumber: 1350,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
@@ -6752,41 +6767,41 @@ function DeveloperOrdersModule({ data, path }) {
                                                 className: "h-4 w-4"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1332,
+                                                lineNumber: 1351,
                                                 columnNumber: 25
                                             }, this),
                                             "Iniciar"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1332,
+                                        lineNumber: 1351,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1326,
+                                lineNumber: 1345,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1325,
+                            lineNumber: 1344,
                             columnNumber: 13
                         }, this)
                     ]
                 }, order.id, true, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 1320,
+                    lineNumber: 1339,
                     columnNumber: 11
                 }, this))
         }, void 0, false, {
             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-            lineNumber: 1318,
+            lineNumber: 1337,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 1317,
+        lineNumber: 1336,
         columnNumber: 5
     }, this);
 }
@@ -6804,7 +6819,7 @@ function UnitTestsModule({ data, path }) {
                             path: path
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1347,
+                            lineNumber: 1366,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -6817,17 +6832,17 @@ function UnitTestsModule({ data, path }) {
                                     orders: data.orders
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1348,
+                                    lineNumber: 1367,
                                     columnNumber: 79
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1348,
+                                lineNumber: 1367,
                                 columnNumber: 41
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1348,
+                            lineNumber: 1367,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -6843,17 +6858,17 @@ function UnitTestsModule({ data, path }) {
                                         ]
                                     }, version.id, true, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1349,
+                                        lineNumber: 1368,
                                         columnNumber: 99
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1349,
+                                lineNumber: 1368,
                                 columnNumber: 38
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1349,
+                            lineNumber: 1368,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -6868,7 +6883,7 @@ function UnitTestsModule({ data, path }) {
                                         children: "OK"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1350,
+                                        lineNumber: 1369,
                                         columnNumber: 76
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -6876,18 +6891,18 @@ function UnitTestsModule({ data, path }) {
                                         children: "No OK"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1350,
+                                        lineNumber: 1369,
                                         columnNumber: 110
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1350,
+                                lineNumber: 1369,
                                 columnNumber: 45
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1350,
+                            lineNumber: 1369,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -6897,12 +6912,12 @@ function UnitTestsModule({ data, path }) {
                                 name: "errors"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1351,
+                                lineNumber: 1370,
                                 columnNumber: 34
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1351,
+                            lineNumber: 1370,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -6912,12 +6927,12 @@ function UnitTestsModule({ data, path }) {
                                 name: "notes"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1352,
+                                lineNumber: 1371,
                                 columnNumber: 32
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1352,
+                            lineNumber: 1371,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -6927,12 +6942,12 @@ function UnitTestsModule({ data, path }) {
                                 name: "gitCommit"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1353,
+                                lineNumber: 1372,
                                 columnNumber: 33
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1353,
+                            lineNumber: 1372,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -6942,12 +6957,12 @@ function UnitTestsModule({ data, path }) {
                                 name: "gitPushRef"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1354,
+                                lineNumber: 1373,
                                 columnNumber: 35
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1354,
+                            lineNumber: 1373,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -6958,12 +6973,12 @@ function UnitTestsModule({ data, path }) {
                                 placeholder: "main"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1355,
+                                lineNumber: 1374,
                                 columnNumber: 34
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1355,
+                            lineNumber: 1374,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -6976,32 +6991,32 @@ function UnitTestsModule({ data, path }) {
                                     value: "on"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1356,
+                                    lineNumber: 1375,
                                     columnNumber: 76
                                 }, this),
                                 " Crear PR y notificar QA automaticamente"
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1356,
+                            lineNumber: 1375,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
                             children: "Guardar prueba"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1357,
+                            lineNumber: 1376,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 1346,
+                    lineNumber: 1365,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 1345,
+                lineNumber: 1364,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Panel"], {
@@ -7021,7 +7036,7 @@ function UnitTestsModule({ data, path }) {
                                     children: test.changeOrder.code
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1364,
+                                    lineNumber: 1383,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -7030,12 +7045,12 @@ function UnitTestsModule({ data, path }) {
                                         value: test.result
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1365,
+                                        lineNumber: 1384,
                                         columnNumber: 41
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1365,
+                                    lineNumber: 1384,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -7043,7 +7058,7 @@ function UnitTestsModule({ data, path }) {
                                     children: test.executedBy.name
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1366,
+                                    lineNumber: 1385,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -7051,7 +7066,7 @@ function UnitTestsModule({ data, path }) {
                                     children: test.errors ?? "-"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1367,
+                                    lineNumber: 1386,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -7059,29 +7074,29 @@ function UnitTestsModule({ data, path }) {
                                     children: test.executedAt.toLocaleString("es-PE")
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1368,
+                                    lineNumber: 1387,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, test.id, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1363,
+                            lineNumber: 1382,
                             columnNumber: 13
                         }, this))
                 }, void 0, false, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 1361,
+                    lineNumber: 1380,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 1360,
+                lineNumber: 1379,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 1344,
+        lineNumber: 1363,
         columnNumber: 5
     }, this);
 }
@@ -7109,7 +7124,7 @@ function QaTestsModule({ data, path }) {
                                     children: order.code
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1393,
+                                    lineNumber: 1412,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -7117,7 +7132,7 @@ function QaTestsModule({ data, path }) {
                                     children: linked.map((item)=>item.code).join(", ") || "-"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1394,
+                                    lineNumber: 1413,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -7125,7 +7140,7 @@ function QaTestsModule({ data, path }) {
                                     children: pending.length === 0 ? "-" : pending.map((item)=>`${item.workItem.code}: ${item.name}`).slice(0, 4).join("; ")
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1395,
+                                    lineNumber: 1414,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -7134,29 +7149,29 @@ function QaTestsModule({ data, path }) {
                                         value: linked.length > 0 && pending.length === 0 ? "READY_FOR_QA" : "PENDING"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1396,
+                                        lineNumber: 1415,
                                         columnNumber: 43
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1396,
+                                    lineNumber: 1415,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, order.id, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1392,
+                            lineNumber: 1411,
                             columnNumber: 15
                         }, this);
                     })
                 }, void 0, false, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 1381,
+                    lineNumber: 1400,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 1380,
+                lineNumber: 1399,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -7172,7 +7187,7 @@ function QaTestsModule({ data, path }) {
                                     path: path
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1405,
+                                    lineNumber: 1424,
                                     columnNumber: 11
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -7188,17 +7203,17 @@ function QaTestsModule({ data, path }) {
                                             ]
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1406,
+                                            lineNumber: 1425,
                                             columnNumber: 93
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1406,
+                                        lineNumber: 1425,
                                         columnNumber: 55
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1406,
+                                    lineNumber: 1425,
                                     columnNumber: 11
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -7216,17 +7231,17 @@ function QaTestsModule({ data, path }) {
                                                 children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$labels$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["labelFor"])(type)
                                             }, type, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1407,
+                                                lineNumber: 1426,
                                                 columnNumber: 128
                                             }, this))
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1407,
+                                        lineNumber: 1426,
                                         columnNumber: 40
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1407,
+                                    lineNumber: 1426,
                                     columnNumber: 11
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -7241,7 +7256,7 @@ function QaTestsModule({ data, path }) {
                                                 children: "OK"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1408,
+                                                lineNumber: 1427,
                                                 columnNumber: 76
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -7249,18 +7264,18 @@ function QaTestsModule({ data, path }) {
                                                 children: "No OK"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1408,
+                                                lineNumber: 1427,
                                                 columnNumber: 110
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1408,
+                                        lineNumber: 1427,
                                         columnNumber: 45
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1408,
+                                    lineNumber: 1427,
                                     columnNumber: 11
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -7270,12 +7285,12 @@ function QaTestsModule({ data, path }) {
                                         name: "notes"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1409,
+                                        lineNumber: 1428,
                                         columnNumber: 32
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1409,
+                                    lineNumber: 1428,
                                     columnNumber: 11
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -7292,17 +7307,17 @@ function QaTestsModule({ data, path }) {
                                                 children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$labels$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["labelFor"])(s)
                                             }, s, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1410,
+                                                lineNumber: 1429,
                                                 columnNumber: 118
                                             }, this))
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1410,
+                                        lineNumber: 1429,
                                         columnNumber: 44
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1410,
+                                    lineNumber: 1429,
                                     columnNumber: 11
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -7312,30 +7327,30 @@ function QaTestsModule({ data, path }) {
                                         name: "defectDescription"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1411,
+                                        lineNumber: 1430,
                                         columnNumber: 46
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1411,
+                                    lineNumber: 1430,
                                     columnNumber: 11
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
                                     children: "Registrar QA"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1412,
+                                    lineNumber: 1431,
                                     columnNumber: 11
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1404,
+                            lineNumber: 1423,
                             columnNumber: 9
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 1403,
+                        lineNumber: 1422,
                         columnNumber: 7
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Panel"], {
@@ -7355,7 +7370,7 @@ function QaTestsModule({ data, path }) {
                                             children: test.changeOrder.code
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1419,
+                                            lineNumber: 1438,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -7363,7 +7378,7 @@ function QaTestsModule({ data, path }) {
                                             children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$labels$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["labelFor"])(test.type)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1420,
+                                            lineNumber: 1439,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -7372,12 +7387,12 @@ function QaTestsModule({ data, path }) {
                                                 value: test.result
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1421,
+                                                lineNumber: 1440,
                                                 columnNumber: 41
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1421,
+                                            lineNumber: 1440,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -7385,7 +7400,7 @@ function QaTestsModule({ data, path }) {
                                             children: test.executedBy.name
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1422,
+                                            lineNumber: 1441,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -7393,35 +7408,35 @@ function QaTestsModule({ data, path }) {
                                             children: test.defects.length
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1423,
+                                            lineNumber: 1442,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, test.id, true, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1418,
+                                    lineNumber: 1437,
                                     columnNumber: 13
                                 }, this))
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1416,
+                            lineNumber: 1435,
                             columnNumber: 9
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 1415,
+                        lineNumber: 1434,
                         columnNumber: 7
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 1402,
+                lineNumber: 1421,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 1379,
+        lineNumber: 1398,
         columnNumber: 5
     }, this);
 }
@@ -7444,7 +7459,7 @@ function DefectsModule({ data, path }) {
                             children: defect.code
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1439,
+                            lineNumber: 1458,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -7452,7 +7467,7 @@ function DefectsModule({ data, path }) {
                             children: defect.changeOrder.code
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1440,
+                            lineNumber: 1459,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -7461,12 +7476,12 @@ function DefectsModule({ data, path }) {
                                 value: defect.severity
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1441,
+                                lineNumber: 1460,
                                 columnNumber: 39
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1441,
+                            lineNumber: 1460,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -7474,7 +7489,7 @@ function DefectsModule({ data, path }) {
                             children: defect.responsible?.name ?? "-"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1442,
+                            lineNumber: 1461,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -7483,12 +7498,12 @@ function DefectsModule({ data, path }) {
                                 value: defect.status
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1443,
+                                lineNumber: 1462,
                                 columnNumber: 39
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1443,
+                            lineNumber: 1462,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -7501,7 +7516,7 @@ function DefectsModule({ data, path }) {
                                         path: path
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1446,
+                                        lineNumber: 1465,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -7510,7 +7525,7 @@ function DefectsModule({ data, path }) {
                                         value: defect.id
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1447,
+                                        lineNumber: 1466,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -7528,12 +7543,12 @@ function DefectsModule({ data, path }) {
                                                 children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$labels$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["labelFor"])(status)
                                             }, status, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1449,
+                                                lineNumber: 1468,
                                                 columnNumber: 86
                                             }, this))
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1448,
+                                        lineNumber: 1467,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
@@ -7541,34 +7556,34 @@ function DefectsModule({ data, path }) {
                                         children: "Guardar"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1451,
+                                        lineNumber: 1470,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1445,
+                                lineNumber: 1464,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1444,
+                            lineNumber: 1463,
                             columnNumber: 13
                         }, this)
                     ]
                 }, defect.id, true, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 1438,
+                    lineNumber: 1457,
                     columnNumber: 11
                 }, this))
         }, void 0, false, {
             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-            lineNumber: 1436,
+            lineNumber: 1455,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 1435,
+        lineNumber: 1454,
         columnNumber: 5
     }, this);
 }
@@ -7586,7 +7601,7 @@ function UatModule({ data, path }) {
                             path: path
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1466,
+                            lineNumber: 1485,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -7603,17 +7618,17 @@ function UatModule({ data, path }) {
                                     ]
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1467,
+                                    lineNumber: 1486,
                                     columnNumber: 85
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1467,
+                                lineNumber: 1486,
                                 columnNumber: 45
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1467,
+                            lineNumber: 1486,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -7624,17 +7639,17 @@ function UatModule({ data, path }) {
                                     orders: data.orders
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1468,
+                                    lineNumber: 1487,
                                     columnNumber: 61
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1468,
+                                lineNumber: 1487,
                                 columnNumber: 32
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1468,
+                            lineNumber: 1487,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -7649,7 +7664,7 @@ function UatModule({ data, path }) {
                                         children: "OK"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1469,
+                                        lineNumber: 1488,
                                         columnNumber: 76
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -7657,18 +7672,18 @@ function UatModule({ data, path }) {
                                         children: "No OK"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1469,
+                                        lineNumber: 1488,
                                         columnNumber: 112
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1469,
+                                lineNumber: 1488,
                                 columnNumber: 45
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1469,
+                            lineNumber: 1488,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -7678,12 +7693,12 @@ function UatModule({ data, path }) {
                                 name: "observations"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1470,
+                                lineNumber: 1489,
                                 columnNumber: 40
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1470,
+                            lineNumber: 1489,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -7694,30 +7709,30 @@ function UatModule({ data, path }) {
                                 type: "file"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1471,
+                                lineNumber: 1490,
                                 columnNumber: 45
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1471,
+                            lineNumber: 1490,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
                             children: "Registrar UAT"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1472,
+                            lineNumber: 1491,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 1465,
+                    lineNumber: 1484,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 1464,
+                lineNumber: 1483,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Panel"], {
@@ -7737,7 +7752,7 @@ function UatModule({ data, path }) {
                                     children: uat.changeRequest.ticketId
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1479,
+                                    lineNumber: 1498,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -7746,12 +7761,12 @@ function UatModule({ data, path }) {
                                         value: uat.result
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1480,
+                                        lineNumber: 1499,
                                         columnNumber: 41
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1480,
+                                    lineNumber: 1499,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -7759,7 +7774,7 @@ function UatModule({ data, path }) {
                                     children: uat.executedBy.name
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1481,
+                                    lineNumber: 1500,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -7767,7 +7782,7 @@ function UatModule({ data, path }) {
                                     children: uat.acceptance ? "Registrada" : "-"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1482,
+                                    lineNumber: 1501,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -7775,29 +7790,29 @@ function UatModule({ data, path }) {
                                     children: uat.observations ?? "-"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1483,
+                                    lineNumber: 1502,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, uat.id, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1478,
+                            lineNumber: 1497,
                             columnNumber: 13
                         }, this))
                 }, void 0, false, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 1476,
+                    lineNumber: 1495,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 1475,
+                lineNumber: 1494,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 1463,
+        lineNumber: 1482,
         columnNumber: 5
     }, this);
 }
@@ -7813,7 +7828,7 @@ function FinalValidationModule({ data, path }) {
                         path: path
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 1496,
+                        lineNumber: 1515,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -7826,17 +7841,17 @@ function FinalValidationModule({ data, path }) {
                                 orders: data.orders
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1497,
+                                lineNumber: 1516,
                                 columnNumber: 87
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1497,
+                            lineNumber: 1516,
                             columnNumber: 49
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 1497,
+                        lineNumber: 1516,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -7851,7 +7866,7 @@ function FinalValidationModule({ data, path }) {
                                     children: "Todo correcto"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1498,
+                                    lineNumber: 1517,
                                     columnNumber: 74
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -7859,18 +7874,18 @@ function FinalValidationModule({ data, path }) {
                                     children: "Revalidar"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1498,
+                                    lineNumber: 1517,
                                     columnNumber: 119
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1498,
+                            lineNumber: 1517,
                             columnNumber: 43
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 1498,
+                        lineNumber: 1517,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -7881,12 +7896,12 @@ function FinalValidationModule({ data, path }) {
                             placeholder: "1.1.0"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1499,
+                            lineNumber: 1518,
                             columnNumber: 31
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 1499,
+                        lineNumber: 1518,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -7897,12 +7912,12 @@ function FinalValidationModule({ data, path }) {
                             placeholder: "produccion"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1500,
+                            lineNumber: 1519,
                             columnNumber: 33
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 1500,
+                        lineNumber: 1519,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -7912,12 +7927,12 @@ function FinalValidationModule({ data, path }) {
                             name: "notes"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1501,
+                            lineNumber: 1520,
                             columnNumber: 38
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 1501,
+                        lineNumber: 1520,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -7928,25 +7943,25 @@ function FinalValidationModule({ data, path }) {
                                     className: "h-4 w-4"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1502,
+                                    lineNumber: 1521,
                                     columnNumber: 49
                                 }, this),
                                 "Registrar"
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1502,
+                            lineNumber: 1521,
                             columnNumber: 41
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 1502,
+                        lineNumber: 1521,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 1495,
+                lineNumber: 1514,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["DataTable"], {
@@ -7964,7 +7979,7 @@ function FinalValidationModule({ data, path }) {
                                 children: release.tagName ?? release.version
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1507,
+                                lineNumber: 1526,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -7972,7 +7987,7 @@ function FinalValidationModule({ data, path }) {
                                 children: release.changeRequest?.ticketId ?? "-"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1508,
+                                lineNumber: 1527,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -7980,7 +7995,7 @@ function FinalValidationModule({ data, path }) {
                                 children: release.semver
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1509,
+                                lineNumber: 1528,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -7989,12 +8004,12 @@ function FinalValidationModule({ data, path }) {
                                     value: release.status
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1510,
+                                    lineNumber: 1529,
                                     columnNumber: 39
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1510,
+                                lineNumber: 1529,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -8002,24 +8017,24 @@ function FinalValidationModule({ data, path }) {
                                 children: release.environment
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1511,
+                                lineNumber: 1530,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, release.id, true, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 1506,
+                        lineNumber: 1525,
                         columnNumber: 11
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 1504,
+                lineNumber: 1523,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 1494,
+        lineNumber: 1513,
         columnNumber: 5
     }, this);
 }
@@ -8041,7 +8056,7 @@ function ReleasesModule({ data, path }) {
                             children: release.semver
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1525,
+                            lineNumber: 1544,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -8049,7 +8064,7 @@ function ReleasesModule({ data, path }) {
                             children: release.project.code
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1526,
+                            lineNumber: 1545,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -8057,7 +8072,7 @@ function ReleasesModule({ data, path }) {
                             children: release.changeRequest?.ticketId ?? "-"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1527,
+                            lineNumber: 1546,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -8066,12 +8081,12 @@ function ReleasesModule({ data, path }) {
                                 value: release.status
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1528,
+                                lineNumber: 1547,
                                 columnNumber: 39
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1528,
+                            lineNumber: 1547,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -8084,7 +8099,7 @@ function ReleasesModule({ data, path }) {
                                         path: path
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1532,
+                                        lineNumber: 1551,
                                         columnNumber: 19
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -8093,7 +8108,7 @@ function ReleasesModule({ data, path }) {
                                         value: release.id
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1533,
+                                        lineNumber: 1552,
                                         columnNumber: 19
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -8103,7 +8118,7 @@ function ReleasesModule({ data, path }) {
                                         required: true
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1534,
+                                        lineNumber: 1553,
                                         columnNumber: 19
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -8114,48 +8129,48 @@ function ReleasesModule({ data, path }) {
                                                 type: "checkbox"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1535,
+                                                lineNumber: 1554,
                                                 columnNumber: 84
                                             }, this),
                                             " Crear tag GitHub"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1535,
+                                        lineNumber: 1554,
                                         columnNumber: 19
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
                                         children: "Ejecutar o registrar"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1536,
+                                        lineNumber: 1555,
                                         columnNumber: 19
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1531,
+                                lineNumber: 1550,
                                 columnNumber: 17
                             }, this) : "-"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1529,
+                            lineNumber: 1548,
                             columnNumber: 13
                         }, this)
                     ]
                 }, release.id, true, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 1524,
+                    lineNumber: 1543,
                     columnNumber: 11
                 }, this))
         }, void 0, false, {
             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-            lineNumber: 1522,
+            lineNumber: 1541,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 1521,
+        lineNumber: 1540,
         columnNumber: 5
     }, this);
 }
@@ -8181,7 +8196,7 @@ function ClosePanel({ data, path }) {
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1555,
+                            lineNumber: 1574,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -8190,12 +8205,12 @@ function ClosePanel({ data, path }) {
                                 value: change.status
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1556,
+                                lineNumber: 1575,
                                 columnNumber: 39
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1556,
+                            lineNumber: 1575,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -8207,7 +8222,7 @@ function ClosePanel({ data, path }) {
                                         path: path
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1559,
+                                        lineNumber: 1578,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -8216,41 +8231,41 @@ function ClosePanel({ data, path }) {
                                         value: change.id
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1560,
+                                        lineNumber: 1579,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
                                         children: "Cerrar y archivar"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1561,
+                                        lineNumber: 1580,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1558,
+                                lineNumber: 1577,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1557,
+                            lineNumber: 1576,
                             columnNumber: 13
                         }, this)
                     ]
                 }, change.id, true, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 1554,
+                    lineNumber: 1573,
                     columnNumber: 11
                 }, this))
         }, void 0, false, {
             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-            lineNumber: 1552,
+            lineNumber: 1571,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 1551,
+        lineNumber: 1570,
         columnNumber: 5
     }, this);
 }
@@ -8265,7 +8280,7 @@ function IntegrationModule({ data, path }) {
                     path: path
                 }, void 0, false, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 1575,
+                    lineNumber: 1594,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -8278,17 +8293,17 @@ function IntegrationModule({ data, path }) {
                             orders: data.orders
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1576,
+                            lineNumber: 1595,
                             columnNumber: 77
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 1576,
+                        lineNumber: 1595,
                         columnNumber: 39
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 1576,
+                    lineNumber: 1595,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -8301,12 +8316,12 @@ function IntegrationModule({ data, path }) {
                         required: true
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 1577,
+                        lineNumber: 1596,
                         columnNumber: 40
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 1577,
+                    lineNumber: 1596,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -8319,12 +8334,12 @@ function IntegrationModule({ data, path }) {
                         required: true
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 1578,
+                        lineNumber: 1597,
                         columnNumber: 46
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 1578,
+                    lineNumber: 1597,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -8336,12 +8351,12 @@ function IntegrationModule({ data, path }) {
                         required: true
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 1579,
+                        lineNumber: 1598,
                         columnNumber: 46
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 1579,
+                    lineNumber: 1598,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -8350,23 +8365,23 @@ function IntegrationModule({ data, path }) {
                         children: "Registrar integracion"
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 1580,
+                        lineNumber: 1599,
                         columnNumber: 41
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 1580,
+                    lineNumber: 1599,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-            lineNumber: 1574,
+            lineNumber: 1593,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 1573,
+        lineNumber: 1592,
         columnNumber: 5
     }, this);
 }
@@ -8395,7 +8410,7 @@ function TraceabilityModule({ data }) {
                                     children: change.ticketId
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1593,
+                                    lineNumber: 1612,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -8403,7 +8418,7 @@ function TraceabilityModule({ data }) {
                                     children: change.originIncident?.ticketId ?? "-"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1594,
+                                    lineNumber: 1613,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -8411,7 +8426,7 @@ function TraceabilityModule({ data }) {
                                     children: change.affectedItems.map((item)=>item.item.code).join(", ") || "-"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1595,
+                                    lineNumber: 1614,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -8419,7 +8434,7 @@ function TraceabilityModule({ data }) {
                                     children: change.impactAssessment ? change.impactAssessment.highImpact ? "Alto" : "Bajo" : "-"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1596,
+                                    lineNumber: 1615,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -8427,7 +8442,7 @@ function TraceabilityModule({ data }) {
                                     children: change.technicalApproval?.decision ?? change.ccbReviews[0]?.resolution?.decision ?? "-"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1597,
+                                    lineNumber: 1616,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -8435,7 +8450,7 @@ function TraceabilityModule({ data }) {
                                     children: change.changeOrder?.code ?? "-"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1598,
+                                    lineNumber: 1617,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -8443,7 +8458,7 @@ function TraceabilityModule({ data }) {
                                     children: change.acceptanceRecords.length ? "UAT aceptado" : "-"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1599,
+                                    lineNumber: 1618,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -8451,7 +8466,7 @@ function TraceabilityModule({ data }) {
                                     children: change.releases.map((release)=>release.semver).join(", ") || "-"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1600,
+                                    lineNumber: 1619,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -8460,28 +8475,28 @@ function TraceabilityModule({ data }) {
                                         value: change.status
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1601,
+                                        lineNumber: 1620,
                                         columnNumber: 41
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1601,
+                                    lineNumber: 1620,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, change.id, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1592,
+                            lineNumber: 1611,
                             columnNumber: 13
                         }, this))
                 }, void 0, false, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 1590,
+                    lineNumber: 1609,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 1589,
+                lineNumber: 1608,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Panel"], {
@@ -8501,7 +8516,7 @@ function TraceabilityModule({ data }) {
                                     children: link.project.code
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1610,
+                                    lineNumber: 1629,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -8513,7 +8528,7 @@ function TraceabilityModule({ data }) {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1611,
+                                    lineNumber: 1630,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -8521,7 +8536,7 @@ function TraceabilityModule({ data }) {
                                     children: link.relationType
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1612,
+                                    lineNumber: 1631,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -8533,7 +8548,7 @@ function TraceabilityModule({ data }) {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1613,
+                                    lineNumber: 1632,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -8541,29 +8556,29 @@ function TraceabilityModule({ data }) {
                                     children: link.createdBy?.name ?? "Sistema"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1614,
+                                    lineNumber: 1633,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, link.id, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1609,
+                            lineNumber: 1628,
                             columnNumber: 13
                         }, this))
                 }, void 0, false, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 1607,
+                    lineNumber: 1626,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 1606,
+                lineNumber: 1625,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 1588,
+        lineNumber: 1607,
         columnNumber: 5
     }, this);
 }
@@ -8585,7 +8600,7 @@ function AuditModule({ data }) {
                             children: log.createdAt.toLocaleString("es-PE")
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1629,
+                            lineNumber: 1648,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -8593,7 +8608,7 @@ function AuditModule({ data }) {
                             children: log.user?.name ?? "Sistema"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1630,
+                            lineNumber: 1649,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -8601,7 +8616,7 @@ function AuditModule({ data }) {
                             children: log.module
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1631,
+                            lineNumber: 1650,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -8609,7 +8624,7 @@ function AuditModule({ data }) {
                             children: log.action
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1632,
+                            lineNumber: 1651,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -8617,23 +8632,23 @@ function AuditModule({ data }) {
                             children: log.newDetail ?? log.previousDetail ?? "-"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1633,
+                            lineNumber: 1652,
                             columnNumber: 13
                         }, this)
                     ]
                 }, log.id, true, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 1628,
+                    lineNumber: 1647,
                     columnNumber: 11
                 }, this))
         }, void 0, false, {
             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-            lineNumber: 1626,
+            lineNumber: 1645,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 1625,
+        lineNumber: 1644,
         columnNumber: 5
     }, this);
 }
@@ -8651,7 +8666,7 @@ function IntegrityModule({ data, path }) {
                             path: path
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1646,
+                            lineNumber: 1665,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -8664,35 +8679,35 @@ function IntegrityModule({ data, path }) {
                                     items: data.items
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1647,
+                                    lineNumber: 1666,
                                     columnNumber: 70
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1647,
+                                lineNumber: 1666,
                                 columnNumber: 39
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1647,
+                            lineNumber: 1666,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
                             children: "Validar SHA-256"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1648,
+                            lineNumber: 1667,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 1645,
+                    lineNumber: 1664,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 1644,
+                lineNumber: 1663,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Panel"], {
@@ -8713,7 +8728,7 @@ function IntegrityModule({ data, path }) {
                                     children: alert.project?.code ?? "-"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1655,
+                                    lineNumber: 1674,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -8721,7 +8736,7 @@ function IntegrityModule({ data, path }) {
                                     children: alert.item?.code ?? "-"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1656,
+                                    lineNumber: 1675,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -8732,7 +8747,7 @@ function IntegrityModule({ data, path }) {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1657,
+                                    lineNumber: 1676,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -8743,7 +8758,7 @@ function IntegrityModule({ data, path }) {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1658,
+                                    lineNumber: 1677,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -8752,12 +8767,12 @@ function IntegrityModule({ data, path }) {
                                         value: alert.status
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1659,
+                                        lineNumber: 1678,
                                         columnNumber: 41
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1659,
+                                    lineNumber: 1678,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -8765,29 +8780,29 @@ function IntegrityModule({ data, path }) {
                                     children: alert.detail
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1660,
+                                    lineNumber: 1679,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, alert.id, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1654,
+                            lineNumber: 1673,
                             columnNumber: 13
                         }, this))
                 }, void 0, false, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 1652,
+                    lineNumber: 1671,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 1651,
+                lineNumber: 1670,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 1643,
+        lineNumber: 1662,
         columnNumber: 5
     }, this);
 }
@@ -8828,7 +8843,7 @@ function BacklogModule({ data, path, params }) {
                                     path: path
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1677,
+                                    lineNumber: 1696,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -8841,17 +8856,17 @@ function BacklogModule({ data, path, params }) {
                                             projects: data.projects
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1678,
+                                            lineNumber: 1697,
                                             columnNumber: 80
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1678,
+                                        lineNumber: 1697,
                                         columnNumber: 46
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1678,
+                                    lineNumber: 1697,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -8875,17 +8890,17 @@ function BacklogModule({ data, path, params }) {
                                                         children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$labels$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["labelFor"])(type)
                                                     }, type, false, {
                                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                        lineNumber: 1680,
+                                                        lineNumber: 1699,
                                                         columnNumber: 146
                                                     }, this))
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1680,
+                                                lineNumber: 1699,
                                                 columnNumber: 44
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1680,
+                                            lineNumber: 1699,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -8903,17 +8918,17 @@ function BacklogModule({ data, path, params }) {
                                                         children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$labels$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["labelFor"])(priority)
                                                     }, priority, false, {
                                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                        lineNumber: 1681,
+                                                        lineNumber: 1700,
                                                         columnNumber: 143
                                                     }, this))
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1681,
+                                                lineNumber: 1700,
                                                 columnNumber: 40
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1681,
+                                            lineNumber: 1700,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -8931,17 +8946,17 @@ function BacklogModule({ data, path, params }) {
                                                         children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$labels$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["labelFor"])(state)
                                                     }, state, false, {
                                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                        lineNumber: 1682,
+                                                        lineNumber: 1701,
                                                         columnNumber: 133
                                                     }, this))
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1682,
+                                                lineNumber: 1701,
                                                 columnNumber: 37
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1682,
+                                            lineNumber: 1701,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -8953,18 +8968,18 @@ function BacklogModule({ data, path, params }) {
                                                 type: "number"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1683,
+                                                lineNumber: 1702,
                                                 columnNumber: 43
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1683,
+                                            lineNumber: 1702,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1679,
+                                    lineNumber: 1698,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -8976,12 +8991,12 @@ function BacklogModule({ data, path, params }) {
                                         required: true
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1685,
+                                        lineNumber: 1704,
                                         columnNumber: 44
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1685,
+                                    lineNumber: 1704,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -8993,12 +9008,12 @@ function BacklogModule({ data, path, params }) {
                                         required: true
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1686,
+                                        lineNumber: 1705,
                                         columnNumber: 49
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1686,
+                                    lineNumber: 1705,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -9013,17 +9028,17 @@ function BacklogModule({ data, path, params }) {
                                                     projectId: data.currentProjectId
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                    lineNumber: 1688,
+                                                    lineNumber: 1707,
                                                     columnNumber: 69
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1688,
+                                                lineNumber: 1707,
                                                 columnNumber: 41
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1688,
+                                            lineNumber: 1707,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -9035,17 +9050,17 @@ function BacklogModule({ data, path, params }) {
                                                     projectId: data.currentProjectId
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                    lineNumber: 1689,
+                                                    lineNumber: 1708,
                                                     columnNumber: 61
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1689,
+                                                lineNumber: 1708,
                                                 columnNumber: 37
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1689,
+                                            lineNumber: 1708,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -9057,17 +9072,17 @@ function BacklogModule({ data, path, params }) {
                                                     projectId: data.currentProjectId
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                    lineNumber: 1690,
+                                                    lineNumber: 1709,
                                                     columnNumber: 66
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1690,
+                                                lineNumber: 1709,
                                                 columnNumber: 40
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1690,
+                                            lineNumber: 1709,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -9078,12 +9093,12 @@ function BacklogModule({ data, path, params }) {
                                                 type: "date"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1691,
+                                                lineNumber: 1710,
                                                 columnNumber: 36
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1691,
+                                            lineNumber: 1710,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -9094,17 +9109,17 @@ function BacklogModule({ data, path, params }) {
                                                     changes: data.changes
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                    lineNumber: 1692,
+                                                    lineNumber: 1711,
                                                     columnNumber: 71
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1692,
+                                                lineNumber: 1711,
                                                 columnNumber: 40
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1692,
+                                            lineNumber: 1711,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -9115,23 +9130,23 @@ function BacklogModule({ data, path, params }) {
                                                     orders: data.orders
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                    lineNumber: 1693,
+                                                    lineNumber: 1712,
                                                     columnNumber: 65
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1693,
+                                                lineNumber: 1712,
                                                 columnNumber: 36
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1693,
+                                            lineNumber: 1712,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1687,
+                                    lineNumber: 1706,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -9145,12 +9160,12 @@ function BacklogModule({ data, path, params }) {
                                                 placeholder: "feature/wi-0001-login"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1696,
+                                                lineNumber: 1715,
                                                 columnNumber: 42
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1696,
+                                            lineNumber: 1715,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -9161,12 +9176,12 @@ function BacklogModule({ data, path, params }) {
                                                 placeholder: "main"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1697,
+                                                lineNumber: 1716,
                                                 columnNumber: 40
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1697,
+                                            lineNumber: 1716,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -9178,14 +9193,14 @@ function BacklogModule({ data, path, params }) {
                                                     value: "on"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                    lineNumber: 1698,
+                                                    lineNumber: 1717,
                                                     columnNumber: 80
                                                 }, this),
                                                 " Crear rama GitHub"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1698,
+                                            lineNumber: 1717,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -9197,20 +9212,20 @@ function BacklogModule({ data, path, params }) {
                                                     value: "on"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                    lineNumber: 1699,
+                                                    lineNumber: 1718,
                                                     columnNumber: 80
                                                 }, this),
                                                 " Crear issue GitHub"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1699,
+                                            lineNumber: 1718,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1695,
+                                    lineNumber: 1714,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
@@ -9219,25 +9234,25 @@ function BacklogModule({ data, path, params }) {
                                             className: "h-4 w-4"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1701,
+                                            lineNumber: 1720,
                                             columnNumber: 21
                                         }, this),
                                         "Crear work item"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1701,
+                                    lineNumber: 1720,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1676,
+                            lineNumber: 1695,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 1675,
+                        lineNumber: 1694,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -9248,7 +9263,7 @@ function BacklogModule({ data, path, params }) {
                                 path: path
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1705,
+                                lineNumber: 1724,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Panel"], {
@@ -9273,7 +9288,7 @@ function BacklogModule({ data, path, params }) {
                                                     children: item.code
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                    lineNumber: 1712,
+                                                    lineNumber: 1731,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -9281,7 +9296,7 @@ function BacklogModule({ data, path, params }) {
                                                     children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$labels$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["labelFor"])(item.type)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                    lineNumber: 1713,
+                                                    lineNumber: 1732,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -9289,7 +9304,7 @@ function BacklogModule({ data, path, params }) {
                                                     children: item.title
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                    lineNumber: 1714,
+                                                    lineNumber: 1733,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -9298,12 +9313,12 @@ function BacklogModule({ data, path, params }) {
                                                         value: item.state
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                        lineNumber: 1715,
+                                                        lineNumber: 1734,
                                                         columnNumber: 47
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                    lineNumber: 1715,
+                                                    lineNumber: 1734,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -9311,7 +9326,7 @@ function BacklogModule({ data, path, params }) {
                                                     children: item.assignedTo?.name ?? "-"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                    lineNumber: 1716,
+                                                    lineNumber: 1735,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -9319,7 +9334,7 @@ function BacklogModule({ data, path, params }) {
                                                     children: item.sprint?.name ?? "-"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                    lineNumber: 1717,
+                                                    lineNumber: 1736,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -9335,7 +9350,7 @@ function BacklogModule({ data, path, params }) {
                                                                 children: item.githubBranch
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                                lineNumber: 1720,
+                                                                lineNumber: 1739,
                                                                 columnNumber: 38
                                                             }, this) : item.githubBranch ?? "-",
                                                             item.githubPullRequestUrl ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
@@ -9346,7 +9361,7 @@ function BacklogModule({ data, path, params }) {
                                                                 children: "PR"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                                lineNumber: 1721,
+                                                                lineNumber: 1740,
                                                                 columnNumber: 54
                                                             }, this) : null,
                                                             item.githubIssueUrl ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
@@ -9357,18 +9372,18 @@ function BacklogModule({ data, path, params }) {
                                                                 children: "Issue"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                                lineNumber: 1722,
+                                                                lineNumber: 1741,
                                                                 columnNumber: 48
                                                             }, this) : null
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                        lineNumber: 1719,
+                                                        lineNumber: 1738,
                                                         columnNumber: 23
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                    lineNumber: 1718,
+                                                    lineNumber: 1737,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -9381,7 +9396,7 @@ function BacklogModule({ data, path, params }) {
                                                                 path: path
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                                lineNumber: 1727,
+                                                                lineNumber: 1746,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -9390,7 +9405,7 @@ function BacklogModule({ data, path, params }) {
                                                                 value: item.id
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                                lineNumber: 1728,
+                                                                lineNumber: 1747,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -9408,12 +9423,12 @@ function BacklogModule({ data, path, params }) {
                                                                         children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$labels$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["labelFor"])(state)
                                                                     }, state, false, {
                                                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                                        lineNumber: 1730,
+                                                                        lineNumber: 1749,
                                                                         columnNumber: 94
                                                                     }, this))
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                                lineNumber: 1729,
+                                                                lineNumber: 1748,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
@@ -9421,47 +9436,47 @@ function BacklogModule({ data, path, params }) {
                                                                 children: "Guardar"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                                lineNumber: 1732,
+                                                                lineNumber: 1751,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                        lineNumber: 1726,
+                                                        lineNumber: 1745,
                                                         columnNumber: 23
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                    lineNumber: 1725,
+                                                    lineNumber: 1744,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, item.id, true, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1711,
+                                            lineNumber: 1730,
                                             columnNumber: 19
                                         }, this);
                                     })
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1707,
+                                    lineNumber: 1726,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1706,
+                                lineNumber: 1725,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 1704,
+                        lineNumber: 1723,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 1674,
+                lineNumber: 1693,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Panel"], {
@@ -9470,7 +9485,7 @@ function BacklogModule({ data, path, params }) {
                     children: "Cree un work item para generar automaticamente los artefactos requeridos segun la metodologia del proyecto."
                 }, void 0, false, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 1744,
+                    lineNumber: 1763,
                     columnNumber: 11
                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["DataTable"], {
                     headers: [
@@ -9491,7 +9506,7 @@ function BacklogModule({ data, path, params }) {
                                             children: requirement.workItem.code
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1750,
+                                            lineNumber: 1769,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -9499,13 +9514,13 @@ function BacklogModule({ data, path, params }) {
                                             children: requirement.workItem.title
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1751,
+                                            lineNumber: 1770,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1749,
+                                    lineNumber: 1768,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -9513,7 +9528,7 @@ function BacklogModule({ data, path, params }) {
                                     children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$labels$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["labelFor"])(requirement.lifecycleStage)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1753,
+                                    lineNumber: 1772,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -9524,7 +9539,7 @@ function BacklogModule({ data, path, params }) {
                                             children: requirement.name
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1755,
+                                            lineNumber: 1774,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -9532,7 +9547,7 @@ function BacklogModule({ data, path, params }) {
                                             children: requirement.description
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1756,
+                                            lineNumber: 1775,
                                             columnNumber: 19
                                         }, this),
                                         !requirement.required ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -9540,13 +9555,13 @@ function BacklogModule({ data, path, params }) {
                                             children: "Opcional"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1757,
+                                            lineNumber: 1776,
                                             columnNumber: 44
                                         }, this) : null
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1754,
+                                    lineNumber: 1773,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -9559,7 +9574,7 @@ function BacklogModule({ data, path, params }) {
                                                     children: version.item.code
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                    lineNumber: 1762,
+                                                    lineNumber: 1781,
                                                     columnNumber: 23
                                                 }, this),
                                                 " v",
@@ -9567,12 +9582,12 @@ function BacklogModule({ data, path, params }) {
                                             ]
                                         }, version.id, true, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1761,
+                                            lineNumber: 1780,
                                             columnNumber: 21
                                         }, this))
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1759,
+                                    lineNumber: 1778,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -9581,12 +9596,12 @@ function BacklogModule({ data, path, params }) {
                                         value: requirement.status
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1766,
+                                        lineNumber: 1785,
                                         columnNumber: 43
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1766,
+                                    lineNumber: 1785,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -9599,7 +9614,7 @@ function BacklogModule({ data, path, params }) {
                                                 path: path
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1769,
+                                                lineNumber: 1788,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -9608,7 +9623,7 @@ function BacklogModule({ data, path, params }) {
                                                 value: requirement.id
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1770,
+                                                lineNumber: 1789,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -9621,7 +9636,7 @@ function BacklogModule({ data, path, params }) {
                                                         children: "Aprobar"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                        lineNumber: 1772,
+                                                        lineNumber: 1791,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -9629,7 +9644,7 @@ function BacklogModule({ data, path, params }) {
                                                         children: "Rechazar"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                        lineNumber: 1773,
+                                                        lineNumber: 1792,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -9637,13 +9652,13 @@ function BacklogModule({ data, path, params }) {
                                                         children: "Exceptuar"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                        lineNumber: 1774,
+                                                        lineNumber: 1793,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1771,
+                                                lineNumber: 1790,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -9652,7 +9667,7 @@ function BacklogModule({ data, path, params }) {
                                                 placeholder: "Observaciones"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1776,
+                                                lineNumber: 1795,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
@@ -9660,34 +9675,34 @@ function BacklogModule({ data, path, params }) {
                                                 children: "Registrar"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1777,
+                                                lineNumber: 1796,
                                                 columnNumber: 21
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1768,
+                                        lineNumber: 1787,
                                         columnNumber: 19
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1767,
+                                    lineNumber: 1786,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, requirement.id, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1748,
+                            lineNumber: 1767,
                             columnNumber: 15
                         }, this))
                 }, void 0, false, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 1746,
+                    lineNumber: 1765,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 1742,
+                lineNumber: 1761,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Panel"], {
@@ -9700,7 +9715,7 @@ function BacklogModule({ data, path, params }) {
                             path: path
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1787,
+                            lineNumber: 1806,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -9713,17 +9728,17 @@ function BacklogModule({ data, path, params }) {
                                     workItems: data.workItems
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1788,
+                                    lineNumber: 1807,
                                     columnNumber: 83
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1788,
+                                lineNumber: 1807,
                                 columnNumber: 42
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1788,
+                            lineNumber: 1807,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -9737,17 +9752,17 @@ function BacklogModule({ data, path, params }) {
                                         children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$labels$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["labelFor"])(type)
                                     }, type, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1789,
+                                        lineNumber: 1808,
                                         columnNumber: 98
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1789,
+                                lineNumber: 1808,
                                 columnNumber: 40
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1789,
+                            lineNumber: 1808,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -9758,17 +9773,17 @@ function BacklogModule({ data, path, params }) {
                                     workItems: data.workItems
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1790,
+                                    lineNumber: 1809,
                                     columnNumber: 74
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1790,
+                                lineNumber: 1809,
                                 columnNumber: 42
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1790,
+                            lineNumber: 1809,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -9779,12 +9794,12 @@ function BacklogModule({ data, path, params }) {
                                 placeholder: "https://github.com/..."
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1791,
+                                lineNumber: 1810,
                                 columnNumber: 38
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1791,
+                            lineNumber: 1810,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -9795,36 +9810,36 @@ function BacklogModule({ data, path, params }) {
                                 placeholder: "SHA, rama o numero"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1792,
+                                lineNumber: 1811,
                                 columnNumber: 37
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1792,
+                            lineNumber: 1811,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
                             children: "Enlazar"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1793,
+                            lineNumber: 1812,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 1786,
+                    lineNumber: 1805,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 1785,
+                lineNumber: 1804,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 1673,
+        lineNumber: 1692,
         columnNumber: 5
     }, this);
 }
@@ -9848,7 +9863,7 @@ function SprintsModule({ data, path }) {
                             path: path
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1806,
+                            lineNumber: 1825,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -9861,17 +9876,17 @@ function SprintsModule({ data, path }) {
                                     projects: data.projects
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1807,
+                                    lineNumber: 1826,
                                     columnNumber: 78
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1807,
+                                lineNumber: 1826,
                                 columnNumber: 44
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1807,
+                            lineNumber: 1826,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -9884,12 +9899,12 @@ function SprintsModule({ data, path }) {
                                 required: true
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1808,
+                                lineNumber: 1827,
                                 columnNumber: 42
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1808,
+                            lineNumber: 1827,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -9902,12 +9917,12 @@ function SprintsModule({ data, path }) {
                                 type: "date"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1809,
+                                lineNumber: 1828,
                                 columnNumber: 42
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1809,
+                            lineNumber: 1828,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -9920,12 +9935,12 @@ function SprintsModule({ data, path }) {
                                 type: "date"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1810,
+                                lineNumber: 1829,
                                 columnNumber: 39
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1810,
+                            lineNumber: 1829,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -9937,19 +9952,19 @@ function SprintsModule({ data, path }) {
                                 type: "number"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1811,
+                                lineNumber: 1830,
                                 columnNumber: 42
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1811,
+                            lineNumber: 1830,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
                             children: "Crear sprint"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1812,
+                            lineNumber: 1831,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -9959,30 +9974,30 @@ function SprintsModule({ data, path }) {
                                 name: "goal"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1813,
+                                lineNumber: 1832,
                                 columnNumber: 35
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1813,
+                            lineNumber: 1832,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 1805,
+                    lineNumber: 1824,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 1804,
+                lineNumber: 1823,
                 columnNumber: 7
             }, this),
             data.sprints.length === 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["EmptyState"], {
                 children: "No hay sprints registrados."
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 1816,
+                lineNumber: 1835,
                 columnNumber: 36
             }, this) : data.sprints.map((sprint)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Panel"], {
                     title: `${sprint.project.code} - ${sprint.name}`,
@@ -9997,7 +10012,7 @@ function SprintsModule({ data, path }) {
                                         children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$labels$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["labelFor"])(state)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1821,
+                                        lineNumber: 1840,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -10010,7 +10025,7 @@ function SprintsModule({ data, path }) {
                                                         children: item.code
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                        lineNumber: 1825,
+                                                        lineNumber: 1844,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -10018,7 +10033,7 @@ function SprintsModule({ data, path }) {
                                                         children: item.title
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                        lineNumber: 1826,
+                                                        lineNumber: 1845,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -10026,40 +10041,40 @@ function SprintsModule({ data, path }) {
                                                         children: item.assignedTo?.name ?? "Sin asignar"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                        lineNumber: 1827,
+                                                        lineNumber: 1846,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, item.id, true, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1824,
+                                                lineNumber: 1843,
                                                 columnNumber: 21
                                             }, this))
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1822,
+                                        lineNumber: 1841,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, `${sprint.id}-${state}`, true, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 1820,
+                                lineNumber: 1839,
                                 columnNumber: 15
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 1818,
+                        lineNumber: 1837,
                         columnNumber: 11
                     }, this)
                 }, sprint.id, false, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 1817,
+                    lineNumber: 1836,
                     columnNumber: 9
                 }, this))
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 1803,
+        lineNumber: 1822,
         columnNumber: 5
     }, this);
 }
@@ -10088,7 +10103,7 @@ function MethodologyModule({ data, path }) {
                                     path: path
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1847,
+                                    lineNumber: 1866,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -10101,17 +10116,17 @@ function MethodologyModule({ data, path }) {
                                             projects: data.projects
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1848,
+                                            lineNumber: 1867,
                                             columnNumber: 80
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1848,
+                                        lineNumber: 1867,
                                         columnNumber: 46
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1848,
+                                    lineNumber: 1867,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -10125,17 +10140,17 @@ function MethodologyModule({ data, path }) {
                                                 children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$labels$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["labelFor"])(type)
                                             }, type, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1849,
+                                                lineNumber: 1868,
                                                 columnNumber: 121
                                             }, this))
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1849,
+                                        lineNumber: 1868,
                                         columnNumber: 49
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1849,
+                                    lineNumber: 1868,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -10145,12 +10160,12 @@ function MethodologyModule({ data, path }) {
                                         name: "methodologyNotes"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1850,
+                                        lineNumber: 1869,
                                         columnNumber: 34
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1850,
+                                    lineNumber: 1869,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -10163,32 +10178,32 @@ function MethodologyModule({ data, path }) {
                                             value: "on"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1851,
+                                            lineNumber: 1870,
                                             columnNumber: 78
                                         }, this),
                                         " Crear fases base"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1851,
+                                    lineNumber: 1870,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
                                     children: "Guardar metodologia"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1852,
+                                    lineNumber: 1871,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1846,
+                            lineNumber: 1865,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 1845,
+                        lineNumber: 1864,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Panel"], {
@@ -10208,7 +10223,7 @@ function MethodologyModule({ data, path }) {
                                             children: project.code
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1859,
+                                            lineNumber: 1878,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -10216,7 +10231,7 @@ function MethodologyModule({ data, path }) {
                                             children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$labels$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["labelFor"])(project.methodologyType)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1860,
+                                            lineNumber: 1879,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -10224,7 +10239,7 @@ function MethodologyModule({ data, path }) {
                                             children: data.methodologyPhases.filter((phase)=>phase.projectId === project.id).length
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1861,
+                                            lineNumber: 1880,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -10232,7 +10247,7 @@ function MethodologyModule({ data, path }) {
                                             children: data.projectActivities.filter((activity)=>activity.projectId === project.id).length
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1862,
+                                            lineNumber: 1881,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -10240,29 +10255,29 @@ function MethodologyModule({ data, path }) {
                                             children: formatDate(project.methodologyConfiguredAt)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1863,
+                                            lineNumber: 1882,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, project.id, true, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1858,
+                                    lineNumber: 1877,
                                     columnNumber: 15
                                 }, this))
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1856,
+                            lineNumber: 1875,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 1855,
+                        lineNumber: 1874,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 1844,
+                lineNumber: 1863,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -10278,7 +10293,7 @@ function MethodologyModule({ data, path }) {
                                     path: path
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1872,
+                                    lineNumber: 1891,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -10291,17 +10306,17 @@ function MethodologyModule({ data, path }) {
                                             projects: data.projects
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1873,
+                                            lineNumber: 1892,
                                             columnNumber: 80
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1873,
+                                        lineNumber: 1892,
                                         columnNumber: 46
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1873,
+                                    lineNumber: 1892,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -10313,17 +10328,17 @@ function MethodologyModule({ data, path }) {
                                                 children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$labels$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["labelFor"])(type)
                                             }, type, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1874,
+                                                lineNumber: 1893,
                                                 columnNumber: 103
                                             }, this))
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1874,
+                                        lineNumber: 1893,
                                         columnNumber: 40
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1874,
+                                    lineNumber: 1893,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -10335,12 +10350,12 @@ function MethodologyModule({ data, path }) {
                                         required: true
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1875,
+                                        lineNumber: 1894,
                                         columnNumber: 42
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1875,
+                                    lineNumber: 1894,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -10354,12 +10369,12 @@ function MethodologyModule({ data, path }) {
                                                 type: "number"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1877,
+                                                lineNumber: 1896,
                                                 columnNumber: 36
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1877,
+                                            lineNumber: 1896,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -10371,17 +10386,17 @@ function MethodologyModule({ data, path }) {
                                                     projectId: data.currentProjectId
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                    lineNumber: 1878,
+                                                    lineNumber: 1897,
                                                     columnNumber: 65
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1878,
+                                                lineNumber: 1897,
                                                 columnNumber: 42
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1878,
+                                            lineNumber: 1897,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -10392,12 +10407,12 @@ function MethodologyModule({ data, path }) {
                                                 type: "date"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1879,
+                                                lineNumber: 1898,
                                                 columnNumber: 37
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1879,
+                                            lineNumber: 1898,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -10408,18 +10423,18 @@ function MethodologyModule({ data, path }) {
                                                 type: "date"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1880,
+                                                lineNumber: 1899,
                                                 columnNumber: 34
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1880,
+                                            lineNumber: 1899,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1876,
+                                    lineNumber: 1895,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -10431,12 +10446,12 @@ function MethodologyModule({ data, path }) {
                                         required: true
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1882,
+                                        lineNumber: 1901,
                                         columnNumber: 62
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1882,
+                                    lineNumber: 1901,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -10446,30 +10461,30 @@ function MethodologyModule({ data, path }) {
                                         name: "acceptanceCriteria"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1883,
+                                        lineNumber: 1902,
                                         columnNumber: 52
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1883,
+                                    lineNumber: 1902,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
                                     children: "Agregar fase"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1884,
+                                    lineNumber: 1903,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1871,
+                            lineNumber: 1890,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 1870,
+                        lineNumber: 1889,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Panel"], {
@@ -10494,7 +10509,7 @@ function MethodologyModule({ data, path }) {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1891,
+                                            lineNumber: 1910,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -10502,7 +10517,7 @@ function MethodologyModule({ data, path }) {
                                             children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$labels$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["labelFor"])(phase.methodologyType)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1892,
+                                            lineNumber: 1911,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -10510,7 +10525,7 @@ function MethodologyModule({ data, path }) {
                                             children: phase.owner?.name ?? "-"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1893,
+                                            lineNumber: 1912,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -10518,7 +10533,7 @@ function MethodologyModule({ data, path }) {
                                             children: phase.requiredDeliverables
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1894,
+                                            lineNumber: 1913,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -10529,7 +10544,7 @@ function MethodologyModule({ data, path }) {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1895,
+                                            lineNumber: 1914,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -10542,7 +10557,7 @@ function MethodologyModule({ data, path }) {
                                                         path: path
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                        lineNumber: 1898,
+                                                        lineNumber: 1917,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -10551,7 +10566,7 @@ function MethodologyModule({ data, path }) {
                                                         value: phase.id
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                        lineNumber: 1899,
+                                                        lineNumber: 1918,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -10568,12 +10583,12 @@ function MethodologyModule({ data, path }) {
                                                                 children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$labels$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["labelFor"])(status)
                                                             }, status, false, {
                                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                                lineNumber: 1901,
+                                                                lineNumber: 1920,
                                                                 columnNumber: 86
                                                             }, this))
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                        lineNumber: 1900,
+                                                        lineNumber: 1919,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
@@ -10581,40 +10596,40 @@ function MethodologyModule({ data, path }) {
                                                         children: "Guardar"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                        lineNumber: 1903,
+                                                        lineNumber: 1922,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1897,
+                                                lineNumber: 1916,
                                                 columnNumber: 19
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1896,
+                                            lineNumber: 1915,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, phase.id, true, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1890,
+                                    lineNumber: 1909,
                                     columnNumber: 15
                                 }, this))
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1888,
+                            lineNumber: 1907,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 1887,
+                        lineNumber: 1906,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 1869,
+                lineNumber: 1888,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -10630,7 +10645,7 @@ function MethodologyModule({ data, path }) {
                                     path: path
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1914,
+                                    lineNumber: 1933,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -10643,17 +10658,17 @@ function MethodologyModule({ data, path }) {
                                             projects: data.projects
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1915,
+                                            lineNumber: 1934,
                                             columnNumber: 80
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1915,
+                                        lineNumber: 1934,
                                         columnNumber: 46
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1915,
+                                    lineNumber: 1934,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -10665,17 +10680,17 @@ function MethodologyModule({ data, path }) {
                                             projectId: data.currentProjectId
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1916,
+                                            lineNumber: 1935,
                                             columnNumber: 56
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1916,
+                                        lineNumber: 1935,
                                         columnNumber: 33
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1916,
+                                    lineNumber: 1935,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -10687,12 +10702,12 @@ function MethodologyModule({ data, path }) {
                                         required: true
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1917,
+                                        lineNumber: 1936,
                                         columnNumber: 47
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1917,
+                                    lineNumber: 1936,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -10706,17 +10721,17 @@ function MethodologyModule({ data, path }) {
                                             projectId: data.currentProjectId
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1918,
+                                            lineNumber: 1937,
                                             columnNumber: 87
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1918,
+                                        lineNumber: 1937,
                                         columnNumber: 49
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1918,
+                                    lineNumber: 1937,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -10732,12 +10747,12 @@ function MethodologyModule({ data, path }) {
                                                 type: "date"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1920,
+                                                lineNumber: 1939,
                                                 columnNumber: 46
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1920,
+                                            lineNumber: 1939,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -10750,12 +10765,12 @@ function MethodologyModule({ data, path }) {
                                                 type: "date"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1921,
+                                                lineNumber: 1940,
                                                 columnNumber: 43
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1921,
+                                            lineNumber: 1940,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -10768,12 +10783,12 @@ function MethodologyModule({ data, path }) {
                                                 type: "number"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1922,
+                                                lineNumber: 1941,
                                                 columnNumber: 39
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1922,
+                                            lineNumber: 1941,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -10791,23 +10806,23 @@ function MethodologyModule({ data, path }) {
                                                         children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$labels$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["labelFor"])(status)
                                                     }, status, false, {
                                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                        lineNumber: 1923,
+                                                        lineNumber: 1942,
                                                         columnNumber: 145
                                                     }, this))
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1923,
+                                                lineNumber: 1942,
                                                 columnNumber: 37
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1923,
+                                            lineNumber: 1942,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1919,
+                                    lineNumber: 1938,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -10819,12 +10834,12 @@ function MethodologyModule({ data, path }) {
                                         required: true
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1925,
+                                        lineNumber: 1944,
                                         columnNumber: 62
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1925,
+                                    lineNumber: 1944,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -10834,30 +10849,30 @@ function MethodologyModule({ data, path }) {
                                         name: "description"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1926,
+                                        lineNumber: 1945,
                                         columnNumber: 40
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1926,
+                                    lineNumber: 1945,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
                                     children: "Agregar actividad"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1927,
+                                    lineNumber: 1946,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1913,
+                            lineNumber: 1932,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 1912,
+                        lineNumber: 1931,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Panel"], {
@@ -10879,7 +10894,7 @@ function MethodologyModule({ data, path }) {
                                             children: activity.title
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1934,
+                                            lineNumber: 1953,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -10887,7 +10902,7 @@ function MethodologyModule({ data, path }) {
                                             children: activity.phase?.name ?? "-"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1935,
+                                            lineNumber: 1954,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -10895,7 +10910,7 @@ function MethodologyModule({ data, path }) {
                                             children: activity.responsible.name
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1936,
+                                            lineNumber: 1955,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -10907,7 +10922,7 @@ function MethodologyModule({ data, path }) {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1937,
+                                            lineNumber: 1956,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -10915,7 +10930,7 @@ function MethodologyModule({ data, path }) {
                                             children: activity.deliverable
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1938,
+                                            lineNumber: 1957,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -10928,7 +10943,7 @@ function MethodologyModule({ data, path }) {
                                                         path: path
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                        lineNumber: 1941,
+                                                        lineNumber: 1960,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -10937,7 +10952,7 @@ function MethodologyModule({ data, path }) {
                                                         value: activity.id
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                        lineNumber: 1942,
+                                                        lineNumber: 1961,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -10949,7 +10964,7 @@ function MethodologyModule({ data, path }) {
                                                         type: "number"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                        lineNumber: 1943,
+                                                        lineNumber: 1962,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -10966,12 +10981,12 @@ function MethodologyModule({ data, path }) {
                                                                 children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$labels$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["labelFor"])(status)
                                                             }, status, false, {
                                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                                lineNumber: 1945,
+                                                                lineNumber: 1964,
                                                                 columnNumber: 86
                                                             }, this))
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                        lineNumber: 1944,
+                                                        lineNumber: 1963,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
@@ -10979,18 +10994,18 @@ function MethodologyModule({ data, path }) {
                                                         children: "Guardar"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                        lineNumber: 1947,
+                                                        lineNumber: 1966,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1940,
+                                                lineNumber: 1959,
                                                 columnNumber: 19
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1939,
+                                            lineNumber: 1958,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -10999,40 +11014,40 @@ function MethodologyModule({ data, path }) {
                                                 value: activityCompliance(activity)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1950,
+                                                lineNumber: 1969,
                                                 columnNumber: 43
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1950,
+                                            lineNumber: 1969,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, activity.id, true, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1933,
+                                    lineNumber: 1952,
                                     columnNumber: 15
                                 }, this))
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1931,
+                            lineNumber: 1950,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 1930,
+                        lineNumber: 1949,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 1911,
+                lineNumber: 1930,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 1843,
+        lineNumber: 1862,
         columnNumber: 5
     }, this);
 }
@@ -11057,7 +11072,7 @@ function DailyReportsModule({ data, path }) {
                                     path: path
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1972,
+                                    lineNumber: 1991,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -11070,17 +11085,17 @@ function DailyReportsModule({ data, path }) {
                                             projects: data.projects
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1973,
+                                            lineNumber: 1992,
                                             columnNumber: 80
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1973,
+                                        lineNumber: 1992,
                                         columnNumber: 46
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1973,
+                                    lineNumber: 1992,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -11097,12 +11112,12 @@ function DailyReportsModule({ data, path }) {
                                                 type: "date"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1975,
+                                                lineNumber: 1994,
                                                 columnNumber: 45
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1975,
+                                            lineNumber: 1994,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -11117,12 +11132,12 @@ function DailyReportsModule({ data, path }) {
                                                 type: "number"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1976,
+                                                lineNumber: 1995,
                                                 columnNumber: 45
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1976,
+                                            lineNumber: 1995,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -11133,17 +11148,17 @@ function DailyReportsModule({ data, path }) {
                                                     workItems: data.workItems
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                    lineNumber: 1977,
+                                                    lineNumber: 1996,
                                                     columnNumber: 66
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1977,
+                                                lineNumber: 1996,
                                                 columnNumber: 40
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1977,
+                                            lineNumber: 1996,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -11154,17 +11169,17 @@ function DailyReportsModule({ data, path }) {
                                                     orders: data.orders
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                    lineNumber: 1978,
+                                                    lineNumber: 1997,
                                                     columnNumber: 65
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1978,
+                                                lineNumber: 1997,
                                                 columnNumber: 36
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1978,
+                                            lineNumber: 1997,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -11176,17 +11191,17 @@ function DailyReportsModule({ data, path }) {
                                                     projectId: data.currentProjectId
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                    lineNumber: 1979,
+                                                    lineNumber: 1998,
                                                     columnNumber: 66
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1979,
+                                                lineNumber: 1998,
                                                 columnNumber: 40
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1979,
+                                            lineNumber: 1998,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -11199,7 +11214,7 @@ function DailyReportsModule({ data, path }) {
                                                         children: "Sin cambio"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                        lineNumber: 1980,
+                                                        lineNumber: 1999,
                                                         columnNumber: 68
                                                     }, this),
                                                     [
@@ -11213,24 +11228,24 @@ function DailyReportsModule({ data, path }) {
                                                             children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$labels$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["labelFor"])(state)
                                                         }, state, false, {
                                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                            lineNumber: 1980,
+                                                            lineNumber: 1999,
                                                             columnNumber: 171
                                                         }, this))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1980,
+                                                lineNumber: 1999,
                                                 columnNumber: 42
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1980,
+                                            lineNumber: 1999,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1974,
+                                    lineNumber: 1993,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -11242,12 +11257,12 @@ function DailyReportsModule({ data, path }) {
                                         required: true
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1982,
+                                        lineNumber: 2001,
                                         columnNumber: 55
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1982,
+                                    lineNumber: 2001,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -11259,12 +11274,12 @@ function DailyReportsModule({ data, path }) {
                                         required: true
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1983,
+                                        lineNumber: 2002,
                                         columnNumber: 52
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1983,
+                                    lineNumber: 2002,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -11274,12 +11289,12 @@ function DailyReportsModule({ data, path }) {
                                         name: "blockers"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 1984,
+                                        lineNumber: 2003,
                                         columnNumber: 37
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1984,
+                                    lineNumber: 2003,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -11292,12 +11307,12 @@ function DailyReportsModule({ data, path }) {
                                                 name: "githubBranch"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1986,
+                                                lineNumber: 2005,
                                                 columnNumber: 42
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1986,
+                                            lineNumber: 2005,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -11307,12 +11322,12 @@ function DailyReportsModule({ data, path }) {
                                                 name: "githubCommit"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1987,
+                                                lineNumber: 2006,
                                                 columnNumber: 37
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1987,
+                                            lineNumber: 2006,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -11323,12 +11338,12 @@ function DailyReportsModule({ data, path }) {
                                                 placeholder: "https://github.com/..."
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1988,
+                                                lineNumber: 2007,
                                                 columnNumber: 43
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1988,
+                                            lineNumber: 2007,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Field"], {
@@ -11341,36 +11356,36 @@ function DailyReportsModule({ data, path }) {
                                                 type: "number"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 1989,
+                                                lineNumber: 2008,
                                                 columnNumber: 49
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1989,
+                                            lineNumber: 2008,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1985,
+                                    lineNumber: 2004,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Button"], {
                                     children: "Registrar reporte"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1991,
+                                    lineNumber: 2010,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1971,
+                            lineNumber: 1990,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 1970,
+                        lineNumber: 1989,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Panel"], {
@@ -11390,7 +11405,7 @@ function DailyReportsModule({ data, path }) {
                                             children: assignment.user.name
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1998,
+                                            lineNumber: 2017,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -11398,7 +11413,7 @@ function DailyReportsModule({ data, path }) {
                                             children: assignment.role.name
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 1999,
+                                            lineNumber: 2018,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -11406,7 +11421,7 @@ function DailyReportsModule({ data, path }) {
                                             children: logs.length
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 2000,
+                                            lineNumber: 2019,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -11414,7 +11429,7 @@ function DailyReportsModule({ data, path }) {
                                             children: logs.reduce((sum, log)=>sum + Number(log.hours), 0).toFixed(1)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 2001,
+                                            lineNumber: 2020,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -11422,29 +11437,29 @@ function DailyReportsModule({ data, path }) {
                                             children: formatDate(logs[0]?.logDate)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 2002,
+                                            lineNumber: 2021,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, assignment.id, true, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 1997,
+                                    lineNumber: 2016,
                                     columnNumber: 15
                                 }, this))
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 1995,
+                            lineNumber: 2014,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 1994,
+                        lineNumber: 2013,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 1969,
+                lineNumber: 1988,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Panel"], {
@@ -11467,7 +11482,7 @@ function DailyReportsModule({ data, path }) {
                                     children: formatDate(log.logDate)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 2012,
+                                    lineNumber: 2031,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -11475,7 +11490,7 @@ function DailyReportsModule({ data, path }) {
                                     children: log.user.name
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 2013,
+                                    lineNumber: 2032,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -11483,7 +11498,7 @@ function DailyReportsModule({ data, path }) {
                                     children: log.workItem?.code ?? log.changeOrder?.code ?? log.activity?.title ?? "-"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 2014,
+                                    lineNumber: 2033,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -11491,7 +11506,7 @@ function DailyReportsModule({ data, path }) {
                                     children: String(log.hours)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 2015,
+                                    lineNumber: 2034,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -11499,7 +11514,7 @@ function DailyReportsModule({ data, path }) {
                                     children: log.completed
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 2016,
+                                    lineNumber: 2035,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -11507,7 +11522,7 @@ function DailyReportsModule({ data, path }) {
                                     children: log.nextPlan
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 2017,
+                                    lineNumber: 2036,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -11519,14 +11534,14 @@ function DailyReportsModule({ data, path }) {
                                                 children: log.githubBranch ?? "-"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 2020,
+                                                lineNumber: 2039,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                 children: log.githubCommit ? log.githubCommit.slice(0, 10) : "-"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 2021,
+                                                lineNumber: 2040,
                                                 columnNumber: 19
                                             }, this),
                                             log.githubPullRequestUrl ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
@@ -11537,18 +11552,18 @@ function DailyReportsModule({ data, path }) {
                                                 children: "PR"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                                lineNumber: 2022,
+                                                lineNumber: 2041,
                                                 columnNumber: 47
                                             }, this) : null
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 2019,
+                                        lineNumber: 2038,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 2018,
+                                    lineNumber: 2037,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -11556,29 +11571,29 @@ function DailyReportsModule({ data, path }) {
                                     children: log.blockers ?? "-"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 2025,
+                                    lineNumber: 2044,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, log.id, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 2011,
+                            lineNumber: 2030,
                             columnNumber: 13
                         }, this))
                 }, void 0, false, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 2009,
+                    lineNumber: 2028,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 2008,
+                lineNumber: 2027,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 1968,
+        lineNumber: 1987,
         columnNumber: 5
     }, this);
 }
@@ -11604,7 +11619,7 @@ function ReportsModule({ data, path, params }) {
                 path: path
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 2040,
+                lineNumber: 2059,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -11615,12 +11630,12 @@ function ReportsModule({ data, path, params }) {
                     children: "Exportar CSV"
                 }, void 0, false, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 2042,
+                    lineNumber: 2061,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 2041,
+                lineNumber: 2060,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -11643,7 +11658,7 @@ function ReportsModule({ data, path, params }) {
                                             children: project.code
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 2051,
+                                            lineNumber: 2070,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -11651,7 +11666,7 @@ function ReportsModule({ data, path, params }) {
                                             children: data.items.filter((item)=>item.projectId === project.id).length
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 2052,
+                                            lineNumber: 2071,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -11659,7 +11674,7 @@ function ReportsModule({ data, path, params }) {
                                             children: data.changes.filter((change)=>change.projectId === project.id).length
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 2053,
+                                            lineNumber: 2072,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -11667,7 +11682,7 @@ function ReportsModule({ data, path, params }) {
                                             children: data.incidents.filter((incident)=>incident.projectId === project.id).length
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 2054,
+                                            lineNumber: 2073,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -11675,23 +11690,23 @@ function ReportsModule({ data, path, params }) {
                                             children: data.releases.filter((release)=>release.projectId === project.id).length
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                            lineNumber: 2055,
+                                            lineNumber: 2074,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, project.id, true, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 2050,
+                                    lineNumber: 2069,
                                     columnNumber: 15
                                 }, this))
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 2048,
+                            lineNumber: 2067,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 2047,
+                        lineNumber: 2066,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Panel"], {
@@ -11702,7 +11717,7 @@ function ReportsModule({ data, path, params }) {
                                 children: items.length
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 2060,
+                                lineNumber: 2079,
                                 columnNumber: 39
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -11710,13 +11725,13 @@ function ReportsModule({ data, path, params }) {
                                 children: "Elementos filtrados"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 2060,
+                                lineNumber: 2079,
                                 columnNumber: 95
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 2060,
+                        lineNumber: 2079,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Panel"], {
@@ -11731,7 +11746,7 @@ function ReportsModule({ data, path, params }) {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 2061,
+                                lineNumber: 2080,
                                 columnNumber: 50
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -11739,19 +11754,19 @@ function ReportsModule({ data, path, params }) {
                                 children: "Solicitudes / incidencias"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                lineNumber: 2061,
+                                lineNumber: 2080,
                                 columnNumber: 127
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                        lineNumber: 2061,
+                        lineNumber: 2080,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 2046,
+                lineNumber: 2065,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Panel"], {
@@ -11771,7 +11786,7 @@ function ReportsModule({ data, path, params }) {
                                     children: change.ticketId
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 2067,
+                                    lineNumber: 2086,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -11779,7 +11794,7 @@ function ReportsModule({ data, path, params }) {
                                     children: change.project.code
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 2068,
+                                    lineNumber: 2087,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -11787,7 +11802,7 @@ function ReportsModule({ data, path, params }) {
                                     children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$labels$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["labelFor"])(change.type)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 2069,
+                                    lineNumber: 2088,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -11796,12 +11811,12 @@ function ReportsModule({ data, path, params }) {
                                         value: change.status
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                        lineNumber: 2070,
+                                        lineNumber: 2089,
                                         columnNumber: 41
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 2070,
+                                    lineNumber: 2089,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -11809,29 +11824,29 @@ function ReportsModule({ data, path, params }) {
                                     children: change.requester.name
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                                    lineNumber: 2071,
+                                    lineNumber: 2090,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, change.id, true, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 2066,
+                            lineNumber: 2085,
                             columnNumber: 13
                         }, this))
                 }, void 0, false, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 2064,
+                    lineNumber: 2083,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 2063,
+                lineNumber: 2082,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 2039,
+        lineNumber: 2058,
         columnNumber: 5
     }, this);
 }
@@ -11840,7 +11855,7 @@ function Module({ path, data, params }) {
         data: data
     }, void 0, false, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 2089,
+        lineNumber: 2108,
         columnNumber: 37
     }, this);
     if (path === "/boards/backlog") return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(BacklogModule, {
@@ -11849,7 +11864,7 @@ function Module({ path, data, params }) {
         params: params
     }, void 0, false, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 2090,
+        lineNumber: 2109,
         columnNumber: 42
     }, this);
     if (path === "/boards/sprints") return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(SprintsModule, {
@@ -11857,7 +11872,7 @@ function Module({ path, data, params }) {
         path: path
     }, void 0, false, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 2091,
+        lineNumber: 2110,
         columnNumber: 42
     }, this);
     if (path === "/boards/metodologia") return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(MethodologyModule, {
@@ -11865,7 +11880,7 @@ function Module({ path, data, params }) {
         path: path
     }, void 0, false, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 2092,
+        lineNumber: 2111,
         columnNumber: 46
     }, this);
     if (path === "/boards/reportes-diarios") return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(DailyReportsModule, {
@@ -11873,7 +11888,7 @@ function Module({ path, data, params }) {
         path: path
     }, void 0, false, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 2093,
+        lineNumber: 2112,
         columnNumber: 51
     }, this);
     if (path === "/admin/usuarios") return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(UsersModule, {
@@ -11881,7 +11896,7 @@ function Module({ path, data, params }) {
         path: path
     }, void 0, false, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 2094,
+        lineNumber: 2113,
         columnNumber: 42
     }, this);
     if (path === "/admin/roles") return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(RolesModule, {
@@ -11889,7 +11904,7 @@ function Module({ path, data, params }) {
         path: path
     }, void 0, false, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 2095,
+        lineNumber: 2114,
         columnNumber: 39
     }, this);
     if (path === "/admin/proyectos") return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(ProjectsModule, {
@@ -11897,7 +11912,7 @@ function Module({ path, data, params }) {
         path: path
     }, void 0, false, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 2096,
+        lineNumber: 2115,
         columnNumber: 43
     }, this);
     if (path === "/github/workspace") return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(GithubWorkspaceModule, {
@@ -11905,14 +11920,14 @@ function Module({ path, data, params }) {
         path: path
     }, void 0, false, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 2097,
+        lineNumber: 2116,
         columnNumber: 44
     }, this);
     if (path === "/admin/auditoria") return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(AuditModule, {
         data: data
     }, void 0, false, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 2098,
+        lineNumber: 2117,
         columnNumber: 43
     }, this);
     if (path === "/admin/integridad") return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(IntegrityModule, {
@@ -11920,7 +11935,7 @@ function Module({ path, data, params }) {
         path: path
     }, void 0, false, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 2099,
+        lineNumber: 2118,
         columnNumber: 44
     }, this);
     if (path === "/configuracion/ecs") return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(EcsModule, {
@@ -11929,7 +11944,7 @@ function Module({ path, data, params }) {
         params: params
     }, void 0, false, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 2100,
+        lineNumber: 2119,
         columnNumber: 45
     }, this);
     if (path === "/configuracion/versiones") return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(VersionsModule, {
@@ -11937,7 +11952,7 @@ function Module({ path, data, params }) {
         path: path
     }, void 0, false, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 2101,
+        lineNumber: 2120,
         columnNumber: 51
     }, this);
     if (path === "/configuracion/bloqueos") return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(LocksModule, {
@@ -11945,7 +11960,7 @@ function Module({ path, data, params }) {
         path: path
     }, void 0, false, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 2102,
+        lineNumber: 2121,
         columnNumber: 50
     }, this);
     if (path === "/configuracion/bibliotecas") return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(LibrariesModule, {
@@ -11953,7 +11968,7 @@ function Module({ path, data, params }) {
         path: path
     }, void 0, false, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 2103,
+        lineNumber: 2122,
         columnNumber: 53
     }, this);
     if (path === "/configuracion/lineas-base") return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(BaselinesModule, {
@@ -11961,14 +11976,14 @@ function Module({ path, data, params }) {
         path: path
     }, void 0, false, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 2104,
+        lineNumber: 2123,
         columnNumber: 53
     }, this);
     if (path === "/configuracion/trazabilidad") return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(TraceabilityModule, {
         data: data
     }, void 0, false, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 2105,
+        lineNumber: 2124,
         columnNumber: 54
     }, this);
     if (path === "/cambios/solicitudes") return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -11980,7 +11995,7 @@ function Module({ path, data, params }) {
                 params: params
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 2106,
+                lineNumber: 2125,
                 columnNumber: 75
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(ClosePanel, {
@@ -11988,13 +12003,13 @@ function Module({ path, data, params }) {
                 path: path
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 2106,
+                lineNumber: 2125,
                 columnNumber: 132
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 2106,
+        lineNumber: 2125,
         columnNumber: 47
     }, this);
     if (path === "/cambios/evaluacion-impacto") return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(ImpactModule, {
@@ -12002,7 +12017,7 @@ function Module({ path, data, params }) {
         path: path
     }, void 0, false, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 2107,
+        lineNumber: 2126,
         columnNumber: 54
     }, this);
     if (path === "/cambios/aprobacion-tecnica") return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(TechnicalApprovalModule, {
@@ -12010,7 +12025,7 @@ function Module({ path, data, params }) {
         path: path
     }, void 0, false, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 2108,
+        lineNumber: 2127,
         columnNumber: 54
     }, this);
     if (path === "/cambios/ccb") return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(CcbModule, {
@@ -12018,7 +12033,7 @@ function Module({ path, data, params }) {
         path: path
     }, void 0, false, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 2109,
+        lineNumber: 2128,
         columnNumber: 39
     }, this);
     if (path === "/cambios/ordenes") return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(OrdersModule, {
@@ -12026,7 +12041,7 @@ function Module({ path, data, params }) {
         path: path
     }, void 0, false, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 2110,
+        lineNumber: 2129,
         columnNumber: 43
     }, this);
     if (path === "/desarrollo/mis-ordenes") return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(DeveloperOrdersModule, {
@@ -12034,7 +12049,7 @@ function Module({ path, data, params }) {
         path: path
     }, void 0, false, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 2111,
+        lineNumber: 2130,
         columnNumber: 50
     }, this);
     if (path === "/desarrollo/pruebas-unitarias") return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(UnitTestsModule, {
@@ -12042,7 +12057,7 @@ function Module({ path, data, params }) {
         path: path
     }, void 0, false, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 2112,
+        lineNumber: 2131,
         columnNumber: 56
     }, this);
     if (path === "/qa/pruebas") return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(QaTestsModule, {
@@ -12050,7 +12065,7 @@ function Module({ path, data, params }) {
         path: path
     }, void 0, false, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 2113,
+        lineNumber: 2132,
         columnNumber: 38
     }, this);
     if (path === "/qa/defectos") return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(DefectsModule, {
@@ -12058,7 +12073,7 @@ function Module({ path, data, params }) {
         path: path
     }, void 0, false, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 2114,
+        lineNumber: 2133,
         columnNumber: 39
     }, this);
     if (path === "/qa/uat") return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(UatModule, {
@@ -12066,7 +12081,7 @@ function Module({ path, data, params }) {
         path: path
     }, void 0, false, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 2115,
+        lineNumber: 2134,
         columnNumber: 34
     }, this);
     if (path === "/qa/validacion-final") return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -12077,7 +12092,7 @@ function Module({ path, data, params }) {
                 path: path
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 2116,
+                lineNumber: 2135,
                 columnNumber: 75
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(FinalValidationModule, {
@@ -12085,13 +12100,13 @@ function Module({ path, data, params }) {
                 path: path
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 2116,
+                lineNumber: 2135,
                 columnNumber: 120
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 2116,
+        lineNumber: 2135,
         columnNumber: 47
     }, this);
     if (path === "/liberacion/releases") return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(ReleasesModule, {
@@ -12099,7 +12114,7 @@ function Module({ path, data, params }) {
         path: path
     }, void 0, false, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 2117,
+        lineNumber: 2136,
         columnNumber: 47
     }, this);
     if (path === "/soporte/incidencias") return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(IncidentsModule, {
@@ -12108,7 +12123,7 @@ function Module({ path, data, params }) {
         params: params
     }, void 0, false, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 2118,
+        lineNumber: 2137,
         columnNumber: 47
     }, this);
     if (path === "/reportes") return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(ReportsModule, {
@@ -12117,14 +12132,14 @@ function Module({ path, data, params }) {
         params: params
     }, void 0, false, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 2119,
+        lineNumber: 2138,
         columnNumber: 36
     }, this);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["EmptyState"], {
         children: "Ruta no registrada en el SRS."
     }, void 0, false, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 2120,
+        lineNumber: 2139,
         columnNumber: 10
     }, this);
 }
@@ -12149,7 +12164,7 @@ async function ProtectedPage({ params, searchParams }) {
                             children: meta.title
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 2142,
+                            lineNumber: 2161,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -12157,25 +12172,25 @@ async function ProtectedPage({ params, searchParams }) {
                             children: meta.subtitle
                         }, void 0, false, {
                             fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                            lineNumber: 2143,
+                            lineNumber: 2162,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                    lineNumber: 2141,
+                    lineNumber: 2160,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 2140,
+                lineNumber: 2159,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(Message, {
                 params: resolvedSearch
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 2146,
+                lineNumber: 2165,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(Module, {
@@ -12184,13 +12199,13 @@ async function ProtectedPage({ params, searchParams }) {
                 path: path
             }, void 0, false, {
                 fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-                lineNumber: 2147,
+                lineNumber: 2166,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(protected)/[...segments]/page.tsx",
-        lineNumber: 2139,
+        lineNumber: 2158,
         columnNumber: 5
     }, this);
 }

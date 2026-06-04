@@ -99,6 +99,25 @@ const routeMeta: Record<string, { title: string; subtitle: string }> = {
   "/reportes": { title: "Reportes", subtitle: "Vistas filtrables por proyecto, estado, fecha y responsable" }
 };
 
+async function runLimited<T extends Array<() => Promise<any>>>(
+  tasks: [...T],
+  limit = 4
+): Promise<{ [K in keyof T]: Awaited<ReturnType<T[K]>> }> {
+  const results: unknown[] = [];
+  let nextIndex = 0;
+
+  async function worker() {
+    while (nextIndex < tasks.length) {
+      const currentIndex = nextIndex;
+      nextIndex += 1;
+      results[currentIndex] = await tasks[currentIndex]();
+    }
+  }
+
+  await Promise.all(Array.from({ length: Math.min(limit, tasks.length) }, worker));
+  return results as { [K in keyof T]: Awaited<ReturnType<T[K]>> };
+}
+
 async function getData(user: SessionUser) {
   const projectId = user.projectId ?? undefined;
   const userWhere = projectId ? { projectUsers: { some: { projectId, active: true } } } : undefined;
@@ -142,20 +161,20 @@ async function getData(user: SessionUser) {
     artifactVersions,
     dailyWorkLogs,
     notifications
-  ] = await Promise.all([
-    prisma.user.findMany({ include: { role: true, projectUsers: { include: { project: true, role: true } } }, orderBy: { createdAt: "desc" }, where: userWhere }),
-    prisma.role.findMany({ include: { rolePermissions: { include: { permission: true } } }, orderBy: { name: "asc" } }),
-    prisma.permission.findMany({ orderBy: [{ module: "asc" }, { action: "asc" }] }),
-    prisma.project.findMany({ include: { manager: true }, orderBy: { createdAt: "desc" }, where: projectWhere }),
-    prisma.projectUser.findMany({ include: { project: true, user: { include: { role: true } }, role: true }, orderBy: { createdAt: "desc" }, where: scopedProjectWhere }),
-    prisma.library.findMany({ include: { project: true }, orderBy: [{ projectId: "asc" }, { type: "asc" }], where: scopedProjectWhere }),
-    prisma.configurationItem.findMany({ include: { project: true, library: true, responsible: true }, orderBy: { createdAt: "desc" }, where: scopedProjectWhere }),
-    prisma.configurationItemVersion.findMany({ include: { item: true, createdBy: true, changeRequest: true, changeOrder: true }, orderBy: { createdAt: "desc" }, where: itemProjectWhere }),
-    prisma.configurationItemLock.findMany({ include: { item: true, user: true, forcedBy: true }, orderBy: { lockedAt: "desc" }, where: itemProjectWhere }),
-    prisma.libraryTransfer.findMany({ include: { item: true, fromLibrary: true, toLibrary: true, user: true }, orderBy: { createdAt: "desc" }, where: itemProjectWhere }),
-    prisma.baseline.findMany({ include: { project: true, items: { include: { item: true, itemVersion: true } } }, orderBy: { createdAt: "desc" }, where: scopedProjectWhere }),
-    prisma.incident.findMany({ include: { project: true, reportedBy: true, assignedTo: true, affectedItem: true }, orderBy: { createdAt: "desc" }, where: scopedProjectWhere }),
-    prisma.changeRequest.findMany({
+  ] = await runLimited([
+    () => prisma.user.findMany({ include: { role: true, projectUsers: { include: { project: true, role: true } } }, orderBy: { createdAt: "desc" }, where: userWhere }),
+    () => prisma.role.findMany({ include: { rolePermissions: { include: { permission: true } } }, orderBy: { name: "asc" } }),
+    () => prisma.permission.findMany({ orderBy: [{ module: "asc" }, { action: "asc" }] }),
+    () => prisma.project.findMany({ include: { manager: true }, orderBy: { createdAt: "desc" }, where: projectWhere }),
+    () => prisma.projectUser.findMany({ include: { project: true, user: { include: { role: true } }, role: true }, orderBy: { createdAt: "desc" }, where: scopedProjectWhere }),
+    () => prisma.library.findMany({ include: { project: true }, orderBy: [{ projectId: "asc" }, { type: "asc" }], where: scopedProjectWhere }),
+    () => prisma.configurationItem.findMany({ include: { project: true, library: true, responsible: true }, orderBy: { createdAt: "desc" }, where: scopedProjectWhere }),
+    () => prisma.configurationItemVersion.findMany({ include: { item: true, createdBy: true, changeRequest: true, changeOrder: true }, orderBy: { createdAt: "desc" }, where: itemProjectWhere }),
+    () => prisma.configurationItemLock.findMany({ include: { item: true, user: true, forcedBy: true }, orderBy: { lockedAt: "desc" }, where: itemProjectWhere }),
+    () => prisma.libraryTransfer.findMany({ include: { item: true, fromLibrary: true, toLibrary: true, user: true }, orderBy: { createdAt: "desc" }, where: itemProjectWhere }),
+    () => prisma.baseline.findMany({ include: { project: true, items: { include: { item: true, itemVersion: true } } }, orderBy: { createdAt: "desc" }, where: scopedProjectWhere }),
+    () => prisma.incident.findMany({ include: { project: true, reportedBy: true, assignedTo: true, affectedItem: true }, orderBy: { createdAt: "desc" }, where: scopedProjectWhere }),
+    () => prisma.changeRequest.findMany({
       include: {
         project: true,
         requester: true,
@@ -172,10 +191,10 @@ async function getData(user: SessionUser) {
       orderBy: { createdAt: "desc" },
       where: scopedProjectWhere
     }),
-    prisma.impactAssessment.findMany({ include: { changeRequest: true, assessedBy: true }, orderBy: { createdAt: "desc" }, where: changeProjectWhere }),
-    prisma.technicalApproval.findMany({ include: { changeRequest: true, reviewer: true }, orderBy: { createdAt: "desc" }, where: changeProjectWhere }),
-    prisma.ccbReview.findMany({ include: { changeRequest: true, resolution: true, votes: { include: { voter: true } } }, orderBy: { createdAt: "desc" }, where: changeProjectWhere }),
-    prisma.changeOrder.findMany({
+    () => prisma.impactAssessment.findMany({ include: { changeRequest: true, assessedBy: true }, orderBy: { createdAt: "desc" }, where: changeProjectWhere }),
+    () => prisma.technicalApproval.findMany({ include: { changeRequest: true, reviewer: true }, orderBy: { createdAt: "desc" }, where: changeProjectWhere }),
+    () => prisma.ccbReview.findMany({ include: { changeRequest: true, resolution: true, votes: { include: { voter: true } } }, orderBy: { createdAt: "desc" }, where: changeProjectWhere }),
+    () => prisma.changeOrder.findMany({
       include: {
         project: true,
         changeRequest: true,
@@ -189,20 +208,20 @@ async function getData(user: SessionUser) {
       orderBy: { createdAt: "desc" },
       where: scopedProjectWhere
     }),
-    prisma.unitTest.findMany({ include: { changeOrder: true, executedBy: true, itemVersion: true }, orderBy: { executedAt: "desc" }, where: orderProjectWhere }),
-    prisma.qaTest.findMany({ include: { changeOrder: true, executedBy: true, defects: true }, orderBy: { executedAt: "desc" }, where: orderProjectWhere }),
-    prisma.defect.findMany({ include: { changeOrder: true, qaTest: true, item: true, itemVersion: true, responsible: true }, orderBy: { createdAt: "desc" }, where: orderProjectWhere }),
-    prisma.uatTest.findMany({ include: { changeRequest: true, changeOrder: true, executedBy: true, acceptance: true }, orderBy: { executedAt: "desc" }, where: changeProjectWhere }),
-    prisma.release.findMany({ include: { project: true, changeRequest: true, changeOrder: true, responsible: true, logs: true }, orderBy: { createdAt: "desc" }, where: scopedProjectWhere }),
-    prisma.auditLog.findMany({ include: { user: true }, orderBy: { createdAt: "desc" }, take: 100 }),
-    prisma.integrityAlert.findMany({ include: { project: true, item: true }, orderBy: { createdAt: "desc" }, where: scopedProjectWhere }),
-    prisma.traceabilityLink.findMany({ include: { project: true, createdBy: true }, orderBy: { createdAt: "desc" }, take: 100, where: scopedProjectWhere }),
-    prisma.methodologyPhase.findMany({
+    () => prisma.unitTest.findMany({ include: { changeOrder: true, executedBy: true, itemVersion: true }, orderBy: { executedAt: "desc" }, where: orderProjectWhere }),
+    () => prisma.qaTest.findMany({ include: { changeOrder: true, executedBy: true, defects: true }, orderBy: { executedAt: "desc" }, where: orderProjectWhere }),
+    () => prisma.defect.findMany({ include: { changeOrder: true, qaTest: true, item: true, itemVersion: true, responsible: true }, orderBy: { createdAt: "desc" }, where: orderProjectWhere }),
+    () => prisma.uatTest.findMany({ include: { changeRequest: true, changeOrder: true, executedBy: true, acceptance: true }, orderBy: { executedAt: "desc" }, where: changeProjectWhere }),
+    () => prisma.release.findMany({ include: { project: true, changeRequest: true, changeOrder: true, responsible: true, logs: true }, orderBy: { createdAt: "desc" }, where: scopedProjectWhere }),
+    () => prisma.auditLog.findMany({ include: { user: true }, orderBy: { createdAt: "desc" }, take: 100 }),
+    () => prisma.integrityAlert.findMany({ include: { project: true, item: true }, orderBy: { createdAt: "desc" }, where: scopedProjectWhere }),
+    () => prisma.traceabilityLink.findMany({ include: { project: true, createdBy: true }, orderBy: { createdAt: "desc" }, take: 100, where: scopedProjectWhere }),
+    () => prisma.methodologyPhase.findMany({
       include: { project: true, owner: true, activities: { include: { responsible: true, workItems: true } } },
       orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
       where: scopedProjectWhere
     }),
-    prisma.projectActivity.findMany({
+    () => prisma.projectActivity.findMany({
       include: {
         project: true,
         phase: true,
@@ -213,12 +232,12 @@ async function getData(user: SessionUser) {
       orderBy: [{ startDate: "asc" }, { endDate: "asc" }],
       where: scopedProjectWhere
     }),
-    prisma.projectSprint.findMany({
+    () => prisma.projectSprint.findMany({
       include: { project: true, workItems: { include: { assignedTo: true } } },
       orderBy: [{ startDate: "desc" }, { endDate: "desc" }],
       where: scopedProjectWhere
     }),
-    prisma.workItem.findMany({
+    () => prisma.workItem.findMany({
       include: {
         project: true,
         createdBy: true,
@@ -233,7 +252,7 @@ async function getData(user: SessionUser) {
       orderBy: { updatedAt: "desc" },
       where: scopedProjectWhere
     }),
-    prisma.workItemArtifactRequirement.findMany({
+    () => prisma.workItemArtifactRequirement.findMany({
       include: {
         workItem: { include: { project: true, assignedTo: true, changeOrder: true, changeRequest: true } },
         reviewedBy: true,
@@ -242,7 +261,7 @@ async function getData(user: SessionUser) {
       orderBy: [{ lifecycleStage: "asc" }, { sortOrder: "asc" }, { createdAt: "asc" }],
       where: projectId ? { workItem: { projectId } } : undefined
     }),
-    prisma.workItemArtifactVersion.findMany({
+    () => prisma.workItemArtifactVersion.findMany({
       include: {
         workItem: { include: { project: true } },
         artifactRequirement: true,
@@ -255,12 +274,12 @@ async function getData(user: SessionUser) {
       orderBy: { submittedAt: "desc" },
       where: projectId ? { workItem: { projectId } } : undefined
     }),
-    prisma.dailyWorkLog.findMany({
+    () => prisma.dailyWorkLog.findMany({
       include: { project: true, user: true, workItem: true, changeOrder: true, activity: true },
       orderBy: [{ logDate: "desc" }, { createdAt: "desc" }],
       where: scopedProjectWhere
     }),
-    prisma.notification.findMany({ where: { userId: user.id }, orderBy: { createdAt: "desc" }, take: 8 })
+    () => prisma.notification.findMany({ where: { userId: user.id }, orderBy: { createdAt: "desc" }, take: 8 })
   ]);
 
   return {

@@ -1660,7 +1660,10 @@ export async function recordUatAction(formData: FormData) {
 }
 
 export async function integrateChangeAction(formData: FormData) {
-  const user = await requireUser("dev.orders.manage");
+  const user = await requireUser();
+  if (!user.permissions.includes("dev.orders.manage") && !user.permissions.includes("qa.final.manage")) {
+    go(formData, "No tiene permiso para registrar la integracion.", "error");
+  }
   const changeOrderId = requireField(formData, "changeOrderId", "Orden");
   const order = await prisma.changeOrder.findUniqueOrThrow({ where: { id: changeOrderId }, include: { changeRequest: true } });
   if (order.changeRequest.status !== "UAT_ACCEPTED") go(formData, "UAT debe estar aceptado antes de integrar.", "error");

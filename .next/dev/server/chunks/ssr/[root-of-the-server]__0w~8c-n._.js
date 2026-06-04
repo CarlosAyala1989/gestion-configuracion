@@ -3857,7 +3857,10 @@ async function recordUatAction(formData) {
     go(formData, "Observaciones UAT registradas.");
 }
 async function integrateChangeAction(formData) {
-    const user = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$auth$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["requireUser"])("dev.orders.manage");
+    const user = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$auth$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["requireUser"])();
+    if (!user.permissions.includes("dev.orders.manage") && !user.permissions.includes("qa.final.manage")) {
+        go(formData, "No tiene permiso para registrar la integracion.", "error");
+    }
     const changeOrderId = requireField(formData, "changeOrderId", "Orden");
     const order = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].changeOrder.findUniqueOrThrow({
         where: {

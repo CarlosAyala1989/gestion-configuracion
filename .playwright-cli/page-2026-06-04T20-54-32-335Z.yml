@@ -1,0 +1,152 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]: SGCSW
+        - generic [ref=e6]: Sistema de Gestion de Configuracion
+      - navigation [ref=e7]:
+        - generic [ref=e8]:
+          - generic [ref=e9]: Operacion
+          - link "Mi Panel de Trabajo" [ref=e11] [cursor=pointer]:
+            - /url: /dashboard
+            - img [ref=e12]
+            - generic [ref=e17]: Mi Panel de Trabajo
+        - generic [ref=e18]:
+          - generic [ref=e19]: Boards
+          - generic [ref=e20]:
+            - link "Backlog" [ref=e21] [cursor=pointer]:
+              - /url: /boards/backlog
+              - img [ref=e22]
+              - generic [ref=e25]: Backlog
+            - link "Sprints" [ref=e26] [cursor=pointer]:
+              - /url: /boards/sprints
+              - img [ref=e27]
+              - generic [ref=e29]: Sprints
+            - link "Reportes diarios" [ref=e30] [cursor=pointer]:
+              - /url: /boards/reportes-diarios
+              - img [ref=e31]
+              - generic [ref=e36]: Reportes diarios
+        - generic [ref=e37]:
+          - generic [ref=e38]: Integraciones
+          - link "GitHub" [ref=e40] [cursor=pointer]:
+            - /url: /github/workspace
+            - img [ref=e41]
+            - generic [ref=e45]: GitHub
+        - generic [ref=e46]:
+          - generic [ref=e47]: Configuracion
+          - link "Trazabilidad" [ref=e49] [cursor=pointer]:
+            - /url: /configuracion/trazabilidad
+            - img [ref=e50]
+            - generic [ref=e55]: Trazabilidad
+        - generic [ref=e56]:
+          - generic [ref=e57]: Calidad
+          - generic [ref=e58]:
+            - link "Pruebas QA" [ref=e59] [cursor=pointer]:
+              - /url: /qa/pruebas
+              - img [ref=e60]
+              - generic [ref=e63]: Pruebas QA
+            - link "Defectos" [ref=e64] [cursor=pointer]:
+              - /url: /qa/defectos
+              - img [ref=e65]
+              - generic [ref=e68]: Defectos
+            - link "UAT" [ref=e69] [cursor=pointer]:
+              - /url: /qa/uat
+              - img [ref=e70]
+              - generic [ref=e73]: UAT
+            - link "Validacion final" [ref=e74] [cursor=pointer]:
+              - /url: /qa/validacion-final
+              - img [ref=e75]
+              - generic [ref=e78]: Validacion final
+        - generic [ref=e79]:
+          - generic [ref=e80]: Liberacion
+          - link "Releases" [ref=e82] [cursor=pointer]:
+            - /url: /liberacion/releases
+            - img [ref=e83]
+            - generic [ref=e88]: Releases
+        - generic [ref=e89]:
+          - generic [ref=e90]: Reportes
+          - link "Reportes" [ref=e92] [cursor=pointer]:
+            - /url: /reportes
+            - img [ref=e93]
+            - generic [ref=e96]: Reportes
+      - generic [ref=e97]:
+        - generic [ref=e98]: Equipo QA / Tester
+        - generic [ref=e99]: MANUAL-001 - Portal SGCSW Manual
+        - generic [ref=e100]: qa@gmail.com
+    - main [ref=e101]:
+      - generic [ref=e103]:
+        - generic [ref=e104]:
+          - generic [ref=e105]: QA Tester Demo
+          - generic [ref=e106]: Equipo QA / Tester en MANUAL-001
+        - generic [ref=e107]:
+          - link "Cambiar proyecto" [ref=e108] [cursor=pointer]:
+            - /url: /seleccionar-proyecto
+            - img [ref=e109]
+            - text: Cambiar proyecto
+          - button "Salir" [ref=e120] [cursor=pointer]:
+            - img [ref=e121]
+            - text: Salir
+      - generic [ref=e124]:
+        - generic [ref=e126]:
+          - heading "Validacion final" [level=1] [ref=e127]
+          - paragraph [ref=e128]: Criterios finales y aprobacion de release
+        - generic [ref=e129]:
+          - generic [ref=e130]:
+            - heading "Integracion del cambio" [level=2] [ref=e132]
+            - generic [ref=e133]:
+              - generic [ref=e134]:
+                - generic [ref=e135]: Orden *
+                - combobox "Orden *" [ref=e136]:
+                  - option "Seleccionar" [selected]
+                  - option "OC-0001 - Implementar autenticacion MFA con documentacion RUP"
+              - generic [ref=e137]:
+                - generic [ref=e138]: SemVer *
+                - textbox "SemVer *" [ref=e139]:
+                  - /placeholder: 1.1.0
+              - generic [ref=e140]:
+                - generic [ref=e141]: Rama destino *
+                - textbox "Rama destino *" [ref=e142]:
+                  - /placeholder: main
+              - generic [ref=e143]:
+                - generic [ref=e144]: Commit merge *
+                - textbox "Commit merge *" [ref=e145]
+              - button "Registrar integracion" [ref=e147] [cursor=pointer]
+          - generic [ref=e148]:
+            - heading "Criterios finales de calidad" [level=2] [ref=e150]
+            - generic [ref=e151]:
+              - generic [ref=e152]:
+                - generic [ref=e153]: Orden integrada *
+                - combobox "Orden integrada *" [ref=e154]:
+                  - option "Seleccionar" [selected]
+                  - option "OC-0001 - Implementar autenticacion MFA con documentacion RUP"
+              - generic [ref=e155]:
+                - generic [ref=e156]: Resultado *
+                - combobox "Resultado *" [ref=e157]:
+                  - option "Seleccionar" [selected]
+                  - option "Todo correcto"
+                  - option "Revalidar"
+              - generic [ref=e158]:
+                - generic [ref=e159]: SemVer
+                - textbox "SemVer" [ref=e160]:
+                  - /placeholder: 1.1.0
+              - generic [ref=e161]:
+                - generic [ref=e162]: Ambiente
+                - textbox "Ambiente" [ref=e163]:
+                  - /placeholder: produccion
+              - generic [ref=e164]:
+                - generic [ref=e165]: Observaciones
+                - textbox "Observaciones" [ref=e166]
+              - button "Registrar" [ref=e168] [cursor=pointer]:
+                - img [ref=e169]
+                - text: Registrar
+            - table [ref=e173]:
+              - rowgroup [ref=e174]:
+                - row "Release Solicitud Version Estado Ambiente" [ref=e175]:
+                  - columnheader "Release" [ref=e176]
+                  - columnheader "Solicitud" [ref=e177]
+                  - columnheader "Version" [ref=e178]
+                  - columnheader "Estado" [ref=e179]
+                  - columnheader "Ambiente" [ref=e180]
+              - rowgroup
+  - button "Open Next.js Dev Tools" [ref=e186] [cursor=pointer]:
+    - img [ref=e187]
