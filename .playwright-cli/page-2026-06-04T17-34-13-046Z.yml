@@ -1,0 +1,121 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]: SGCSW
+        - generic [ref=e6]: Sistema de Gestion de Configuracion
+      - navigation [ref=e7]:
+        - generic [ref=e8]:
+          - generic [ref=e9]: Operacion
+          - link "Mi Panel de Trabajo" [ref=e11] [cursor=pointer]:
+            - /url: /dashboard
+            - img [ref=e12]
+            - generic [ref=e17]: Mi Panel de Trabajo
+        - generic [ref=e18]:
+          - generic [ref=e19]: Boards
+          - generic [ref=e20]:
+            - link "Backlog" [ref=e21] [cursor=pointer]:
+              - /url: /boards/backlog
+              - img [ref=e22]
+              - generic [ref=e25]: Backlog
+            - link "Sprints" [ref=e26] [cursor=pointer]:
+              - /url: /boards/sprints
+              - img [ref=e27]
+              - generic [ref=e29]: Sprints
+            - link "Reportes diarios" [ref=e30] [cursor=pointer]:
+              - /url: /boards/reportes-diarios
+              - img [ref=e31]
+              - generic [ref=e36]: Reportes diarios
+        - generic [ref=e37]:
+          - generic [ref=e38]: Integraciones
+          - link "GitHub" [ref=e40] [cursor=pointer]:
+            - /url: /github/workspace
+            - img [ref=e41]
+            - generic [ref=e45]: GitHub
+        - generic [ref=e46]:
+          - generic [ref=e47]: Configuracion
+          - generic [ref=e48]:
+            - link "Repositorio ECS" [ref=e49] [cursor=pointer]:
+              - /url: /configuracion/ecs
+              - img [ref=e50]
+              - generic [ref=e53]: Repositorio ECS
+            - link "Versiones" [ref=e54] [cursor=pointer]:
+              - /url: /configuracion/versiones
+              - img [ref=e55]
+              - generic [ref=e59]: Versiones
+        - generic [ref=e60]:
+          - generic [ref=e61]: Cambios
+          - link "Solicitudes" [ref=e63] [cursor=pointer]:
+            - /url: /cambios/solicitudes
+            - img [ref=e64]
+            - generic [ref=e67]: Solicitudes
+        - generic [ref=e68]:
+          - generic [ref=e69]: Desarrollo
+          - generic [ref=e70]:
+            - link "Mis ordenes" [ref=e71] [cursor=pointer]:
+              - /url: /desarrollo/mis-ordenes
+              - img [ref=e72]
+              - generic [ref=e76]: Mis ordenes
+            - link "Pruebas unitarias" [ref=e77] [cursor=pointer]:
+              - /url: /desarrollo/pruebas-unitarias
+              - img [ref=e78]
+              - generic [ref=e82]: Pruebas unitarias
+        - generic [ref=e83]:
+          - generic [ref=e84]: Soporte
+          - link "Incidencias" [ref=e86] [cursor=pointer]:
+            - /url: /soporte/incidencias
+            - img [ref=e87]
+            - generic [ref=e90]: Incidencias
+      - generic [ref=e91]:
+        - generic [ref=e92]: Desarrollador Asignado
+        - generic [ref=e93]: MANUAL-001 - Portal SGCSW Manual
+        - generic [ref=e94]: desarrollador@gmail.com
+    - main [ref=e95]:
+      - generic [ref=e97]:
+        - generic [ref=e98]:
+          - generic [ref=e99]: Desarrollador Demo
+          - generic [ref=e100]: Desarrollador Asignado en MANUAL-001
+        - generic [ref=e101]:
+          - link "Cambiar proyecto" [ref=e102] [cursor=pointer]:
+            - /url: /seleccionar-proyecto
+            - img [ref=e103]
+            - text: Cambiar proyecto
+          - button "Salir" [ref=e114] [cursor=pointer]:
+            - img [ref=e115]
+            - text: Salir
+      - generic [ref=e118]:
+        - generic [ref=e120]:
+          - heading "Mis ordenes asignadas" [level=1] [ref=e121]
+          - paragraph [ref=e122]: Rama GitFlow e inicio de implementacion
+        - generic [ref=e123]:
+          - img [ref=e124]
+          - generic [ref=e127]: Implementacion iniciada.
+        - generic [ref=e128]:
+          - heading "Implementacion GitFlow" [level=2] [ref=e130]
+          - table [ref=e132]:
+            - rowgroup [ref=e133]:
+              - row "Orden Solicitud Rama Estado Iniciar" [ref=e134]:
+                - columnheader "Orden" [ref=e135]
+                - columnheader "Solicitud" [ref=e136]
+                - columnheader "Rama" [ref=e137]
+                - columnheader "Estado" [ref=e138]
+                - columnheader "Iniciar" [ref=e139]
+            - rowgroup [ref=e140]:
+              - row "OC-0001 Implementar autenticacion MFA con documentacion RUP feature/wi-0001-mfa-login IMPLEMENTING feature/wi-0001-mfa-login Crear rama en GitHub Iniciar" [ref=e141]:
+                - cell "OC-0001" [ref=e142]
+                - cell "Implementar autenticacion MFA con documentacion RUP" [ref=e143]
+                - cell "feature/wi-0001-mfa-login" [ref=e144]
+                - cell "IMPLEMENTING" [ref=e145]:
+                  - generic [ref=e146]: IMPLEMENTING
+                - cell "feature/wi-0001-mfa-login Crear rama en GitHub Iniciar" [ref=e147]:
+                  - generic [ref=e148]:
+                    - textbox "feature/sc-0001-rbac" [ref=e149]: feature/wi-0001-mfa-login
+                    - textbox "main" [ref=e150]
+                    - generic [ref=e151]:
+                      - checkbox "Crear rama en GitHub" [checked] [ref=e152]
+                      - text: Crear rama en GitHub
+                    - button "Iniciar" [ref=e153] [cursor=pointer]:
+                      - img [ref=e154]
+                      - text: Iniciar
+  - button "Open Next.js Dev Tools" [ref=e163] [cursor=pointer]:
+    - img [ref=e164]

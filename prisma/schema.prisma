@@ -1,0 +1,1546 @@
+generator client {
+  provider   = "prisma-client-js"
+  engineType = "binary"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum ProjectStatus {
+  ACTIVE
+  PAUSED
+  CLOSED
+  INACTIVE
+}
+
+enum ProjectSetupStatus {
+  DRAFT
+  READY
+  LOCKED
+}
+
+enum ProjectSetupLockReason {
+  FIRST_WORK_ITEM
+  MANUAL
+}
+
+enum TemplateStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+enum LibraryType {
+  WORK
+  INTEGRATION
+  SUPPORT
+  MASTER
+}
+
+enum ConfigItemType {
+  CODE
+  DOCUMENT
+  SCRIPT
+  MODEL
+  CONFIGURATION
+  OTHER
+}
+
+enum ArtifactLifecycleStage {
+  ANALYSIS
+  DESIGN
+  IMPLEMENTATION
+}
+
+enum ArtifactKind {
+  STAKEHOLDER_INTERVIEW
+  REQUIREMENT_SPEC
+  USE_CASE
+  USER_STORY
+  ACCEPTANCE_CRITERIA
+  BACKLOG_ITEM
+  PROCESS_POLICY
+  DOMAIN_MODEL
+  ARCHITECTURE_DOC
+  CLASS_DIAGRAM
+  SEQUENCE_DIAGRAM
+  DATA_MODEL
+  API_CONTRACT
+  UI_PROTOTYPE
+  SOURCE_CODE
+  DATABASE_SCRIPT
+  BUILD_SCRIPT
+  CONFIGURATION_FILE
+  UNIT_TEST_EVIDENCE
+  QA_TEST_CASE
+  RELEASE_NOTE
+  OTHER
+}
+
+enum ArtifactRequirementStatus {
+  PENDING
+  SUBMITTED
+  QA_APPROVED
+  QA_REJECTED
+  WAIVED
+}
+
+enum ConfigItemStatus {
+  REGISTERED
+  AVAILABLE
+  LOCKED
+  BASELINED
+  ARCHIVED
+  INACTIVE
+}
+
+enum ConfigurationPlanStatus {
+  PLANNED
+  APPROVED
+  GENERATED
+  OMITTED
+}
+
+enum VersionStatus {
+  DRAFT
+  CHECKED_IN
+  BASELINED
+  RELEASED
+}
+
+enum LockStatus {
+  ACTIVE
+  RELEASED
+  FORCED
+}
+
+enum TransferStatus {
+  PENDING
+  COMPLETED
+  REJECTED
+}
+
+enum BaselineStatus {
+  DRAFT
+  FROZEN
+  ARCHIVED
+}
+
+enum IncidentSeverity {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum IncidentStatus {
+  OPEN
+  ASSIGNED
+  IN_PROGRESS
+  DERIVED_TO_CHANGE
+  RESOLVED
+  CLOSED
+}
+
+enum ChangeType {
+  CORRECTIVE
+  EVOLUTIONARY
+  PREVENTIVE
+  EMERGENCY
+}
+
+enum ChangePriority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum ChangeRequestStatus {
+  DRAFT
+  INITIAL_VALIDATION
+  FORMAT_OBSERVED
+  ALIGNMENT_REJECTED
+  REGISTERED
+  CLASSIFIED
+  IMPACT_ANALYSIS
+  FAST_APPROVAL
+  CCB_REVIEW
+  APPROVED
+  REJECTED
+  RESOURCE_ASSIGNMENT
+  IMPLEMENTATION
+  UNIT_TESTING
+  QA_TESTING
+  QA_DEFECTS
+  UAT
+  UAT_OBSERVATIONS
+  UAT_ACCEPTED
+  INTEGRATION
+  FINAL_VALIDATION
+  RELEASE_APPROVED
+  RELEASED
+  ARCHIVED
+  CLOSED
+}
+
+enum AlignmentDecision {
+  PENDING
+  ALIGNED
+  NOT_ALIGNED
+}
+
+enum ApprovalDecision {
+  PENDING
+  APPROVED
+  REJECTED
+  POSTPONED
+}
+
+enum ImpactRoute {
+  TECHNICAL_LEAD
+  CCB
+}
+
+enum ChangeOrderStatus {
+  ASSIGNED
+  IMPLEMENTING
+  UNIT_TESTING
+  READY_FOR_QA
+  QA_FAILED
+  READY_FOR_UAT
+  UAT_FAILED
+  READY_FOR_INTEGRATION
+  INTEGRATED
+  COMPLETED
+  CANCELLED
+}
+
+enum TestResult {
+  PENDING
+  PASSED
+  FAILED
+}
+
+enum QaTestType {
+  FUNCTIONAL
+  INTEGRATION
+  REGRESSION
+  FINAL_QUALITY
+}
+
+enum DefectStatus {
+  OPEN
+  ASSIGNED
+  FIXED
+  RETEST
+  CLOSED
+}
+
+enum UatResult {
+  PENDING
+  ACCEPTED
+  OBSERVED
+}
+
+enum ReleaseStatus {
+  PENDING_SIGNAL
+  APPROVED
+  EXECUTED
+  FAILED
+  NOTIFIED
+  CLOSED
+}
+
+enum NotificationType {
+  INFO
+  WARNING
+  ERROR
+  SUCCESS
+}
+
+enum IntegrityAlertStatus {
+  OPEN
+  REVIEWED
+  RESOLVED
+}
+
+enum AttachmentStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+enum MethodologyType {
+  SCRUM
+  KANBAN
+  RUP
+  CASCADA
+  XP
+  CUSTOM
+}
+
+enum MethodologyPhaseStatus {
+  PENDING
+  IN_PROGRESS
+  DONE
+  BLOCKED
+}
+
+enum ProjectActivityStatus {
+  PLANNED
+  IN_PROGRESS
+  DONE
+  BLOCKED
+}
+
+enum WorkItemType {
+  EPIC
+  FEATURE
+  USER_STORY
+  TASK
+  BUG
+  ISSUE
+}
+
+enum WorkItemState {
+  NEW
+  ACTIVE
+  RESOLVED
+  CLOSED
+  REMOVED
+}
+
+enum WorkItemLinkType {
+  PARENT
+  CHILD
+  RELATED
+  PREDECESSOR
+  SUCCESSOR
+  GITHUB_BRANCH
+  GITHUB_COMMIT
+  GITHUB_PULL_REQUEST
+  GITHUB_ISSUE
+  CHANGE_REQUEST
+  CHANGE_ORDER
+  CONFIG_ITEM
+  RELEASE
+}
+
+model User {
+  id                   String     @id @default(uuid()) @db.VarChar(36)
+  name                 String
+  email                String     @unique
+  passwordHash         String
+  status               UserStatus @default(ACTIVE)
+  roleId               String     @db.VarChar(36)
+  githubTokenEncrypted String?    @db.Text
+  githubTokenLast4     String?    @db.VarChar(12)
+  lastLoginAt          DateTime?
+  createdAt            DateTime   @default(now())
+  updatedAt            DateTime   @updatedAt
+
+  role                   Role                       @relation(fields: [roleId], references: [id])
+  managedProjects        Project[]                  @relation("ProjectManager")
+  createdProjects        Project[]                  @relation("ProjectCreatedBy")
+  projectUsers           ProjectUser[]
+  responsibleItems       ConfigurationItem[]        @relation("ItemResponsible")
+  itemVersions           ConfigurationItemVersion[] @relation("ItemVersionCreator")
+  locks                  ConfigurationItemLock[]    @relation("LockUser")
+  forcedLocks            ConfigurationItemLock[]    @relation("ForceUnlockUser")
+  libraryTransfers       LibraryTransfer[]          @relation("TransferUser")
+  createdBaselines       Baseline[]                 @relation("BaselineCreator")
+  reportedIncidents      Incident[]                 @relation("IncidentReporter")
+  assignedIncidents      Incident[]                 @relation("IncidentAssignee")
+  requestedChanges       ChangeRequest[]            @relation("ChangeRequester")
+  alignedChanges         ChangeRequest[]            @relation("ChangeAlignedBy")
+  impactAssessments      ImpactAssessment[]         @relation("ImpactAssessor")
+  technicalApprovals     TechnicalApproval[]        @relation("TechnicalReviewer")
+  ccbVotes               CcbVote[]
+  ccbResolutions         CcbResolution[]            @relation("ResolutionIssuer")
+  developerOrders        ChangeOrder[]              @relation("OrderDeveloper")
+  changeOrderAssignments ChangeOrderAssignment[]
+  unitTests              UnitTest[]                 @relation("UnitTestExecutor")
+  qaTests                QaTest[]                   @relation("QaTestExecutor")
+  defectsResponsible     Defect[]                   @relation("DefectResponsible")
+  uatTests               UatTest[]                  @relation("UatExecutor")
+  acceptanceRecords      AcceptanceRecord[]         @relation("AcceptanceSigner")
+  releases               Release[]                  @relation("ReleaseResponsible")
+  releaseLogs            ReleaseLog[]               @relation("ReleaseLogUser")
+  notifications          Notification[]
+  auditLogs              AuditLog[]
+  traceabilityLinks      TraceabilityLink[]         @relation("TraceabilityCreator")
+  attachments            Attachment[]               @relation("AttachmentUploader")
+  methodologyPhases      MethodologyPhase[]         @relation("MethodologyPhaseOwner")
+  projectActivities      ProjectActivity[]          @relation("ActivityResponsible")
+  reviewedArtifactRequirements WorkItemArtifactRequirement[] @relation("ArtifactRequirementReviewer")
+  submittedArtifactVersions WorkItemArtifactVersion[] @relation("ArtifactVersionSubmitter")
+  createdWorkItems       WorkItem[]                 @relation("WorkItemCreator")
+  assignedWorkItems      WorkItem[]                 @relation("WorkItemAssignee")
+  workItemLinks          WorkItemLink[]             @relation("WorkItemLinkCreator")
+  dailyWorkLogs          DailyWorkLog[]
+  setupLockedProjects    Project[]                  @relation("ProjectSetupLocker")
+  createdSetupTemplates  ProjectSetupTemplate[]     @relation("SetupTemplateCreator")
+  updatedSetupTemplates  ProjectSetupTemplate[]     @relation("SetupTemplateUpdater")
+  defaultTemplateMembers ProjectSetupTemplateMember[] @relation("TemplateMemberDefaultUser")
+  configurationPlans     ProjectConfigurationItemPlan[] @relation("ConfigPlanResponsible")
+
+  @@map("users")
+}
+
+model Role {
+  id          String   @id @default(uuid()) @db.VarChar(36)
+  name        String
+  slug        String   @unique
+  description String?  @db.Text
+  isSystem    Boolean  @default(false)
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  users           User[]
+  rolePermissions RolePermission[]
+  projectUsers    ProjectUser[]
+  setupTemplatePhases     ProjectSetupTemplatePhase[] @relation("TemplatePhaseOwnerRole")
+  setupTemplateActivities ProjectSetupTemplateActivity[] @relation("TemplateActivityResponsibleRole")
+  setupTemplateItems      ProjectSetupTemplateConfigItem[] @relation("TemplateConfigItemResponsibleRole")
+  setupTemplateMembers    ProjectSetupTemplateMember[]
+  methodologyArtifactRequirements MethodologyArtifactRequirement[] @relation("ArtifactRequirementResponsibleRole")
+
+  @@map("roles")
+}
+
+model Permission {
+  id          String   @id @default(uuid()) @db.VarChar(36)
+  code        String   @unique
+  module      String
+  action      String
+  description String?  @db.Text
+  createdAt   DateTime @default(now())
+
+  rolePermissions RolePermission[]
+
+  @@map("permissions")
+}
+
+model RolePermission {
+  roleId       String @db.VarChar(36)
+  permissionId String @db.VarChar(36)
+
+  role       Role       @relation(fields: [roleId], references: [id])
+  permission Permission @relation(fields: [permissionId], references: [id])
+
+  @@id([roleId, permissionId])
+  @@map("role_permissions")
+}
+
+model Project {
+  id          String        @id @default(uuid()) @db.VarChar(36)
+  code        String        @unique
+  name        String
+  description String?       @db.Text
+  status      ProjectStatus @default(ACTIVE)
+  managerId   String        @db.VarChar(36)
+  createdById String?       @db.VarChar(36)
+  githubOwner String?
+  githubRepo  String?
+  methodologyType         MethodologyType?
+  methodologyNotes        String?       @db.Text
+  methodologyConfiguredAt DateTime?
+  plannedStartDate        DateTime?
+  plannedEndDate          DateTime?
+  setupStatus             ProjectSetupStatus @default(DRAFT)
+  setupTemplateId         String?       @db.VarChar(36)
+  setupCompletedAt        DateTime?
+  setupLockedAt           DateTime?
+  setupLockedById         String?       @db.VarChar(36)
+  setupLockReason         ProjectSetupLockReason?
+  setupVersion            Int           @default(1)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  closedAt    DateTime?
+
+  manager            User                @relation("ProjectManager", fields: [managerId], references: [id])
+  createdBy          User?               @relation("ProjectCreatedBy", fields: [createdById], references: [id])
+  setupTemplate      ProjectSetupTemplate? @relation("ProjectAppliedTemplate", fields: [setupTemplateId], references: [id])
+  setupLockedBy      User?               @relation("ProjectSetupLocker", fields: [setupLockedById], references: [id])
+  projectUsers       ProjectUser[]
+  libraries          Library[]
+  configurationItems ConfigurationItem[]
+  configurationItemPlans ProjectConfigurationItemPlan[]
+  baselines          Baseline[]
+  incidents          Incident[]
+  changeRequests     ChangeRequest[]
+  changeOrders       ChangeOrder[]
+  releases           Release[]
+  integrityAlerts    IntegrityAlert[]
+  traceabilityLinks  TraceabilityLink[]
+  attachments        Attachment[]
+  methodologyPhases  MethodologyPhase[]
+  projectActivities  ProjectActivity[]
+  sprints            ProjectSprint[]
+  workItems          WorkItem[]
+  dailyWorkLogs      DailyWorkLog[]
+  sourceSetupTemplates ProjectSetupTemplate[] @relation("ProjectTemplateSource")
+
+  @@index([setupStatus, setupLockedAt])
+  @@index([setupTemplateId])
+  @@map("projects")
+}
+
+model ProjectUser {
+  id        String   @id @default(uuid()) @db.VarChar(36)
+  projectId String   @db.VarChar(36)
+  userId    String   @db.VarChar(36)
+  roleId    String   @db.VarChar(36)
+  sourceTemplateMemberId String? @db.VarChar(36)
+  roleNote  String?
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  project Project @relation(fields: [projectId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+  role    Role    @relation(fields: [roleId], references: [id])
+  sourceTemplateMember ProjectSetupTemplateMember? @relation(fields: [sourceTemplateMemberId], references: [id])
+
+  @@unique([projectId, userId])
+  @@map("project_users")
+}
+
+model ConfigurationItemCatalog {
+  id                 String           @id @default(uuid()) @db.VarChar(36)
+  methodologyType    MethodologyType?
+  lifecycleStage     ArtifactLifecycleStage?
+  artifactKind       ArtifactKind?
+  code               String           @unique
+  type               ConfigItemType
+  name               String
+  description        String           @db.Text
+  defaultLibraryType LibraryType      @default(WORK)
+  defaultVersion     String           @default("1.0.0")
+  defaultMetadata    String?          @db.Text
+  required           Boolean          @default(true)
+  sortOrder          Int              @default(0)
+  active             Boolean          @default(true)
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+
+  projectPlans    ProjectConfigurationItemPlan[]
+  templateItems   ProjectSetupTemplateConfigItem[]
+  methodologyRequirements MethodologyArtifactRequirement[]
+
+  @@index([methodologyType, active, sortOrder])
+  @@index([lifecycleStage, artifactKind])
+  @@map("configuration_item_catalog")
+}
+
+model ProjectConfigurationItemPlan {
+  id                   String                  @id @default(uuid()) @db.VarChar(36)
+  projectId            String                  @db.VarChar(36)
+  catalogItemId        String?                 @db.VarChar(36)
+  sourceTemplateItemId String?                 @db.VarChar(36)
+  lifecycleStage       ArtifactLifecycleStage?
+  artifactKind         ArtifactKind?
+  code                 String
+  type                 ConfigItemType
+  name                 String
+  description          String                  @db.Text
+  libraryType          LibraryType             @default(WORK)
+  defaultVersion       String                  @default("1.0.0")
+  metadata             String?                 @db.Text
+  responsibleId        String?                 @db.VarChar(36)
+  required             Boolean                 @default(true)
+  selected             Boolean                 @default(true)
+  notes                String?                 @db.Text
+  sortOrder            Int                     @default(0)
+  status               ConfigurationPlanStatus @default(PLANNED)
+  createdAt            DateTime                @default(now())
+  updatedAt            DateTime                @updatedAt
+
+  project            Project                         @relation(fields: [projectId], references: [id])
+  catalogItem        ConfigurationItemCatalog?       @relation(fields: [catalogItemId], references: [id])
+  sourceTemplateItem ProjectSetupTemplateConfigItem? @relation("TemplateConfigItemApplications", fields: [sourceTemplateItemId], references: [id])
+  responsible        User?                           @relation("ConfigPlanResponsible", fields: [responsibleId], references: [id])
+
+  @@unique([projectId, code])
+  @@index([projectId, selected, status])
+  @@index([projectId, lifecycleStage, artifactKind])
+  @@index([responsibleId])
+  @@map("project_configuration_item_plans")
+}
+
+model MethodologyArtifactRequirement {
+  id                    String                    @id @default(uuid()) @db.VarChar(36)
+  methodologyType        MethodologyType
+  lifecycleStage         ArtifactLifecycleStage
+  artifactKind           ArtifactKind
+  catalogItemId          String?                   @db.VarChar(36)
+  configItemType         ConfigItemType
+  libraryType            LibraryType               @default(WORK)
+  name                   String
+  description            String                    @db.Text
+  required               Boolean                   @default(true)
+  requiresQaApproval     Boolean                   @default(true)
+  responsibleRoleId      String?                   @db.VarChar(36)
+  sortOrder              Int                       @default(0)
+  active                 Boolean                   @default(true)
+  createdAt              DateTime                  @default(now())
+  updatedAt              DateTime                  @updatedAt
+
+  catalogItem      ConfigurationItemCatalog? @relation(fields: [catalogItemId], references: [id])
+  responsibleRole  Role?                     @relation("ArtifactRequirementResponsibleRole", fields: [responsibleRoleId], references: [id])
+  workItemRequirements WorkItemArtifactRequirement[]
+
+  @@unique([methodologyType, lifecycleStage, artifactKind, name])
+  @@index([methodologyType, lifecycleStage, sortOrder])
+  @@map("methodology_artifact_requirements")
+}
+
+model ProjectSetupTemplate {
+  id                  String           @id @default(uuid()) @db.VarChar(36)
+  name                String
+  description         String?          @db.Text
+  methodologyType     MethodologyType
+  methodologyNotes    String?          @db.Text
+  plannedDurationDays Int?
+  status              TemplateStatus   @default(ACTIVE)
+  sourceProjectId     String?          @db.VarChar(36)
+  createdById         String?          @db.VarChar(36)
+  updatedById         String?          @db.VarChar(36)
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+
+  sourceProject Project? @relation("ProjectTemplateSource", fields: [sourceProjectId], references: [id])
+  createdBy     User?    @relation("SetupTemplateCreator", fields: [createdById], references: [id])
+  updatedBy     User?    @relation("SetupTemplateUpdater", fields: [updatedById], references: [id])
+  appliedProjects Project[] @relation("ProjectAppliedTemplate")
+  phases        ProjectSetupTemplatePhase[]
+  activities    ProjectSetupTemplateActivity[]
+  configItems   ProjectSetupTemplateConfigItem[]
+  members       ProjectSetupTemplateMember[]
+
+  @@unique([name])
+  @@index([methodologyType, status])
+  @@map("project_setup_templates")
+}
+
+model ProjectSetupTemplatePhase {
+  id                   String                 @id @default(uuid()) @db.VarChar(36)
+  templateId           String                 @db.VarChar(36)
+  name                 String
+  methodologyType      MethodologyType
+  sortOrder            Int                    @default(0)
+  startOffsetDays      Int                    @default(0)
+  durationDays         Int                    @default(1)
+  ownerRoleId          String?                @db.VarChar(36)
+  requiredDeliverables String                 @db.Text
+  acceptanceCriteria   String?                @db.Text
+  status               MethodologyPhaseStatus @default(PENDING)
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+
+  template       ProjectSetupTemplate @relation(fields: [templateId], references: [id])
+  ownerRole      Role?                @relation("TemplatePhaseOwnerRole", fields: [ownerRoleId], references: [id])
+  activities     ProjectSetupTemplateActivity[]
+  appliedPhases  MethodologyPhase[]   @relation("TemplatePhaseApplications")
+
+  @@unique([templateId, name])
+  @@index([templateId, sortOrder])
+  @@map("project_setup_template_phases")
+}
+
+model ProjectSetupTemplateActivity {
+  id                 String                @id @default(uuid()) @db.VarChar(36)
+  templateId         String                @db.VarChar(36)
+  phaseId            String?               @db.VarChar(36)
+  title              String
+  description        String?               @db.Text
+  startOffsetDays    Int                   @default(0)
+  durationDays       Int                   @default(1)
+  responsibleRoleId  String?               @db.VarChar(36)
+  deliverable        String                @db.Text
+  progress           Int                   @default(0)
+  status             ProjectActivityStatus @default(PLANNED)
+  createdAt          DateTime              @default(now())
+  updatedAt          DateTime              @updatedAt
+
+  template        ProjectSetupTemplate       @relation(fields: [templateId], references: [id])
+  phase           ProjectSetupTemplatePhase? @relation(fields: [phaseId], references: [id])
+  responsibleRole Role?                      @relation("TemplateActivityResponsibleRole", fields: [responsibleRoleId], references: [id])
+  appliedActivities ProjectActivity[]        @relation("TemplateActivityApplications")
+
+  @@index([templateId, startOffsetDays])
+  @@map("project_setup_template_activities")
+}
+
+model ProjectSetupTemplateConfigItem {
+  id                    String         @id @default(uuid()) @db.VarChar(36)
+  templateId            String         @db.VarChar(36)
+  catalogItemId         String?        @db.VarChar(36)
+  lifecycleStage        ArtifactLifecycleStage?
+  artifactKind          ArtifactKind?
+  code                  String
+  type                  ConfigItemType
+  name                  String
+  description           String         @db.Text
+  libraryType           LibraryType    @default(WORK)
+  defaultVersion        String         @default("1.0.0")
+  metadata              String?        @db.Text
+  responsibleRoleId     String?        @db.VarChar(36)
+  required              Boolean        @default(true)
+  selected              Boolean        @default(true)
+  sortOrder             Int            @default(0)
+  notes                 String?        @db.Text
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
+
+  template        ProjectSetupTemplate       @relation(fields: [templateId], references: [id])
+  catalogItem     ConfigurationItemCatalog?  @relation(fields: [catalogItemId], references: [id])
+  responsibleRole Role?                      @relation("TemplateConfigItemResponsibleRole", fields: [responsibleRoleId], references: [id])
+  projectPlans    ProjectConfigurationItemPlan[] @relation("TemplateConfigItemApplications")
+
+  @@unique([templateId, code])
+  @@index([templateId, sortOrder])
+  @@index([templateId, lifecycleStage, artifactKind])
+  @@map("project_setup_template_config_items")
+}
+
+model ProjectSetupTemplateMember {
+  id              String   @id @default(uuid()) @db.VarChar(36)
+  templateId      String   @db.VarChar(36)
+  roleId          String   @db.VarChar(36)
+  defaultUserId   String?  @db.VarChar(36)
+  roleNote        String?
+  allocationHours Int?
+  sortOrder       Int      @default(0)
+  active          Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  template    ProjectSetupTemplate @relation(fields: [templateId], references: [id])
+  role        Role                 @relation(fields: [roleId], references: [id])
+  defaultUser User?                @relation("TemplateMemberDefaultUser", fields: [defaultUserId], references: [id])
+  projectUsers ProjectUser[]
+
+  @@unique([templateId, roleId])
+  @@index([templateId, sortOrder])
+  @@map("project_setup_template_members")
+}
+
+model Library {
+  id          String      @id @default(uuid()) @db.VarChar(36)
+  projectId   String      @db.VarChar(36)
+  type        LibraryType
+  name        String
+  description String?     @db.Text
+  active      Boolean     @default(true)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  project       Project             @relation(fields: [projectId], references: [id])
+  items         ConfigurationItem[]
+  fromTransfers LibraryTransfer[]   @relation("TransferFromLibrary")
+  toTransfers   LibraryTransfer[]   @relation("TransferToLibrary")
+
+  @@unique([projectId, type])
+  @@map("libraries")
+}
+
+model ConfigurationItem {
+  id             String           @id @default(uuid()) @db.VarChar(36)
+  code           String           @unique
+  projectId      String           @db.VarChar(36)
+  libraryId      String           @db.VarChar(36)
+  type           ConfigItemType
+  name           String
+  description    String           @db.Text
+  currentVersion String
+  status         ConfigItemStatus @default(REGISTERED)
+  metadata       String?          @db.Text
+  storagePath    String?
+  sha256Hash     String?          @db.Char(64)
+  responsibleId  String           @db.VarChar(36)
+  active         Boolean          @default(true)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  project            Project                    @relation(fields: [projectId], references: [id])
+  library            Library                    @relation(fields: [libraryId], references: [id])
+  responsible        User                       @relation("ItemResponsible", fields: [responsibleId], references: [id])
+  versions           ConfigurationItemVersion[]
+  locks              ConfigurationItemLock[]
+  libraryTransfers   LibraryTransfer[]
+  baselineItems      BaselineItem[]
+  incidents          Incident[]                 @relation("IncidentAffectedItem")
+  changeRequestItems ChangeRequestItem[]
+  artifactVersions   WorkItemArtifactVersion[]
+  defects            Defect[]
+  integrityAlerts    IntegrityAlert[]
+
+  @@index([projectId, libraryId])
+  @@map("configuration_items")
+}
+
+model ConfigurationItemVersion {
+  id              String        @id @default(uuid()) @db.VarChar(36)
+  itemId          String        @db.VarChar(36)
+  version         String
+  storagePath     String
+  sha256Hash      String        @db.Char(64)
+  comment         String        @db.Text
+  status          VersionStatus @default(CHECKED_IN)
+  createdById     String        @db.VarChar(36)
+  changeRequestId String?       @db.VarChar(36)
+  changeOrderId   String?       @db.VarChar(36)
+  gitBranch       String?
+  gitCommit       String?
+  gitPushRef      String?
+  createdAt       DateTime      @default(now())
+
+  item          ConfigurationItem @relation(fields: [itemId], references: [id])
+  createdBy     User              @relation("ItemVersionCreator", fields: [createdById], references: [id])
+  changeRequest ChangeRequest?    @relation(fields: [changeRequestId], references: [id])
+  changeOrder   ChangeOrder?      @relation(fields: [changeOrderId], references: [id])
+  baselineItems BaselineItem[]
+  unitTests     UnitTest[]
+  artifactVersions WorkItemArtifactVersion[]
+  defects       Defect[]
+
+  @@unique([itemId, version])
+  @@map("configuration_item_versions")
+}
+
+model ConfigurationItemLock {
+  id          String     @id @default(uuid()) @db.VarChar(36)
+  itemId      String     @db.VarChar(36)
+  userId      String     @db.VarChar(36)
+  status      LockStatus @default(ACTIVE)
+  reason      String?    @db.Text
+  lockedAt    DateTime   @default(now())
+  unlockedAt  DateTime?
+  forcedById  String?    @db.VarChar(36)
+  forceReason String?    @db.Text
+
+  item     ConfigurationItem @relation(fields: [itemId], references: [id])
+  user     User              @relation("LockUser", fields: [userId], references: [id])
+  forcedBy User?             @relation("ForceUnlockUser", fields: [forcedById], references: [id])
+
+  @@index([itemId, status])
+  @@map("configuration_item_locks")
+}
+
+model LibraryTransfer {
+  id            String         @id @default(uuid()) @db.VarChar(36)
+  itemId        String         @db.VarChar(36)
+  fromLibraryId String         @db.VarChar(36)
+  toLibraryId   String         @db.VarChar(36)
+  userId        String         @db.VarChar(36)
+  reason        String         @db.Text
+  status        TransferStatus @default(PENDING)
+  createdAt     DateTime       @default(now())
+  completedAt   DateTime?
+
+  item        ConfigurationItem @relation(fields: [itemId], references: [id])
+  fromLibrary Library           @relation("TransferFromLibrary", fields: [fromLibraryId], references: [id])
+  toLibrary   Library           @relation("TransferToLibrary", fields: [toLibraryId], references: [id])
+  user        User              @relation("TransferUser", fields: [userId], references: [id])
+
+  @@map("library_transfers")
+}
+
+model Baseline {
+  id          String         @id @default(uuid()) @db.VarChar(36)
+  code        String         @unique
+  projectId   String         @db.VarChar(36)
+  name        String
+  description String?        @db.Text
+  milestone   String?
+  status      BaselineStatus @default(DRAFT)
+  createdById String         @db.VarChar(36)
+  frozenAt    DateTime?
+  createdAt   DateTime       @default(now())
+
+  project   Project        @relation(fields: [projectId], references: [id])
+  createdBy User           @relation("BaselineCreator", fields: [createdById], references: [id])
+  items     BaselineItem[]
+
+  @@map("baselines")
+}
+
+model BaselineItem {
+  id            String @id @default(uuid()) @db.VarChar(36)
+  baselineId    String @db.VarChar(36)
+  itemId        String @db.VarChar(36)
+  itemVersionId String @db.VarChar(36)
+  versionLabel  String
+
+  baseline    Baseline                 @relation(fields: [baselineId], references: [id])
+  item        ConfigurationItem        @relation(fields: [itemId], references: [id])
+  itemVersion ConfigurationItemVersion @relation(fields: [itemVersionId], references: [id])
+
+  @@unique([baselineId, itemId])
+  @@map("baseline_items")
+}
+
+model Incident {
+  id                String           @id @default(uuid()) @db.VarChar(36)
+  ticketId          String           @unique
+  projectId         String           @db.VarChar(36)
+  reportedById      String           @db.VarChar(36)
+  title             String
+  severity          IncidentSeverity
+  description       String           @db.Text
+  reproductionSteps String           @db.Text
+  affectedItemId    String?          @db.VarChar(36)
+  assignedToId      String?          @db.VarChar(36)
+  status            IncidentStatus   @default(OPEN)
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+
+  project              Project            @relation(fields: [projectId], references: [id])
+  reportedBy           User               @relation("IncidentReporter", fields: [reportedById], references: [id])
+  assignedTo           User?              @relation("IncidentAssignee", fields: [assignedToId], references: [id])
+  affectedItem         ConfigurationItem? @relation("IncidentAffectedItem", fields: [affectedItemId], references: [id])
+  derivedChangeRequest ChangeRequest?     @relation("IncidentOriginChange")
+
+  @@map("incidents")
+}
+
+model ChangeRequest {
+  id                     String              @id @default(uuid()) @db.VarChar(36)
+  ticketId               String              @unique
+  projectId              String              @db.VarChar(36)
+  requesterId            String              @db.VarChar(36)
+  title                  String
+  description            String              @db.Text
+  justification          String              @db.Text
+  type                   ChangeType
+  priority               ChangePriority
+  originIncidentId       String?             @unique @db.VarChar(36)
+  status                 ChangeRequestStatus @default(INITIAL_VALIDATION)
+  observations           String?             @db.Text
+  classificationCriteria String?             @db.Text
+  alignmentDecision      AlignmentDecision   @default(PENDING)
+  alignmentReason        String?             @db.Text
+  alignedById            String?             @db.VarChar(36)
+  formalRegisteredAt     DateTime?
+  createdAt              DateTime            @default(now())
+  updatedAt              DateTime            @updatedAt
+  closedAt               DateTime?
+
+  project           Project                    @relation(fields: [projectId], references: [id])
+  requester         User                       @relation("ChangeRequester", fields: [requesterId], references: [id])
+  alignedBy         User?                      @relation("ChangeAlignedBy", fields: [alignedById], references: [id])
+  originIncident    Incident?                  @relation("IncidentOriginChange", fields: [originIncidentId], references: [id])
+  affectedItems     ChangeRequestItem[]
+  versions          ConfigurationItemVersion[]
+  impactAssessment  ImpactAssessment?
+  technicalApproval TechnicalApproval?
+  ccbReviews        CcbReview[]
+  changeOrder       ChangeOrder?
+  uatTests          UatTest[]
+  acceptanceRecords AcceptanceRecord[]
+  releases          Release[]
+  workItems         WorkItem[]
+  artifactVersions  WorkItemArtifactVersion[]
+
+  @@map("change_requests")
+}
+
+model ChangeRequestItem {
+  id              String  @id @default(uuid()) @db.VarChar(36)
+  changeRequestId String  @db.VarChar(36)
+  itemId          String  @db.VarChar(36)
+  relationNote    String?
+
+  changeRequest ChangeRequest     @relation(fields: [changeRequestId], references: [id])
+  item          ConfigurationItem @relation(fields: [itemId], references: [id])
+
+  @@unique([changeRequestId, itemId])
+  @@map("change_request_items")
+}
+
+model ImpactAssessment {
+  id                  String      @id @default(uuid()) @db.VarChar(36)
+  changeRequestId     String      @unique @db.VarChar(36)
+  costEstimated       Decimal     @db.Decimal(12, 2)
+  timeEstimatedHours  Int
+  risks               String      @db.Text
+  requiredResources   String      @db.Text
+  technicalImpact     String      @db.Text
+  functionalImpact    String      @db.Text
+  affectedItemsImpact String      @db.Text
+  roi                 String      @db.Text
+  highImpact          Boolean     @default(false)
+  route               ImpactRoute
+  assessedById        String      @db.VarChar(36)
+  createdAt           DateTime    @default(now())
+
+  changeRequest ChangeRequest @relation(fields: [changeRequestId], references: [id])
+  assessedBy    User          @relation("ImpactAssessor", fields: [assessedById], references: [id])
+
+  @@map("impact_assessments")
+}
+
+model TechnicalApproval {
+  id              String           @id @default(uuid()) @db.VarChar(36)
+  changeRequestId String           @unique @db.VarChar(36)
+  reviewerId      String           @db.VarChar(36)
+  decision        ApprovalDecision @default(PENDING)
+  reason          String?          @db.Text
+  decidedAt       DateTime?
+  createdAt       DateTime         @default(now())
+
+  changeRequest ChangeRequest @relation(fields: [changeRequestId], references: [id])
+  reviewer      User          @relation("TechnicalReviewer", fields: [reviewerId], references: [id])
+
+  @@map("technical_approvals")
+}
+
+model CcbReview {
+  id              String           @id @default(uuid()) @db.VarChar(36)
+  changeRequestId String           @db.VarChar(36)
+  status          ApprovalDecision @default(PENDING)
+  summary         String?          @db.Text
+  scheduledAt     DateTime?
+  reviewedAt      DateTime?
+  createdAt       DateTime         @default(now())
+
+  changeRequest ChangeRequest  @relation(fields: [changeRequestId], references: [id])
+  votes         CcbVote[]
+  resolution    CcbResolution?
+
+  @@map("ccb_reviews")
+}
+
+model CcbVote {
+  id        String           @id @default(uuid()) @db.VarChar(36)
+  reviewId  String           @db.VarChar(36)
+  voterId   String           @db.VarChar(36)
+  decision  ApprovalDecision
+  comment   String?          @db.Text
+  createdAt DateTime         @default(now())
+
+  review CcbReview @relation(fields: [reviewId], references: [id])
+  voter  User      @relation(fields: [voterId], references: [id])
+
+  @@unique([reviewId, voterId])
+  @@map("ccb_votes")
+}
+
+model CcbResolution {
+  id         String           @id @default(uuid()) @db.VarChar(36)
+  reviewId   String           @unique @db.VarChar(36)
+  decision   ApprovalDecision
+  resolution String           @db.Text
+  issuedById String           @db.VarChar(36)
+  issuedAt   DateTime         @default(now())
+
+  review   CcbReview @relation(fields: [reviewId], references: [id])
+  issuedBy User      @relation("ResolutionIssuer", fields: [issuedById], references: [id])
+
+  @@map("ccb_resolutions")
+}
+
+model ChangeOrder {
+  id                String            @id @default(uuid()) @db.VarChar(36)
+  code              String            @unique
+  changeRequestId   String            @unique @db.VarChar(36)
+  projectId         String            @db.VarChar(36)
+  developerId       String?           @db.VarChar(36)
+  priority          ChangePriority
+  dueDate           DateTime?
+  estimatedHours    Int?
+  peopleResources   String            @db.Text
+  environment       String
+  status            ChangeOrderStatus @default(ASSIGNED)
+  gitBranch         String?
+  gitCommit         String?
+  gitPushRef        String?
+  integrationBranch String?
+  integrationCommit String?
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+
+  changeRequest ChangeRequest              @relation(fields: [changeRequestId], references: [id])
+  project       Project                    @relation(fields: [projectId], references: [id])
+  developer     User?                      @relation("OrderDeveloper", fields: [developerId], references: [id])
+  assignments   ChangeOrderAssignment[]
+  versions      ConfigurationItemVersion[]
+  unitTests     UnitTest[]
+  qaTests       QaTest[]
+  defects       Defect[]
+  uatTests      UatTest[]
+  releases      Release[]
+  workItems     WorkItem[]
+  artifactVersions WorkItemArtifactVersion[]
+  dailyWorkLogs DailyWorkLog[]
+
+  @@map("change_orders")
+}
+
+model MethodologyPhase {
+  id                   String                 @id @default(uuid()) @db.VarChar(36)
+  projectId            String                 @db.VarChar(36)
+  sourceTemplatePhaseId String?               @db.VarChar(36)
+  name                 String
+  methodologyType      MethodologyType
+  sortOrder            Int                    @default(0)
+  startDate            DateTime?
+  endDate              DateTime?
+  ownerId              String?                @db.VarChar(36)
+  requiredDeliverables String                 @db.Text
+  acceptanceCriteria   String?                @db.Text
+  status               MethodologyPhaseStatus @default(PENDING)
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+
+  project    Project           @relation(fields: [projectId], references: [id])
+  sourceTemplatePhase ProjectSetupTemplatePhase? @relation("TemplatePhaseApplications", fields: [sourceTemplatePhaseId], references: [id])
+  owner      User?             @relation("MethodologyPhaseOwner", fields: [ownerId], references: [id])
+  activities ProjectActivity[]
+
+  @@index([projectId, sortOrder])
+  @@index([sourceTemplatePhaseId])
+  @@map("methodology_phases")
+}
+
+model ProjectActivity {
+  id            String                @id @default(uuid()) @db.VarChar(36)
+  projectId     String                @db.VarChar(36)
+  phaseId       String?               @db.VarChar(36)
+  sourceTemplateActivityId String?    @db.VarChar(36)
+  title         String
+  description   String?               @db.Text
+  startDate     DateTime
+  endDate       DateTime
+  responsibleId String                 @db.VarChar(36)
+  deliverable   String                @db.Text
+  progress      Int                   @default(0)
+  status        ProjectActivityStatus @default(PLANNED)
+  createdAt     DateTime              @default(now())
+  updatedAt     DateTime              @updatedAt
+
+  project      Project           @relation(fields: [projectId], references: [id])
+  phase        MethodologyPhase? @relation(fields: [phaseId], references: [id])
+  sourceTemplateActivity ProjectSetupTemplateActivity? @relation("TemplateActivityApplications", fields: [sourceTemplateActivityId], references: [id])
+  responsible  User              @relation("ActivityResponsible", fields: [responsibleId], references: [id])
+  workItems    WorkItem[]
+  dailyWorkLogs DailyWorkLog[]
+
+  @@index([projectId, startDate, endDate])
+  @@index([sourceTemplateActivityId])
+  @@map("project_activities")
+}
+
+model ProjectSprint {
+  id            String   @id @default(uuid()) @db.VarChar(36)
+  projectId     String   @db.VarChar(36)
+  name          String
+  goal          String?  @db.Text
+  startDate     DateTime
+  endDate       DateTime
+  capacityHours Int?
+  active        Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  project   Project    @relation(fields: [projectId], references: [id])
+  workItems WorkItem[]
+
+  @@index([projectId, startDate, endDate])
+  @@map("project_sprints")
+}
+
+model WorkItem {
+  id                   String       @id @default(uuid()) @db.VarChar(36)
+  code                 String       @unique
+  projectId            String       @db.VarChar(36)
+  type                 WorkItemType
+  state                WorkItemState @default(NEW)
+  lifecycleStage       ArtifactLifecycleStage @default(ANALYSIS)
+  title                String
+  description          String       @db.Text
+  priority             ChangePriority @default(MEDIUM)
+  storyPoints          Int?
+  createdById          String       @db.VarChar(36)
+  assignedToId         String?      @db.VarChar(36)
+  sprintId             String?      @db.VarChar(36)
+  activityId           String?      @db.VarChar(36)
+  changeRequestId      String?      @db.VarChar(36)
+  changeOrderId        String?      @db.VarChar(36)
+  githubBranch         String?
+  githubCommit         String?
+  githubPullRequestUrl String?
+  githubIssueUrl       String?
+  dueDate              DateTime?
+  analysisSummary      String?      @db.Text
+  designSummary        String?      @db.Text
+  analysisCompletedAt  DateTime?
+  designCompletedAt    DateTime?
+  closedAt             DateTime?
+  createdAt            DateTime     @default(now())
+  updatedAt            DateTime     @updatedAt
+
+  project       Project           @relation(fields: [projectId], references: [id])
+  createdBy     User              @relation("WorkItemCreator", fields: [createdById], references: [id])
+  assignedTo    User?             @relation("WorkItemAssignee", fields: [assignedToId], references: [id])
+  sprint        ProjectSprint?    @relation(fields: [sprintId], references: [id])
+  activity      ProjectActivity?  @relation(fields: [activityId], references: [id])
+  changeRequest ChangeRequest?    @relation(fields: [changeRequestId], references: [id])
+  changeOrder   ChangeOrder?      @relation(fields: [changeOrderId], references: [id])
+  outgoingLinks WorkItemLink[]    @relation("WorkItemSourceLinks")
+  incomingLinks WorkItemLink[]    @relation("WorkItemTargetLinks")
+  artifactRequirements WorkItemArtifactRequirement[]
+  artifactVersions WorkItemArtifactVersion[]
+  dailyWorkLogs DailyWorkLog[]
+
+  @@index([projectId, state, type])
+  @@index([projectId, lifecycleStage])
+  @@map("work_items")
+}
+
+model WorkItemArtifactRequirement {
+  id                    String                    @id @default(uuid()) @db.VarChar(36)
+  workItemId            String                    @db.VarChar(36)
+  sourceRequirementId   String?                   @db.VarChar(36)
+  lifecycleStage        ArtifactLifecycleStage
+  artifactKind          ArtifactKind
+  configItemType        ConfigItemType
+  libraryType           LibraryType               @default(WORK)
+  name                  String
+  description           String                    @db.Text
+  required              Boolean                   @default(true)
+  requiresQaApproval    Boolean                   @default(true)
+  status                ArtifactRequirementStatus @default(PENDING)
+  reviewedById          String?                   @db.VarChar(36)
+  reviewedAt            DateTime?
+  reviewNotes           String?                   @db.Text
+  sortOrder             Int                       @default(0)
+  createdAt             DateTime                  @default(now())
+  updatedAt             DateTime                  @updatedAt
+
+  workItem          WorkItem                       @relation(fields: [workItemId], references: [id])
+  sourceRequirement MethodologyArtifactRequirement? @relation(fields: [sourceRequirementId], references: [id])
+  reviewedBy        User?                          @relation("ArtifactRequirementReviewer", fields: [reviewedById], references: [id])
+  versions          WorkItemArtifactVersion[]
+
+  @@unique([workItemId, sourceRequirementId])
+  @@index([workItemId, lifecycleStage, status])
+  @@index([reviewedById])
+  @@map("work_item_artifact_requirements")
+}
+
+model WorkItemArtifactVersion {
+  id                    String                 @id @default(uuid()) @db.VarChar(36)
+  workItemId            String                 @db.VarChar(36)
+  artifactRequirementId String?                @db.VarChar(36)
+  itemId                String                 @db.VarChar(36)
+  itemVersionId         String                 @db.VarChar(36)
+  changeRequestId       String?                @db.VarChar(36)
+  changeOrderId         String?                @db.VarChar(36)
+  lifecycleStage        ArtifactLifecycleStage
+  artifactKind          ArtifactKind
+  submittedById         String                 @db.VarChar(36)
+  submittedAt           DateTime               @default(now())
+  notes                 String?                @db.Text
+
+  workItem            WorkItem                     @relation(fields: [workItemId], references: [id])
+  artifactRequirement WorkItemArtifactRequirement? @relation(fields: [artifactRequirementId], references: [id])
+  item                ConfigurationItem            @relation(fields: [itemId], references: [id])
+  itemVersion         ConfigurationItemVersion     @relation(fields: [itemVersionId], references: [id])
+  changeRequest       ChangeRequest?               @relation(fields: [changeRequestId], references: [id])
+  changeOrder         ChangeOrder?                 @relation(fields: [changeOrderId], references: [id])
+  submittedBy         User                         @relation("ArtifactVersionSubmitter", fields: [submittedById], references: [id])
+
+  @@unique([artifactRequirementId, itemVersionId])
+  @@index([workItemId, lifecycleStage, artifactKind])
+  @@index([changeOrderId])
+  @@index([itemVersionId])
+  @@map("work_item_artifact_versions")
+}
+
+model WorkItemLink {
+  id               String           @id @default(uuid()) @db.VarChar(36)
+  sourceWorkItemId String           @db.VarChar(36)
+  targetWorkItemId String?          @db.VarChar(36)
+  linkType         WorkItemLinkType
+  targetUrl        String?
+  externalId       String?
+  note             String?          @db.Text
+  createdById      String?          @db.VarChar(36)
+  createdAt        DateTime         @default(now())
+
+  sourceWorkItem WorkItem  @relation("WorkItemSourceLinks", fields: [sourceWorkItemId], references: [id])
+  targetWorkItem WorkItem? @relation("WorkItemTargetLinks", fields: [targetWorkItemId], references: [id])
+  createdBy      User?     @relation("WorkItemLinkCreator", fields: [createdById], references: [id])
+
+  @@index([sourceWorkItemId, linkType])
+  @@map("work_item_links")
+}
+
+model DailyWorkLog {
+  id                   String   @id @default(uuid()) @db.VarChar(36)
+  projectId            String   @db.VarChar(36)
+  userId               String   @db.VarChar(36)
+  workItemId           String?  @db.VarChar(36)
+  changeOrderId        String?  @db.VarChar(36)
+  activityId           String?  @db.VarChar(36)
+  logDate              DateTime
+  hours                Decimal  @db.Decimal(5, 2)
+  completed            String   @db.Text
+  nextPlan             String   @db.Text
+  blockers             String?  @db.Text
+  githubBranch         String?
+  githubCommit         String?
+  githubPullRequestUrl String?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  project     Project          @relation(fields: [projectId], references: [id])
+  user        User             @relation(fields: [userId], references: [id])
+  workItem    WorkItem?        @relation(fields: [workItemId], references: [id])
+  changeOrder ChangeOrder?     @relation(fields: [changeOrderId], references: [id])
+  activity    ProjectActivity? @relation(fields: [activityId], references: [id])
+
+  @@index([projectId, logDate])
+  @@index([userId, logDate])
+  @@map("daily_work_logs")
+}
+
+model ChangeOrderAssignment {
+  id            String   @id @default(uuid()) @db.VarChar(36)
+  changeOrderId String   @db.VarChar(36)
+  userId        String   @db.VarChar(36)
+  roleInOrder   String
+  hoursAssigned Int?
+  createdAt     DateTime @default(now())
+
+  changeOrder ChangeOrder @relation(fields: [changeOrderId], references: [id])
+  user        User        @relation(fields: [userId], references: [id])
+
+  @@unique([changeOrderId, userId])
+  @@map("change_order_assignments")
+}
+
+model UnitTest {
+  id            String     @id @default(uuid()) @db.VarChar(36)
+  changeOrderId String     @db.VarChar(36)
+  itemVersionId String?    @db.VarChar(36)
+  executedById  String     @db.VarChar(36)
+  result        TestResult @default(PENDING)
+  errors        String?    @db.Text
+  notes         String?    @db.Text
+  executedAt    DateTime   @default(now())
+
+  changeOrder ChangeOrder               @relation(fields: [changeOrderId], references: [id])
+  itemVersion ConfigurationItemVersion? @relation(fields: [itemVersionId], references: [id])
+  executedBy  User                      @relation("UnitTestExecutor", fields: [executedById], references: [id])
+
+  @@map("unit_tests")
+}
+
+model QaTest {
+  id            String     @id @default(uuid()) @db.VarChar(36)
+  changeOrderId String     @db.VarChar(36)
+  executedById  String     @db.VarChar(36)
+  type          QaTestType
+  result        TestResult @default(PENDING)
+  notes         String?    @db.Text
+  executedAt    DateTime   @default(now())
+
+  changeOrder ChangeOrder @relation(fields: [changeOrderId], references: [id])
+  executedBy  User        @relation("QaTestExecutor", fields: [executedById], references: [id])
+  defects     Defect[]
+
+  @@map("qa_tests")
+}
+
+model Defect {
+  id            String           @id @default(uuid()) @db.VarChar(36)
+  code          String           @unique
+  qaTestId      String?          @db.VarChar(36)
+  changeOrderId String           @db.VarChar(36)
+  itemId        String?          @db.VarChar(36)
+  itemVersionId String?          @db.VarChar(36)
+  severity      IncidentSeverity
+  description   String           @db.Text
+  responsibleId String?          @db.VarChar(36)
+  status        DefectStatus     @default(OPEN)
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  qaTest      QaTest?                   @relation(fields: [qaTestId], references: [id])
+  changeOrder ChangeOrder               @relation(fields: [changeOrderId], references: [id])
+  item        ConfigurationItem?        @relation(fields: [itemId], references: [id])
+  itemVersion ConfigurationItemVersion? @relation(fields: [itemVersionId], references: [id])
+  responsible User?                     @relation("DefectResponsible", fields: [responsibleId], references: [id])
+
+  @@map("defects")
+}
+
+model UatTest {
+  id              String    @id @default(uuid()) @db.VarChar(36)
+  changeRequestId String    @db.VarChar(36)
+  changeOrderId   String?   @db.VarChar(36)
+  executedById    String    @db.VarChar(36)
+  result          UatResult @default(PENDING)
+  observations    String?   @db.Text
+  executedAt      DateTime  @default(now())
+
+  changeRequest ChangeRequest     @relation(fields: [changeRequestId], references: [id])
+  changeOrder   ChangeOrder?      @relation(fields: [changeOrderId], references: [id])
+  executedBy    User              @relation("UatExecutor", fields: [executedById], references: [id])
+  acceptance    AcceptanceRecord?
+
+  @@map("uat_tests")
+}
+
+model AcceptanceRecord {
+  id              String   @id @default(uuid()) @db.VarChar(36)
+  changeRequestId String   @db.VarChar(36)
+  uatTestId       String   @unique @db.VarChar(36)
+  signedById      String   @db.VarChar(36)
+  documentPath    String
+  sha256Hash      String   @db.Char(64)
+  signedAt        DateTime @default(now())
+
+  changeRequest ChangeRequest @relation(fields: [changeRequestId], references: [id])
+  uatTest       UatTest       @relation(fields: [uatTestId], references: [id])
+  signedBy      User          @relation("AcceptanceSigner", fields: [signedById], references: [id])
+
+  @@map("acceptance_records")
+}
+
+model Release {
+  id              String        @id @default(uuid()) @db.VarChar(36)
+  projectId       String        @db.VarChar(36)
+  changeRequestId String?       @db.VarChar(36)
+  changeOrderId   String?       @db.VarChar(36)
+  version         String
+  semver          String
+  environment     String
+  status          ReleaseStatus @default(PENDING_SIGNAL)
+  responsibleId   String        @db.VarChar(36)
+  result          String?       @db.Text
+  targetBranch    String?
+  mergeCommit     String?
+  tagName         String?
+  approvedAt      DateTime?
+  releasedAt      DateTime?
+  createdAt       DateTime      @default(now())
+
+  project       Project        @relation(fields: [projectId], references: [id])
+  changeRequest ChangeRequest? @relation(fields: [changeRequestId], references: [id])
+  changeOrder   ChangeOrder?   @relation(fields: [changeOrderId], references: [id])
+  responsible   User           @relation("ReleaseResponsible", fields: [responsibleId], references: [id])
+  logs          ReleaseLog[]
+
+  @@map("releases")
+}
+
+model ReleaseLog {
+  id          String   @id @default(uuid()) @db.VarChar(36)
+  releaseId   String   @db.VarChar(36)
+  level       String
+  message     String   @db.Text
+  createdById String?  @db.VarChar(36)
+  createdAt   DateTime @default(now())
+
+  release   Release @relation(fields: [releaseId], references: [id])
+  createdBy User?   @relation("ReleaseLogUser", fields: [createdById], references: [id])
+
+  @@map("release_logs")
+}
+
+model Notification {
+  id        String           @id @default(uuid()) @db.VarChar(36)
+  userId    String           @db.VarChar(36)
+  title     String
+  message   String           @db.Text
+  type      NotificationType @default(INFO)
+  link      String?
+  readAt    DateTime?
+  createdAt DateTime         @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("notifications")
+}
+
+model AuditLog {
+  id             String   @id @default(uuid()) @db.VarChar(36)
+  userId         String?  @db.VarChar(36)
+  module         String
+  action         String
+  ip             String?
+  previousDetail String?  @db.Text
+  newDetail      String?  @db.Text
+  createdAt      DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id])
+
+  @@index([module, action])
+  @@map("audit_logs")
+}
+
+model IntegrityAlert {
+  id           String               @id @default(uuid()) @db.VarChar(36)
+  projectId    String?              @db.VarChar(36)
+  itemId       String?              @db.VarChar(36)
+  expectedHash String               @db.Char(64)
+  actualHash   String               @db.Char(64)
+  detail       String               @db.Text
+  status       IntegrityAlertStatus @default(OPEN)
+  createdAt    DateTime             @default(now())
+  resolvedAt   DateTime?
+
+  project Project?           @relation(fields: [projectId], references: [id])
+  item    ConfigurationItem? @relation(fields: [itemId], references: [id])
+
+  @@map("integrity_alerts")
+}
+
+model TraceabilityLink {
+  id           String   @id @default(uuid()) @db.VarChar(36)
+  projectId    String   @db.VarChar(36)
+  sourceType   String
+  sourceId     String
+  targetType   String
+  targetId     String
+  relationType String
+  createdById  String?  @db.VarChar(36)
+  createdAt    DateTime @default(now())
+
+  project   Project @relation(fields: [projectId], references: [id])
+  createdBy User?   @relation("TraceabilityCreator", fields: [createdById], references: [id])
+
+  @@index([sourceType, sourceId])
+  @@index([targetType, targetId])
+  @@map("traceability_links")
+}
+
+model Attachment {
+  id           String           @id @default(uuid()) @db.VarChar(36)
+  projectId    String           @db.VarChar(36)
+  ownerType    String
+  ownerId      String
+  fileName     String
+  mimeType     String?
+  storagePath  String
+  sha256Hash   String           @db.Char(64)
+  version      String?
+  status       AttachmentStatus @default(ACTIVE)
+  uploadedById String           @db.VarChar(36)
+  createdAt    DateTime         @default(now())
+
+  project    Project @relation(fields: [projectId], references: [id])
+  uploadedBy User    @relation("AttachmentUploader", fields: [uploadedById], references: [id])
+
+  @@index([ownerType, ownerId])
+  @@map("attachments")
+}

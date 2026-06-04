@@ -1,0 +1,36 @@
+- generic [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e6]:
+        - img [ref=e8]
+        - heading "SGCSW" [level=1] [ref=e11]
+        - paragraph [ref=e12]: Acceso seguro al flujo de gestion de configuracion, cambios, auditoria e integridad.
+        - generic [ref=e13]:
+          - generic [ref=e14]: RBAC
+          - generic [ref=e15]: SHA-256
+          - generic [ref=e16]: GitFlow
+          - generic [ref=e17]: Auditoria
+      - generic [ref=e18]:
+        - generic [ref=e19]:
+          - heading "Login" [level=2] [ref=e20]
+          - paragraph [ref=e21]: Ingrese con un usuario activo del seed o de administracion.
+        - generic [ref=e22]:
+          - text: Email
+          - textbox "Email" [ref=e23]:
+            - /placeholder: admin@sgcsw.local
+            - text: ccb@gmail.com
+        - generic [ref=e24]:
+          - text: Contrasena
+          - textbox "Contrasena" [ref=e25]:
+            - /placeholder: Sgcsw2026!
+            - text: carlosdaniel
+        - button "Ingresar" [active] [ref=e26] [cursor=pointer]
+        - generic [ref=e27]: "Seed: admin@sgcsw.local, solicitante@sgcsw.local, jefe@sgcsw.local, lider@sgcsw.local, ccb@sgcsw.local, bibliotecario@sgcsw.local, dev@sgcsw.local, qa@sgcsw.local. Password: Sgcsw2026!"
+  - button "Open Next.js Dev Tools" [ref=e38] [cursor=pointer]:
+    - generic [ref=e41]:
+      - text: Rendering
+      - generic [ref=e42]:
+        - generic [ref=e43]: .
+        - generic [ref=e44]: .
+        - generic [ref=e45]: .
+  - alert [ref=e37]

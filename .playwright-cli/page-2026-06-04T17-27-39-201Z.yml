@@ -1,0 +1,149 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]: SGCSW
+        - generic [ref=e6]: Sistema de Gestion de Configuracion
+      - navigation [ref=e7]:
+        - generic [ref=e8]:
+          - generic [ref=e9]: Operacion
+          - link "Mi Panel de Trabajo" [ref=e11] [cursor=pointer]:
+            - /url: /dashboard
+            - img [ref=e12]
+            - generic [ref=e17]: Mi Panel de Trabajo
+        - generic [ref=e18]:
+          - generic [ref=e19]: Boards
+          - generic [ref=e20]:
+            - link "Backlog" [ref=e21] [cursor=pointer]:
+              - /url: /boards/backlog
+              - img [ref=e22]
+              - generic [ref=e25]: Backlog
+            - link "Sprints" [ref=e26] [cursor=pointer]:
+              - /url: /boards/sprints
+              - img [ref=e27]
+              - generic [ref=e29]: Sprints
+            - link "Metodologia" [ref=e30] [cursor=pointer]:
+              - /url: /boards/metodologia
+              - img [ref=e31]
+              - generic [ref=e36]: Metodologia
+            - link "Reportes diarios" [ref=e37] [cursor=pointer]:
+              - /url: /boards/reportes-diarios
+              - img [ref=e38]
+              - generic [ref=e43]: Reportes diarios
+        - generic [ref=e44]:
+          - generic [ref=e45]: Administracion
+          - link "Proyectos" [ref=e47] [cursor=pointer]:
+            - /url: /admin/proyectos
+            - img [ref=e48]
+            - generic [ref=e58]: Proyectos
+        - generic [ref=e59]:
+          - generic [ref=e60]: Integraciones
+          - link "GitHub" [ref=e62] [cursor=pointer]:
+            - /url: /github/workspace
+            - img [ref=e63]
+            - generic [ref=e67]: GitHub
+        - generic [ref=e68]:
+          - generic [ref=e69]: Configuracion
+          - link "Trazabilidad" [ref=e71] [cursor=pointer]:
+            - /url: /configuracion/trazabilidad
+            - img [ref=e72]
+            - generic [ref=e77]: Trazabilidad
+        - generic [ref=e78]:
+          - generic [ref=e79]: Cambios
+          - generic [ref=e80]:
+            - link "Solicitudes" [ref=e81] [cursor=pointer]:
+              - /url: /cambios/solicitudes
+              - img [ref=e82]
+              - generic [ref=e85]: Solicitudes
+            - link "Evaluacion de impacto" [ref=e86] [cursor=pointer]:
+              - /url: /cambios/evaluacion-impacto
+              - img [ref=e87]
+              - generic [ref=e91]: Evaluacion de impacto
+            - link "Ordenes de cambio" [ref=e92] [cursor=pointer]:
+              - /url: /cambios/ordenes
+              - img [ref=e93]
+              - generic [ref=e97]: Ordenes de cambio
+        - generic [ref=e98]:
+          - generic [ref=e99]: Reportes
+          - link "Reportes" [ref=e101] [cursor=pointer]:
+            - /url: /reportes
+            - img [ref=e102]
+            - generic [ref=e105]: Reportes
+      - generic [ref=e106]:
+        - generic [ref=e107]: Director / Jefe de Proyecto
+        - generic [ref=e108]: MANUAL-001 - Portal SGCSW Manual
+        - generic [ref=e109]: jefeproyecto@gmail.com
+    - main [ref=e110]:
+      - generic [ref=e112]:
+        - generic [ref=e113]:
+          - generic [ref=e114]: Jefe de Proyecto Demo
+          - generic [ref=e115]: Director / Jefe de Proyecto en MANUAL-001
+        - generic [ref=e116]:
+          - link "Cambiar proyecto" [ref=e117] [cursor=pointer]:
+            - /url: /seleccionar-proyecto
+            - img [ref=e118]
+            - text: Cambiar proyecto
+          - button "Salir" [ref=e129] [cursor=pointer]:
+            - img [ref=e130]
+            - text: Salir
+      - generic [ref=e133]:
+        - generic [ref=e135]:
+          - heading "Evaluacion de impacto" [level=1] [ref=e136]
+          - paragraph [ref=e137]: Costo, ROI, riesgo, recursos y ruta de aprobacion
+        - generic [ref=e138]:
+          - generic [ref=e139]:
+            - heading "Registrar evaluacion" [level=2] [ref=e141]
+            - generic [ref=e142]:
+              - generic [ref=e143]:
+                - generic [ref=e144]: Solicitud clasificada *
+                - combobox "Solicitud clasificada *" [ref=e145]:
+                  - option "Seleccionar"
+                  - option "SC-0001 - Implementar autenticacion MFA con documentacion RUP" [selected]
+              - generic [ref=e146]:
+                - generic [ref=e147]:
+                  - generic [ref=e148]: Costo estimado *
+                  - spinbutton "Costo estimado *" [ref=e149]: "1200"
+                - generic [ref=e150]:
+                  - generic [ref=e151]: Horas estimadas *
+                  - spinbutton "Horas estimadas *" [ref=e152]: "32"
+              - generic [ref=e153]:
+                - checkbox "Alto impacto" [checked] [ref=e154]
+                - text: Alto impacto
+              - generic [ref=e155]:
+                - generic [ref=e156]: Riesgos *
+                - textbox "Riesgos *" [ref=e157]: Riesgo medio por tocar autenticacion y sesiones; requiere pruebas de regresion.
+              - generic [ref=e158]:
+                - generic [ref=e159]: Recursos necesarios *
+                - textbox "Recursos necesarios *" [ref=e160]: Jefe, lider tecnico, desarrollador, QA y bibliotecario de configuracion.
+              - generic [ref=e161]:
+                - generic [ref=e162]: Impacto tecnico *
+                - textbox "Impacto tecnico *" [ref=e163]: Cambios en login, modelo de usuario, manejo de tokens MFA y documentacion de arquitectura.
+              - generic [ref=e164]:
+                - generic [ref=e165]: Impacto funcional *
+                - textbox "Impacto funcional *" [ref=e166]: El usuario final debera registrar y validar un segundo factor al iniciar sesion.
+              - generic [ref=e167]:
+                - generic [ref=e168]: ECS afectados *
+                - textbox "ECS afectados *" [ref=e169]: SRS, casos de uso, diagramas UML, modulo auth, pruebas unitarias y evidencias QA.
+              - generic [ref=e170]:
+                - generic [ref=e171]: Beneficio o ROI *
+                - textbox "Beneficio o ROI *" [ref=e172]: Disminuye accesos no autorizados y aumenta cumplimiento de seguridad.
+              - button "Derivar aprobacion" [active] [ref=e173] [cursor=pointer]
+          - generic [ref=e174]:
+            - heading "Evaluaciones" [level=2] [ref=e176]
+            - table [ref=e178]:
+              - rowgroup [ref=e179]:
+                - row "Solicitud Costo Horas Ruta Alto impacto" [ref=e180]:
+                  - columnheader "Solicitud" [ref=e181]
+                  - columnheader "Costo" [ref=e182]
+                  - columnheader "Horas" [ref=e183]
+                  - columnheader "Ruta" [ref=e184]
+                  - columnheader "Alto impacto" [ref=e185]
+              - rowgroup
+  - button "Open Next.js Dev Tools" [ref=e196] [cursor=pointer]:
+    - generic [ref=e199]:
+      - text: Rendering
+      - generic [ref=e200]:
+        - generic [ref=e201]: .
+        - generic [ref=e202]: .
+        - generic [ref=e203]: .
+  - alert [ref=e195]

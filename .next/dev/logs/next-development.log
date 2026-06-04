@@ -1,0 +1,59 @@
+{"timestamp":"00:00:00.995","source":"Server","level":"LOG","message":""}
+{"timestamp":"00:00:15.692","source":"Browser","level":"INFO","message":"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"}
+{"timestamp":"00:01:46.249","source":"Browser","level":"INFO","message":"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"}
+{"timestamp":"00:02:53.643","source":"Browser","level":"INFO","message":"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"}
+{"timestamp":"00:03:42.455","source":"Browser","level":"INFO","message":"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"}
+{"timestamp":"00:05:10.347","source":"Browser","level":"INFO","message":"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"}
+{"timestamp":"00:05:25.709","source":"Browser","level":"INFO","message":"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"}
+{"timestamp":"00:06:11.144","source":"Browser","level":"INFO","message":"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"}
+{"timestamp":"00:06:57.085","source":"Browser","level":"INFO","message":"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"}
+{"timestamp":"00:07:28.211","source":"Browser","level":"INFO","message":"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"}
+{"timestamp":"00:08:44.358","source":"Browser","level":"INFO","message":"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"}
+{"timestamp":"00:09:24.110","source":"Browser","level":"INFO","message":"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"}
+{"timestamp":"00:10:03.794","source":"Browser","level":"INFO","message":"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"}
+{"timestamp":"00:10:32.202","source":"Browser","level":"INFO","message":"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"}
+{"timestamp":"00:11:25.864","source":"Browser","level":"INFO","message":"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"}
+{"timestamp":"00:11:35.033","source":"Browser","level":"INFO","message":"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"}
+{"timestamp":"00:12:15.158","source":"Browser","level":"INFO","message":"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"}
+{"timestamp":"00:12:58.793","source":"Browser","level":"INFO","message":"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"}
+{"timestamp":"00:13:08.266","source":"Browser","level":"INFO","message":"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"}
+{"timestamp":"00:13:47.938","source":"Browser","level":"INFO","message":"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"}
+{"timestamp":"00:14:36.305","source":"Browser","level":"INFO","message":"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"}
+{"timestamp":"00:14:48.898","source":"Browser","level":"INFO","message":"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"}
+{"timestamp":"00:15:47.518","source":"Browser","level":"INFO","message":"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"}
+{"timestamp":"00:16:06.915","source":"Browser","level":"INFO","message":"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"}
+{"timestamp":"00:16:49.330","source":"Browser","level":"INFO","message":"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"}
+{"timestamp":"00:17:34.276","source":"Browser","level":"INFO","message":"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"}
+{"timestamp":"00:20:35.819","source":"Browser","level":"INFO","message":"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"}
+{"timestamp":"00:20:50.760","source":"Browser","level":"INFO","message":"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"}
+{"timestamp":"00:21:45.612","source":"Browser","level":"INFO","message":"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"}
+{"timestamp":"00:22:31.399","source":"Browser","level":"INFO","message":"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"}
+{"timestamp":"00:23:11.439","source":"Browser","level":"INFO","message":"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"}
+{"timestamp":"00:23:25.523","source":"Browser","level":"INFO","message":"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"}
+{"timestamp":"00:24:11.895","source":"Browser","level":"INFO","message":"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"}
+{"timestamp":"00:24:19.759","source":"Server","level":"LOG","message":"prisma:error \"pool timeout: failed to retrieve a connection from pool after 2327556ms\\n    (pool connections: active=8 idle=0 limit=10)\""}
+{"timestamp":"00:24:19.762","source":"Server","level":"LOG","message":"prisma:error \"pool timeout: failed to retrieve a connection from pool after 2327331ms\\n    (pool connections: active=8 idle=0 limit=10)\""}
+{"timestamp":"00:24:19.764","source":"Server","level":"LOG","message":"prisma:error \"pool timeout: failed to retrieve a connection from pool after 2327574ms\\n    (pool connections: active=8 idle=0 limit=10)\""}
+{"timestamp":"00:24:19.766","source":"Server","level":"LOG","message":"prisma:error \"pool timeout: failed to retrieve a connection from pool after 2327573ms\\n    (pool connections: active=8 idle=0 limit=10)\""}
+{"timestamp":"00:24:19.767","source":"Server","level":"LOG","message":"prisma:error \"pool timeout: failed to retrieve a connection from pool after 2327573ms\\n    (pool connections: active=8 idle=0 limit=10)\""}
+{"timestamp":"00:24:19.769","source":"Server","level":"LOG","message":"prisma:error \"pool timeout: failed to retrieve a connection from pool after 2327572ms\\n    (pool connections: active=8 idle=0 limit=10)\""}
+{"timestamp":"00:24:19.771","source":"Server","level":"LOG","message":"prisma:error \"pool timeout: failed to retrieve a connection from pool after 2327571ms\\n    (pool connections: active=8 idle=0 limit=10)\""}
+{"timestamp":"00:24:19.772","source":"Server","level":"LOG","message":"prisma:error \"pool timeout: failed to retrieve a connection from pool after 2327570ms\\n    (pool connections: active=8 idle=0 limit=10)\""}
+{"timestamp":"00:24:19.774","source":"Server","level":"LOG","message":"prisma:error \"pool timeout: failed to retrieve a connection from pool after 2327569ms\\n    (pool connections: active=8 idle=0 limit=10)\""}
+{"timestamp":"00:24:19.776","source":"Server","level":"LOG","message":"prisma:error \"pool timeout: failed to retrieve a connection from pool after 2327569ms\\n    (pool connections: active=8 idle=0 limit=10)\""}
+{"timestamp":"00:24:19.777","source":"Server","level":"LOG","message":"prisma:error \"pool timeout: failed to retrieve a connection from pool after 2327568ms\\n    (pool connections: active=8 idle=0 limit=10)\""}
+{"timestamp":"00:24:19.779","source":"Server","level":"LOG","message":"prisma:error \"pool timeout: failed to retrieve a connection from pool after 2327567ms\\n    (pool connections: active=8 idle=0 limit=10)\""}
+{"timestamp":"00:24:19.781","source":"Server","level":"LOG","message":"prisma:error \"pool timeout: failed to retrieve a connection from pool after 2327567ms\\n    (pool connections: active=8 idle=0 limit=10)\""}
+{"timestamp":"00:24:19.783","source":"Server","level":"LOG","message":"prisma:error \"pool timeout: failed to retrieve a connection from pool after 2327566ms\\n    (pool connections: active=8 idle=0 limit=10)\""}
+{"timestamp":"00:24:19.785","source":"Server","level":"LOG","message":"prisma:error \"pool timeout: failed to retrieve a connection from pool after 2327565ms\\n    (pool connections: active=8 idle=0 limit=10)\""}
+{"timestamp":"00:24:19.787","source":"Server","level":"LOG","message":"prisma:error \"pool timeout: failed to retrieve a connection from pool after 2327563ms\\n    (pool connections: active=8 idle=0 limit=10)\""}
+{"timestamp":"00:24:19.789","source":"Server","level":"LOG","message":"prisma:error \"pool timeout: failed to retrieve a connection from pool after 2327563ms\\n    (pool connections: active=8 idle=0 limit=10)\""}
+{"timestamp":"00:24:19.792","source":"Server","level":"LOG","message":"prisma:error \"pool timeout: failed to retrieve a connection from pool after 2327562ms\\n    (pool connections: active=8 idle=0 limit=10)\""}
+{"timestamp":"00:24:19.794","source":"Server","level":"LOG","message":"prisma:error \"pool timeout: failed to retrieve a connection from pool after 2327561ms\\n    (pool connections: active=8 idle=0 limit=10)\""}
+{"timestamp":"00:24:19.805","source":"Server","level":"LOG","message":"prisma:error \"pool timeout: failed to retrieve a connection from pool after 2327560ms\\n    (pool connections: active=8 idle=0 limit=10)\""}
+{"timestamp":"00:24:19.807","source":"Server","level":"LOG","message":"prisma:error \"pool timeout: failed to retrieve a connection from pool after 2327559ms\\n    (pool connections: active=8 idle=0 limit=10)\""}
+{"timestamp":"00:24:19.808","source":"Server","level":"LOG","message":"prisma:error \"pool timeout: failed to retrieve a connection from pool after 2327558ms\\n    (pool connections: active=8 idle=0 limit=10)\""}
+{"timestamp":"00:24:19.810","source":"Server","level":"LOG","message":"prisma:error \"pool timeout: failed to retrieve a connection from pool after 2327557ms\\n    (pool connections: active=8 idle=0 limit=10)\""}
+{"timestamp":"00:24:19.812","source":"Server","level":"LOG","message":"prisma:error \"pool timeout: failed to retrieve a connection from pool after 2327332ms\\n    (pool connections: active=8 idle=0 limit=10)\""}
+{"timestamp":"00:24:19.813","source":"Server","level":"LOG","message":"prisma:error \"pool timeout: failed to retrieve a connection from pool after 2327332ms\\n    (pool connections: active=8 idle=0 limit=10)\""}
+{"timestamp":"00:24:20.003","source":"Server","level":"ERROR","message":"⨯ DriverAdapterError: pool timeout: failed to retrieve a connection from pool after 2327556ms\n    (pool connections: active=8 idle=0 limit=10)"}

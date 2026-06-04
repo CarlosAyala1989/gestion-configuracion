@@ -1,0 +1,641 @@
+{
+  "node": {
+    "001673bf106908c8d3426eec222a128099e2ed3af5": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "logoutAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "logoutAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "4005e5cc0ec190bfb412f655f8bef99562f5f344fc": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "createEcsAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "createEcsAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "400756a5494cc56125bcda745629bf35d68bb6d55a": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "registerDailyWorkLogAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "registerDailyWorkLogAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "401805c153c3cea5fb20ec2dfec90b3e8bd0a108d2": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "linkWorkItemAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "linkWorkItemAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "40187c3b36b597f9d895df0826cb88cfa90778c14f": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "finalQualityAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "finalQualityAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "40205f8d6f4c4fd92e5ff60e1cfd53301f2db98496": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "closeChangeRequestAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "closeChangeRequestAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "4024848b8cc359e36719d8bededadd19ecbd91d87c": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "createGithubBranchAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "createGithubBranchAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "4029ef3894713c482d1764feaeeeb8e6202e2ca460": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "observeFormatAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "observeFormatAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "402f0ea3db2386fe8cb00de0189f136bfe8c803d8f": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "createRoleAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "createRoleAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "402fa80b5507df9b3d4aab54c6741c33379f5f3036": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "createChangeRequestAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "createChangeRequestAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "4031b9abbf3a25401a2fceab7eb682eb0beb41e3bb": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "updateDefectStatusAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "updateDefectStatusAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "40337d87b05bc63e58b65ad34e62456bba2f173244": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "executeReleaseAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "executeReleaseAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "40360e4b27b7f1d6051d484a201c1ee3c44fdb8b16": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "createWorkItemAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "createWorkItemAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "403b94788d665fef61ccf295b53d3869b558a9dda7": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "recordUnitTestAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "recordUnitTestAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "4041dbdb3afa10dc8c1927ea7b351f49657ce44668": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "createGithubProjectRepoAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "createGithubProjectRepoAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "404592d76b3dd15584144fe2a495c4cbae98405714": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "integrateChangeAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "integrateChangeAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "405749e1a203fb1153676fcc28a68ce53e0e8d739b": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "validateAlignmentAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "validateAlignmentAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "4057c8afef0b69e2d03afb5e1aa0d9ce4810a0cdfc": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "reviewArtifactRequirementAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "reviewArtifactRequirementAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "405885459964968c919b8865a9c1e9fd39ce3d3cea": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "createChangeOrderAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "createChangeOrderAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "405ec788137460f6c1130464d04b4968d9f8a600af": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "createMethodologyPhaseAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "createMethodologyPhaseAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "406597829c1d6e684c03deaf6524551b7c9b2eda25": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "createGithubTagAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "createGithubTagAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "4068cfdf0f0155586763d97d0b4baf4bc70c0c7764": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "resubmitChangeRequestAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "resubmitChangeRequestAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "406a9710480b473fbe910c2a590c2039965c675f97": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "createIncidentAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "createIncidentAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "406f0a4acc4a144c3b30120442f715ee9c6a56942a": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "createSprintAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "createSprintAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "407a1177b6b4691416179692b7cb353f48e407f6f5": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "setProjectStatusAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "setProjectStatusAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "4083b8367d5081a20b44ac07a7f3abceea28f1edae": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "setProjectUserStatusAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "setProjectUserStatusAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "40913446e2e68f8aa61b34cb00d315f7a1dafec184": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "checkInAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "checkInAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "409326a9acbb3f7e3285e40b6908075372a9d18ea8": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "setProjectActivityStatusAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "setProjectActivityStatusAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "409845efc66eff460f13a8d7f4c958b7cfd2c8f8e4": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "ccbDecisionAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "ccbDecisionAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "40996835f1e8cfe71a7f77fac808e6fc4f2a6c9095": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "recordUatAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "recordUatAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "409ce3de40e8827cc9ca743bbd2cccc0573b117e1e": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "transferLibraryAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "transferLibraryAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "40a03a3bc404e998f9bedca73385633752a620975a": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "configureProjectMethodologyAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "configureProjectMethodologyAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "40b02b3d534a806ed6c030705f60fef1ec74b0a564": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "setWorkItemStateAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "setWorkItemStateAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "40b0a795a6fb6fffad3a1f8ea13256c436abec153d": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "configureGithubWebhookAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "configureGithubWebhookAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "40b2a099603c0939c383ff400a3c16c3f01a178e84": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "setRoleStatusAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "setRoleStatusAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "40b525afa05b2bf8d7620241024a6b3bb645d49132": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "createBaselineAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "createBaselineAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "40bb94c676fbdbd12c0e5c4634a5c66d1a49a5a77d": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "validateIntegrityAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "validateIntegrityAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "40c51d0da21bf4971ab58450e6b1a2ccab86730bcd": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "createUserAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "createUserAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "40c857da79012c09ff82e2e48fa6d1b4e147fef840": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "forceUnlockAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "forceUnlockAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "40ceceb55510febdeee4df1dfea967f796c415cff8": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "setUserStatusAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "setUserStatusAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "40deb43f1afef7be1f1c75a8093edb87059f2eeb45": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "createImpactAssessmentAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "createImpactAssessmentAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "40e1f00259b3a0998d113c67d1b0d09249e246972f": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "updateIncidentStatusAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "updateIncidentStatusAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "40ec786f6e2c88c022e90be07d52256e45c8da69e8": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "setMethodologyPhaseStatusAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "setMethodologyPhaseStatusAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "40ee996497a9c2bd47f9038f4808820eedb7c00ab6": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "createProjectActivityAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "createProjectActivityAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "40f0f8d5eeff78e4ac287fcd39e66e91f173f70e7b": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "createGithubIssueAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "createGithubIssueAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "40f22d2e2ff3e31a99df51467f47c12834d7cc15e8": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "checkOutAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "checkOutAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "40f782daf9b056d574bd0f905641fb9b8e9ef18ab1": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "assignProjectRoleAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "assignProjectRoleAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "40f9e819eea9fdcf8063b506b3b96720bdd7dd3bce": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "createProjectAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "createProjectAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "40fd9015124e26bd3c4abe7ed9d38e966330a44ad2": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "recordQaTestAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "recordQaTestAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "40fde470c338c3d4f4dacc897d690bbeda9aca7b4b": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "createGithubPullRequestAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "createGithubPullRequestAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "40ff14fa1c13777668eaabc7220177788403a9433b": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "technicalDecisionAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "technicalDecisionAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "40ff3bf6173fd1180383ac2b135a5ef3d442093dd6": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "startImplementationAction",
+          "filename": "src/app/(protected)/actions.ts"
+        }
+      },
+      "exportedName": "startImplementationAction",
+      "filename": "src/app/(protected)/actions.ts"
+    },
+    "40cac35d690a4a36c8042b6340443eeaf46a9d7c14": {
+      "workers": {
+        "app/(protected)/seleccionar-proyecto/page": {
+          "moduleId": "[project]/.next-internal/server/app/(protected)/seleccionar-proyecto/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(protected)/actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(protected)/seleccionar-proyecto/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": true,
+          "exportedName": "selectProjectContextAction",
+          "filename": "src/app/(protected)/seleccionar-proyecto/actions.ts"
+        }
+      },
+      "exportedName": "selectProjectContextAction",
+      "filename": "src/app/(protected)/seleccionar-proyecto/actions.ts"
+    }
+  },
+  "edge": {}
+}

@@ -1,0 +1,195 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]: SGCSW
+        - generic [ref=e6]: Sistema de Gestion de Configuracion
+      - navigation [ref=e7]:
+        - generic [ref=e8]:
+          - generic [ref=e9]: Operacion
+          - link "Mi Panel de Trabajo" [ref=e11] [cursor=pointer]:
+            - /url: /dashboard
+            - img [ref=e12]
+            - generic [ref=e17]: Mi Panel de Trabajo
+        - generic [ref=e18]:
+          - generic [ref=e19]: Boards
+          - generic [ref=e20]:
+            - link "Backlog" [ref=e21] [cursor=pointer]:
+              - /url: /boards/backlog
+              - img [ref=e22]
+              - generic [ref=e25]: Backlog
+            - link "Sprints" [ref=e26] [cursor=pointer]:
+              - /url: /boards/sprints
+              - img [ref=e27]
+              - generic [ref=e29]: Sprints
+            - link "Metodologia" [ref=e30] [cursor=pointer]:
+              - /url: /boards/metodologia
+              - img [ref=e31]
+              - generic [ref=e36]: Metodologia
+            - link "Reportes diarios" [ref=e37] [cursor=pointer]:
+              - /url: /boards/reportes-diarios
+              - img [ref=e38]
+              - generic [ref=e43]: Reportes diarios
+        - generic [ref=e44]:
+          - generic [ref=e45]: Administracion
+          - link "Proyectos" [ref=e47] [cursor=pointer]:
+            - /url: /admin/proyectos
+            - img [ref=e48]
+            - generic [ref=e58]: Proyectos
+        - generic [ref=e59]:
+          - generic [ref=e60]: Integraciones
+          - link "GitHub" [ref=e62] [cursor=pointer]:
+            - /url: /github/workspace
+            - img [ref=e63]
+            - generic [ref=e67]: GitHub
+        - generic [ref=e68]:
+          - generic [ref=e69]: Configuracion
+          - link "Trazabilidad" [ref=e71] [cursor=pointer]:
+            - /url: /configuracion/trazabilidad
+            - img [ref=e72]
+            - generic [ref=e77]: Trazabilidad
+        - generic [ref=e78]:
+          - generic [ref=e79]: Cambios
+          - generic [ref=e80]:
+            - link "Solicitudes" [ref=e81] [cursor=pointer]:
+              - /url: /cambios/solicitudes
+              - img [ref=e82]
+              - generic [ref=e85]: Solicitudes
+            - link "Evaluacion de impacto" [ref=e86] [cursor=pointer]:
+              - /url: /cambios/evaluacion-impacto
+              - img [ref=e87]
+              - generic [ref=e91]: Evaluacion de impacto
+            - link "Ordenes de cambio" [ref=e92] [cursor=pointer]:
+              - /url: /cambios/ordenes
+              - img [ref=e93]
+              - generic [ref=e97]: Ordenes de cambio
+        - generic [ref=e98]:
+          - generic [ref=e99]: Reportes
+          - link "Reportes" [ref=e101] [cursor=pointer]:
+            - /url: /reportes
+            - img [ref=e102]
+            - generic [ref=e105]: Reportes
+      - generic [ref=e106]:
+        - generic [ref=e107]: Director / Jefe de Proyecto
+        - generic [ref=e108]: MANUAL-001 - Portal SGCSW Manual
+        - generic [ref=e109]: jefeproyecto@gmail.com
+    - main [ref=e110]:
+      - generic [ref=e112]:
+        - generic [ref=e113]:
+          - generic [ref=e114]: Jefe de Proyecto Demo
+          - generic [ref=e115]: Director / Jefe de Proyecto en MANUAL-001
+        - generic [ref=e116]:
+          - link "Cambiar proyecto" [ref=e117] [cursor=pointer]:
+            - /url: /seleccionar-proyecto
+            - img [ref=e118]
+            - text: Cambiar proyecto
+          - button "Salir" [ref=e129] [cursor=pointer]:
+            - img [ref=e130]
+            - text: Salir
+      - generic [ref=e133]:
+        - generic [ref=e135]:
+          - heading "Solicitudes de cambio" [level=1] [ref=e136]
+          - paragraph [ref=e137]: Registro formal, validacion, clasificacion y cierre
+        - generic [ref=e139]:
+          - generic [ref=e140]:
+            - generic [ref=e141]:
+              - heading "Crear solicitud de cambio" [level=2] [ref=e143]
+              - generic [ref=e144]:
+                - generic [ref=e145]:
+                  - generic [ref=e146]: Proyecto *
+                  - combobox "Proyecto *" [ref=e147]:
+                    - option "Seleccionar" [selected]
+                    - option "MANUAL-001 - Portal SGCSW Manual"
+                - generic [ref=e148]:
+                  - generic [ref=e149]: Titulo *
+                  - textbox "Titulo *" [ref=e150]
+                - generic [ref=e151]:
+                  - generic [ref=e152]: Prioridad *
+                  - combobox "Prioridad *" [ref=e153]:
+                    - option "Seleccionar" [selected]
+                    - option "Baja"
+                    - option "Media"
+                    - option "Alta"
+                    - option "Critica"
+                - generic [ref=e154]:
+                  - generic [ref=e155]: Incidencia origen
+                  - combobox "Incidencia origen" [ref=e156]:
+                    - option "Seleccionar" [selected]
+                - generic [ref=e157]:
+                  - generic [ref=e158]: ECS afectado
+                  - combobox "ECS afectado" [ref=e159]:
+                    - option "Seleccionar" [selected]
+                - generic [ref=e160]:
+                  - generic [ref=e161]: Descripcion *
+                  - textbox "Descripcion *" [ref=e162]
+                - generic [ref=e163]:
+                  - generic [ref=e164]: Justificacion *
+                  - textbox "Justificacion *" [ref=e165]
+                - button "Registrar solicitud" [ref=e166] [cursor=pointer]
+            - generic [ref=e167]:
+              - generic [ref=e168]:
+                - generic [ref=e169]:
+                  - generic [ref=e170]: Proyecto
+                  - combobox "Proyecto" [ref=e171]:
+                    - option "Todos" [selected]
+                    - option "MANUAL-001 - Portal SGCSW Manual"
+                - generic [ref=e172]:
+                  - generic [ref=e173]: Estado
+                  - textbox "Estado" [ref=e174]
+                - generic [ref=e175]:
+                  - generic [ref=e176]: Buscar
+                  - textbox "Buscar" [ref=e177]:
+                    - /placeholder: Texto
+                - button "Filtrar" [ref=e178] [cursor=pointer]:
+                  - img [ref=e179]
+                  - text: Filtrar
+              - generic [ref=e181]:
+                - heading "Solicitudes" [level=2] [ref=e183]
+                - table [ref=e185]:
+                  - rowgroup [ref=e186]:
+                    - row "Ticket Proyecto Tipo Prioridad Estado Trazabilidad" [ref=e187]:
+                      - columnheader "Ticket" [ref=e188]
+                      - columnheader "Proyecto" [ref=e189]
+                      - columnheader "Tipo" [ref=e190]
+                      - columnheader "Prioridad" [ref=e191]
+                      - columnheader "Estado" [ref=e192]
+                      - columnheader "Trazabilidad" [ref=e193]
+                  - rowgroup [ref=e194]:
+                    - row "SC-0001 MANUAL-001 Preventivo Alta En validacion inicial -" [ref=e195]:
+                      - cell "SC-0001" [ref=e196]
+                      - cell "MANUAL-001" [ref=e197]
+                      - cell "Preventivo" [ref=e198]
+                      - cell "Alta" [ref=e199]:
+                        - generic [ref=e200]: Alta
+                      - cell "En validacion inicial" [ref=e201]:
+                        - generic [ref=e202]: En validacion inicial
+                      - cell "-" [ref=e203]
+          - generic [ref=e204]:
+            - heading "Validacion inicial y observaciones" [level=2] [ref=e206]
+            - table [ref=e208]:
+              - rowgroup [ref=e209]:
+                - row "Solicitud Estado Alineacion Observar formato Corregir" [ref=e210]:
+                  - columnheader "Solicitud" [ref=e211]
+                  - columnheader "Estado" [ref=e212]
+                  - columnheader "Alineacion" [ref=e213]
+                  - columnheader "Observar formato" [ref=e214]
+                  - columnheader "Corregir" [ref=e215]
+              - rowgroup [ref=e216]:
+                - row "SC-0001 - Implementar autenticacion MFA con documentacion RUP En validacion inicial Alineada Validar Observar -" [ref=e217]:
+                  - cell "SC-0001 - Implementar autenticacion MFA con documentacion RUP" [ref=e218]
+                  - cell "En validacion inicial" [ref=e219]:
+                    - generic [ref=e220]: En validacion inicial
+                  - cell "Alineada Validar" [ref=e221]:
+                    - generic [ref=e222]:
+                      - combobox [ref=e223]:
+                        - option "Alineada" [selected]
+                        - option "No alineada"
+                      - textbox "Motivo si rechaza" [ref=e224]
+                      - button "Validar" [ref=e225] [cursor=pointer]
+                  - cell "Observar" [ref=e226]:
+                    - generic [ref=e227]:
+                      - textbox "Campos faltantes" [ref=e228]
+                      - button "Observar" [ref=e229] [cursor=pointer]
+                  - cell "-" [ref=e230]
+  - button "Open Next.js Dev Tools" [ref=e236] [cursor=pointer]:
+    - img [ref=e237]

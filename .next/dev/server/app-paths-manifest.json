@@ -1,0 +1,5 @@
+{
+  "/(protected)/[...segments]/page": "app/(protected)/[...segments]/page.js",
+  "/(protected)/seleccionar-proyecto/page": "app/(protected)/seleccionar-proyecto/page.js",
+  "/login/page": "app/login/page.js"
+}

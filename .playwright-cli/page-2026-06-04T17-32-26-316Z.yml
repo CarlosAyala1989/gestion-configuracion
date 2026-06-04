@@ -1,0 +1,473 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]: SGCSW
+        - generic [ref=e6]: Sistema de Gestion de Configuracion
+      - navigation [ref=e7]:
+        - generic [ref=e8]:
+          - generic [ref=e9]: Operacion
+          - link "Mi Panel de Trabajo" [ref=e11] [cursor=pointer]:
+            - /url: /dashboard
+            - img [ref=e12]
+            - generic [ref=e17]: Mi Panel de Trabajo
+        - generic [ref=e18]:
+          - generic [ref=e19]: Boards
+          - generic [ref=e20]:
+            - link "Backlog" [ref=e21] [cursor=pointer]:
+              - /url: /boards/backlog
+              - img [ref=e22]
+              - generic [ref=e25]: Backlog
+            - link "Sprints" [ref=e26] [cursor=pointer]:
+              - /url: /boards/sprints
+              - img [ref=e27]
+              - generic [ref=e29]: Sprints
+            - link "Metodologia" [ref=e30] [cursor=pointer]:
+              - /url: /boards/metodologia
+              - img [ref=e31]
+              - generic [ref=e36]: Metodologia
+            - link "Reportes diarios" [ref=e37] [cursor=pointer]:
+              - /url: /boards/reportes-diarios
+              - img [ref=e38]
+              - generic [ref=e43]: Reportes diarios
+        - generic [ref=e44]:
+          - generic [ref=e45]: Administracion
+          - link "Proyectos" [ref=e47] [cursor=pointer]:
+            - /url: /admin/proyectos
+            - img [ref=e48]
+            - generic [ref=e58]: Proyectos
+        - generic [ref=e59]:
+          - generic [ref=e60]: Integraciones
+          - link "GitHub" [ref=e62] [cursor=pointer]:
+            - /url: /github/workspace
+            - img [ref=e63]
+            - generic [ref=e67]: GitHub
+        - generic [ref=e68]:
+          - generic [ref=e69]: Configuracion
+          - link "Trazabilidad" [ref=e71] [cursor=pointer]:
+            - /url: /configuracion/trazabilidad
+            - img [ref=e72]
+            - generic [ref=e77]: Trazabilidad
+        - generic [ref=e78]:
+          - generic [ref=e79]: Cambios
+          - generic [ref=e80]:
+            - link "Solicitudes" [ref=e81] [cursor=pointer]:
+              - /url: /cambios/solicitudes
+              - img [ref=e82]
+              - generic [ref=e85]: Solicitudes
+            - link "Evaluacion de impacto" [ref=e86] [cursor=pointer]:
+              - /url: /cambios/evaluacion-impacto
+              - img [ref=e87]
+              - generic [ref=e91]: Evaluacion de impacto
+            - link "Ordenes de cambio" [ref=e92] [cursor=pointer]:
+              - /url: /cambios/ordenes
+              - img [ref=e93]
+              - generic [ref=e97]: Ordenes de cambio
+        - generic [ref=e98]:
+          - generic [ref=e99]: Reportes
+          - link "Reportes" [ref=e101] [cursor=pointer]:
+            - /url: /reportes
+            - img [ref=e102]
+            - generic [ref=e105]: Reportes
+      - generic [ref=e106]:
+        - generic [ref=e107]: Director / Jefe de Proyecto
+        - generic [ref=e108]: MANUAL-001 - Portal SGCSW Manual
+        - generic [ref=e109]: jefeproyecto@gmail.com
+    - main [ref=e110]:
+      - generic [ref=e112]:
+        - generic [ref=e113]:
+          - generic [ref=e114]: Jefe de Proyecto Demo
+          - generic [ref=e115]: Director / Jefe de Proyecto en MANUAL-001
+        - generic [ref=e116]:
+          - link "Cambiar proyecto" [ref=e117] [cursor=pointer]:
+            - /url: /seleccionar-proyecto
+            - img [ref=e118]
+            - text: Cambiar proyecto
+          - button "Salir" [ref=e129] [cursor=pointer]:
+            - img [ref=e130]
+            - text: Salir
+      - generic [ref=e133]:
+        - generic [ref=e135]:
+          - heading "Backlog" [level=1] [ref=e136]
+          - paragraph [ref=e137]: Work items, jerarquia, ramas, issues, PRs y trazabilidad GitHub
+        - generic [ref=e138]:
+          - img [ref=e139]
+          - generic [ref=e142]: Work item creado y enlazado a GitHub.
+        - generic [ref=e143]:
+          - generic [ref=e144]:
+            - generic [ref=e145]:
+              - heading "Crear work item" [level=2] [ref=e147]
+              - generic [ref=e148]:
+                - generic [ref=e149]:
+                  - generic [ref=e150]: Proyecto *
+                  - combobox "Proyecto *" [ref=e151]:
+                    - option "Seleccionar" [selected]
+                    - option "MANUAL-001 - Portal SGCSW Manual"
+                - generic [ref=e152]:
+                  - generic [ref=e153]:
+                    - generic [ref=e154]: Tipo *
+                    - combobox "Tipo *" [ref=e155]:
+                      - option "Seleccionar" [selected]
+                      - option "Epic"
+                      - option "Feature"
+                      - option "Historia"
+                      - option "Tarea"
+                      - option "Bug"
+                      - option "Issue"
+                  - generic [ref=e156]:
+                    - generic [ref=e157]: Prioridad
+                    - combobox "Prioridad" [ref=e158]:
+                      - option "Seleccionar"
+                      - option "Baja"
+                      - option "Media" [selected]
+                      - option "Alta"
+                      - option "Critica"
+                  - generic [ref=e159]:
+                    - generic [ref=e160]: Estado
+                    - combobox "Estado" [ref=e161]:
+                      - option "Seleccionar"
+                      - option "Nuevo" [selected]
+                      - option "Activo"
+                      - option "Resuelta"
+                      - option "Cerrada"
+                  - generic [ref=e162]:
+                    - generic [ref=e163]: Story points
+                    - spinbutton "Story points" [ref=e164]
+                - generic [ref=e165]:
+                  - generic [ref=e166]: Titulo *
+                  - textbox "Titulo *" [ref=e167]
+                - generic [ref=e168]:
+                  - generic [ref=e169]: Descripcion *
+                  - textbox "Descripcion *" [ref=e170]
+                - generic [ref=e171]:
+                  - generic [ref=e172]:
+                    - generic [ref=e173]: Asignado a
+                    - combobox "Asignado a" [ref=e174]:
+                      - option "Seleccionar" [selected]
+                      - option "QA Tester Demo (Equipo QA / Tester)"
+                      - option "Desarrollador Demo (Desarrollador Asignado)"
+                      - option "Bibliotecario Demo (Administrador de Configuracion / Bibliotecario)"
+                      - option "Miembro CCB Demo (Comite de Control de Cambios)"
+                      - option "Lider Tecnico Demo (Lider Tecnico / Analista)"
+                      - option "Jefe de Proyecto Demo (Director / Jefe de Proyecto)"
+                      - option "Solicitante Demo (Solicitante / Cliente / Usuario Final)"
+                      - option "Carlos Daniel Administrador (Administrador del Sistema)"
+                  - generic [ref=e175]:
+                    - generic [ref=e176]: Sprint
+                    - combobox "Sprint" [ref=e177]:
+                      - option "Seleccionar" [selected]
+                  - generic [ref=e178]:
+                    - generic [ref=e179]: Actividad
+                    - combobox "Actividad" [ref=e180]:
+                      - option "Seleccionar" [selected]
+                      - option "MANUAL-001 - Levantamiento y validacion de requerimientos"
+                      - option "MANUAL-001 - Modelado de analisis y diseno"
+                      - option "MANUAL-001 - Implementacion y versionamiento"
+                      - option "MANUAL-001 - QA, UAT, linea base y liberacion"
+                  - generic [ref=e181]:
+                    - generic [ref=e182]: Vence
+                    - textbox "Vence" [ref=e183]
+                  - generic [ref=e184]:
+                    - generic [ref=e185]: Solicitud
+                    - combobox "Solicitud" [ref=e186]:
+                      - option "Seleccionar" [selected]
+                      - option "SC-0001 - Implementar autenticacion MFA con documentacion RUP"
+                  - generic [ref=e187]:
+                    - generic [ref=e188]: Orden
+                    - combobox "Orden" [ref=e189]:
+                      - option "Seleccionar" [selected]
+                      - option "OC-0001 - Implementar autenticacion MFA con documentacion RUP"
+                - generic [ref=e190]:
+                  - generic [ref=e191]:
+                    - generic [ref=e192]: Rama GitHub
+                    - textbox "Rama GitHub" [ref=e193]:
+                      - /placeholder: feature/wi-0001-login
+                  - generic [ref=e194]:
+                    - generic [ref=e195]: Rama base
+                    - textbox "Rama base" [ref=e196]:
+                      - /placeholder: main
+                  - generic [ref=e197]:
+                    - checkbox "Crear rama GitHub" [ref=e198]
+                    - text: Crear rama GitHub
+                  - generic [ref=e199]:
+                    - checkbox "Crear issue GitHub" [ref=e200]
+                    - text: Crear issue GitHub
+                - button "Crear work item" [ref=e201] [cursor=pointer]:
+                  - img [ref=e202]
+                  - text: Crear work item
+            - generic [ref=e203]:
+              - generic [ref=e204]:
+                - generic [ref=e205]:
+                  - generic [ref=e206]: Proyecto
+                  - combobox "Proyecto" [ref=e207]:
+                    - option "Todos" [selected]
+                    - option "MANUAL-001 - Portal SGCSW Manual"
+                - generic [ref=e208]:
+                  - generic [ref=e209]: Estado
+                  - textbox "Estado" [ref=e210]
+                - generic [ref=e211]:
+                  - generic [ref=e212]: Buscar
+                  - textbox "Buscar" [ref=e213]:
+                    - /placeholder: Texto
+                - button "Filtrar" [ref=e214] [cursor=pointer]:
+                  - img [ref=e215]
+                  - text: Filtrar
+              - generic [ref=e217]:
+                - heading "Backlog" [level=2] [ref=e219]
+                - table [ref=e221]:
+                  - rowgroup [ref=e222]:
+                    - row "ID Tipo Titulo Estado Asignado Sprint GitHub Actualizar" [ref=e223]:
+                      - columnheader "ID" [ref=e224]
+                      - columnheader "Tipo" [ref=e225]
+                      - columnheader "Titulo" [ref=e226]
+                      - columnheader "Estado" [ref=e227]
+                      - columnheader "Asignado" [ref=e228]
+                      - columnheader "Sprint" [ref=e229]
+                      - columnheader "GitHub" [ref=e230]
+                      - columnheader "Actualizar" [ref=e231]
+                  - rowgroup [ref=e232]:
+                    - row "WI-0001 Historia MFA en login con trazabilidad documental Nuevo Desarrollador Demo - feature/wi-0001-mfa-login Nuevo Guardar" [ref=e233]:
+                      - cell "WI-0001" [ref=e234]
+                      - cell "Historia" [ref=e235]
+                      - cell "MFA en login con trazabilidad documental" [ref=e236]
+                      - cell "Nuevo" [ref=e237]:
+                        - generic [ref=e238]: Nuevo
+                      - cell "Desarrollador Demo" [ref=e239]
+                      - cell "-" [ref=e240]
+                      - cell "feature/wi-0001-mfa-login" [ref=e241]:
+                        - link "feature/wi-0001-mfa-login" [ref=e243] [cursor=pointer]:
+                          - /url: https://github.com/carlosdaniel/sgcsw-manual-demo/tree/feature%2Fwi-0001-mfa-login
+                      - cell "Nuevo Guardar" [ref=e244]:
+                        - generic [ref=e245]:
+                          - combobox [ref=e246]:
+                            - option "Nuevo" [selected]
+                            - option "Activo"
+                            - option "Resuelta"
+                            - option "Cerrada"
+                            - option "Removido"
+                          - button "Guardar" [ref=e247] [cursor=pointer]
+          - generic [ref=e248]:
+            - heading "Matriz de analisis, diseno e implementacion" [level=2] [ref=e250]
+            - table [ref=e252]:
+              - rowgroup [ref=e253]:
+                - row "Work item Etapa Artefacto Versiones Estado Revision QA" [ref=e254]:
+                  - columnheader "Work item" [ref=e255]
+                  - columnheader "Etapa" [ref=e256]
+                  - columnheader "Artefacto" [ref=e257]
+                  - columnheader "Versiones" [ref=e258]
+                  - columnheader "Estado" [ref=e259]
+                  - columnheader "Revision QA" [ref=e260]
+              - rowgroup [ref=e261]:
+                - row "WI-0001 MFA en login con trazabilidad documental Analisis Entrevista del interesado Acta o notas de entrevista con necesidades, restricciones y criterios de aceptacion iniciales. - Pendiente Aprobar Registrar" [ref=e262]:
+                  - cell "WI-0001 MFA en login con trazabilidad documental" [ref=e263]:
+                    - generic [ref=e264]: WI-0001
+                    - generic [ref=e265]: MFA en login con trazabilidad documental
+                  - cell "Analisis" [ref=e266]
+                  - cell "Entrevista del interesado Acta o notas de entrevista con necesidades, restricciones y criterios de aceptacion iniciales." [ref=e267]:
+                    - generic [ref=e268]: Entrevista del interesado
+                    - generic [ref=e269]: Acta o notas de entrevista con necesidades, restricciones y criterios de aceptacion iniciales.
+                  - cell "-" [ref=e270]
+                  - cell "Pendiente" [ref=e271]:
+                    - generic [ref=e272]: Pendiente
+                  - cell "Aprobar Registrar" [ref=e273]:
+                    - generic [ref=e274]:
+                      - combobox [ref=e275]:
+                        - option "Aprobar" [selected]
+                        - option "Rechazar"
+                        - option "Exceptuar"
+                      - textbox "Observaciones" [ref=e276]
+                      - button "Registrar" [ref=e277] [cursor=pointer]
+                - row "WI-0001 MFA en login con trazabilidad documental Analisis Requisitos afectados SRS o seccion del SRS actualizada con requisitos funcionales/no funcionales afectados. - Pendiente Aprobar Registrar" [ref=e278]:
+                  - cell "WI-0001 MFA en login con trazabilidad documental" [ref=e279]:
+                    - generic [ref=e280]: WI-0001
+                    - generic [ref=e281]: MFA en login con trazabilidad documental
+                  - cell "Analisis" [ref=e282]
+                  - cell "Requisitos afectados SRS o seccion del SRS actualizada con requisitos funcionales/no funcionales afectados." [ref=e283]:
+                    - generic [ref=e284]: Requisitos afectados
+                    - generic [ref=e285]: SRS o seccion del SRS actualizada con requisitos funcionales/no funcionales afectados.
+                  - cell "-" [ref=e286]
+                  - cell "Pendiente" [ref=e287]:
+                    - generic [ref=e288]: Pendiente
+                  - cell "Aprobar Registrar" [ref=e289]:
+                    - generic [ref=e290]:
+                      - combobox [ref=e291]:
+                        - option "Aprobar" [selected]
+                        - option "Rechazar"
+                        - option "Exceptuar"
+                      - textbox "Observaciones" [ref=e292]
+                      - button "Registrar" [ref=e293] [cursor=pointer]
+                - row "WI-0001 MFA en login con trazabilidad documental Analisis Casos de uso afectados Diagrama y narrativas de casos de uso impactados por el cambio. - Pendiente Aprobar Registrar" [ref=e294]:
+                  - cell "WI-0001 MFA en login con trazabilidad documental" [ref=e295]:
+                    - generic [ref=e296]: WI-0001
+                    - generic [ref=e297]: MFA en login con trazabilidad documental
+                  - cell "Analisis" [ref=e298]
+                  - cell "Casos de uso afectados Diagrama y narrativas de casos de uso impactados por el cambio." [ref=e299]:
+                    - generic [ref=e300]: Casos de uso afectados
+                    - generic [ref=e301]: Diagrama y narrativas de casos de uso impactados por el cambio.
+                  - cell "-" [ref=e302]
+                  - cell "Pendiente" [ref=e303]:
+                    - generic [ref=e304]: Pendiente
+                  - cell "Aprobar Registrar" [ref=e305]:
+                    - generic [ref=e306]:
+                      - combobox [ref=e307]:
+                        - option "Aprobar" [selected]
+                        - option "Rechazar"
+                        - option "Exceptuar"
+                      - textbox "Observaciones" [ref=e308]
+                      - button "Registrar" [ref=e309] [cursor=pointer]
+                - row "WI-0001 MFA en login con trazabilidad documental Diseno Diseno arquitectonico afectado SAD o seccion de arquitectura actualizada con decisiones y componentes afectados. - Pendiente Aprobar Registrar" [ref=e310]:
+                  - cell "WI-0001 MFA en login con trazabilidad documental" [ref=e311]:
+                    - generic [ref=e312]: WI-0001
+                    - generic [ref=e313]: MFA en login con trazabilidad documental
+                  - cell "Diseno" [ref=e314]
+                  - cell "Diseno arquitectonico afectado SAD o seccion de arquitectura actualizada con decisiones y componentes afectados." [ref=e315]:
+                    - generic [ref=e316]: Diseno arquitectonico afectado
+                    - generic [ref=e317]: SAD o seccion de arquitectura actualizada con decisiones y componentes afectados.
+                  - cell "-" [ref=e318]
+                  - cell "Pendiente" [ref=e319]:
+                    - generic [ref=e320]: Pendiente
+                  - cell "Aprobar Registrar" [ref=e321]:
+                    - generic [ref=e322]:
+                      - combobox [ref=e323]:
+                        - option "Aprobar" [selected]
+                        - option "Rechazar"
+                        - option "Exceptuar"
+                      - textbox "Observaciones" [ref=e324]
+                      - button "Registrar" [ref=e325] [cursor=pointer]
+                - row "WI-0001 MFA en login con trazabilidad documental Diseno Diagrama de clases Diagrama de clases actualizado para el modulo o requerimiento. - Pendiente Aprobar Registrar" [ref=e326]:
+                  - cell "WI-0001 MFA en login con trazabilidad documental" [ref=e327]:
+                    - generic [ref=e328]: WI-0001
+                    - generic [ref=e329]: MFA en login con trazabilidad documental
+                  - cell "Diseno" [ref=e330]
+                  - cell "Diagrama de clases Diagrama de clases actualizado para el modulo o requerimiento." [ref=e331]:
+                    - generic [ref=e332]: Diagrama de clases
+                    - generic [ref=e333]: Diagrama de clases actualizado para el modulo o requerimiento.
+                  - cell "-" [ref=e334]
+                  - cell "Pendiente" [ref=e335]:
+                    - generic [ref=e336]: Pendiente
+                  - cell "Aprobar Registrar" [ref=e337]:
+                    - generic [ref=e338]:
+                      - combobox [ref=e339]:
+                        - option "Aprobar" [selected]
+                        - option "Rechazar"
+                        - option "Exceptuar"
+                      - textbox "Observaciones" [ref=e340]
+                      - button "Registrar" [ref=e341] [cursor=pointer]
+                - row "WI-0001 MFA en login con trazabilidad documental Diseno Diagrama de secuencia Secuencia de interacciones del caso de uso o flujo modificado. - Pendiente Aprobar Registrar" [ref=e342]:
+                  - cell "WI-0001 MFA en login con trazabilidad documental" [ref=e343]:
+                    - generic [ref=e344]: WI-0001
+                    - generic [ref=e345]: MFA en login con trazabilidad documental
+                  - cell "Diseno" [ref=e346]
+                  - cell "Diagrama de secuencia Secuencia de interacciones del caso de uso o flujo modificado." [ref=e347]:
+                    - generic [ref=e348]: Diagrama de secuencia
+                    - generic [ref=e349]: Secuencia de interacciones del caso de uso o flujo modificado.
+                  - cell "-" [ref=e350]
+                  - cell "Pendiente" [ref=e351]:
+                    - generic [ref=e352]: Pendiente
+                  - cell "Aprobar Registrar" [ref=e353]:
+                    - generic [ref=e354]:
+                      - combobox [ref=e355]:
+                        - option "Aprobar" [selected]
+                        - option "Rechazar"
+                        - option "Exceptuar"
+                      - textbox "Observaciones" [ref=e356]
+                      - button "Registrar" [ref=e357] [cursor=pointer]
+                - row "WI-0001 MFA en login con trazabilidad documental Diseno Modelo de datos Modelo de datos actualizado si el cambio toca entidades, tablas o contratos persistentes. Opcional - Pendiente Aprobar Registrar" [ref=e358]:
+                  - cell "WI-0001 MFA en login con trazabilidad documental" [ref=e359]:
+                    - generic [ref=e360]: WI-0001
+                    - generic [ref=e361]: MFA en login con trazabilidad documental
+                  - cell "Diseno" [ref=e362]
+                  - cell "Modelo de datos Modelo de datos actualizado si el cambio toca entidades, tablas o contratos persistentes. Opcional" [ref=e363]:
+                    - generic [ref=e364]: Modelo de datos
+                    - generic [ref=e365]: Modelo de datos actualizado si el cambio toca entidades, tablas o contratos persistentes.
+                    - generic [ref=e366]: Opcional
+                  - cell "-" [ref=e367]
+                  - cell "Pendiente" [ref=e368]:
+                    - generic [ref=e369]: Pendiente
+                  - cell "Aprobar Registrar" [ref=e370]:
+                    - generic [ref=e371]:
+                      - combobox [ref=e372]:
+                        - option "Aprobar" [selected]
+                        - option "Rechazar"
+                        - option "Exceptuar"
+                      - textbox "Observaciones" [ref=e373]
+                      - button "Registrar" [ref=e374] [cursor=pointer]
+                - row "WI-0001 MFA en login con trazabilidad documental En implementacion Codigo implementado Version del codigo fuente asociado al requerimiento o modulo. - Pendiente Aprobar Registrar" [ref=e375]:
+                  - cell "WI-0001 MFA en login con trazabilidad documental" [ref=e376]:
+                    - generic [ref=e377]: WI-0001
+                    - generic [ref=e378]: MFA en login con trazabilidad documental
+                  - cell "En implementacion" [ref=e379]
+                  - cell "Codigo implementado Version del codigo fuente asociado al requerimiento o modulo." [ref=e380]:
+                    - generic [ref=e381]: Codigo implementado
+                    - generic [ref=e382]: Version del codigo fuente asociado al requerimiento o modulo.
+                  - cell "-" [ref=e383]
+                  - cell "Pendiente" [ref=e384]:
+                    - generic [ref=e385]: Pendiente
+                  - cell "Aprobar Registrar" [ref=e386]:
+                    - generic [ref=e387]:
+                      - combobox [ref=e388]:
+                        - option "Aprobar" [selected]
+                        - option "Rechazar"
+                        - option "Exceptuar"
+                      - textbox "Observaciones" [ref=e389]
+                      - button "Registrar" [ref=e390] [cursor=pointer]
+                - row "WI-0001 MFA en login con trazabilidad documental En implementacion Evidencia de pruebas unitarias Resultado de pruebas unitarias y comandos ejecutados. - Pendiente Aprobar Registrar" [ref=e391]:
+                  - cell "WI-0001 MFA en login con trazabilidad documental" [ref=e392]:
+                    - generic [ref=e393]: WI-0001
+                    - generic [ref=e394]: MFA en login con trazabilidad documental
+                  - cell "En implementacion" [ref=e395]
+                  - cell "Evidencia de pruebas unitarias Resultado de pruebas unitarias y comandos ejecutados." [ref=e396]:
+                    - generic [ref=e397]: Evidencia de pruebas unitarias
+                    - generic [ref=e398]: Resultado de pruebas unitarias y comandos ejecutados.
+                  - cell "-" [ref=e399]
+                  - cell "Pendiente" [ref=e400]:
+                    - generic [ref=e401]: Pendiente
+                  - cell "Aprobar Registrar" [ref=e402]:
+                    - generic [ref=e403]:
+                      - combobox [ref=e404]:
+                        - option "Aprobar" [selected]
+                        - option "Rechazar"
+                        - option "Exceptuar"
+                      - textbox "Observaciones" [ref=e405]
+                      - button "Registrar" [ref=e406] [cursor=pointer]
+          - generic [ref=e407]:
+            - heading "Enlazar work items y evidencias" [level=2] [ref=e409]
+            - generic [ref=e410]:
+              - generic [ref=e411]:
+                - generic [ref=e412]: Origen *
+                - combobox "Origen *" [ref=e413]:
+                  - option "Seleccionar" [selected]
+                  - option "WI-0001 - MFA en login con trazabilidad documental"
+              - generic [ref=e414]:
+                - generic [ref=e415]: Tipo *
+                - combobox "Tipo *" [ref=e416]:
+                  - option "Seleccionar" [selected]
+                  - option "Padre"
+                  - option "Hijo"
+                  - option "Relacionado"
+                  - option "Predecesor"
+                  - option "Sucesor"
+                  - option "Rama GitHub"
+                  - option "Commit GitHub"
+                  - option "Pull Request GitHub"
+                  - option "Issue GitHub"
+                  - option "Solicitud de cambio"
+                  - option "Orden de cambio"
+                  - option "ECS"
+                  - option "Release"
+              - generic [ref=e417]:
+                - generic [ref=e418]: Destino interno
+                - combobox "Destino interno" [ref=e419]:
+                  - option "Seleccionar" [selected]
+                  - option "WI-0001 - MFA en login con trazabilidad documental"
+              - generic [ref=e420]:
+                - generic [ref=e421]: URL externa
+                - textbox "URL externa" [ref=e422]:
+                  - /placeholder: https://github.com/...
+              - generic [ref=e423]:
+                - generic [ref=e424]: ID externo
+                - textbox "ID externo" [ref=e425]:
+                  - /placeholder: SHA, rama o numero
+              - button "Enlazar" [ref=e426] [cursor=pointer]
+  - button "Open Next.js Dev Tools" [ref=e432] [cursor=pointer]:
+    - img [ref=e433]

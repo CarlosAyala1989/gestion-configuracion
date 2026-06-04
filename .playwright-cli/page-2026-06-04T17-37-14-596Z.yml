@@ -1,0 +1,253 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]: SGCSW
+        - generic [ref=e6]: Sistema de Gestion de Configuracion
+      - navigation [ref=e7]:
+        - generic [ref=e8]:
+          - generic [ref=e9]: Operacion
+          - link "Mi Panel de Trabajo" [ref=e11] [cursor=pointer]:
+            - /url: /dashboard
+            - img [ref=e12]
+            - generic [ref=e17]: Mi Panel de Trabajo
+        - generic [ref=e18]:
+          - generic [ref=e19]: Boards
+          - generic [ref=e20]:
+            - link "Backlog" [ref=e21] [cursor=pointer]:
+              - /url: /boards/backlog
+              - img [ref=e22]
+              - generic [ref=e25]: Backlog
+            - link "Sprints" [ref=e26] [cursor=pointer]:
+              - /url: /boards/sprints
+              - img [ref=e27]
+              - generic [ref=e29]: Sprints
+            - link "Reportes diarios" [ref=e30] [cursor=pointer]:
+              - /url: /boards/reportes-diarios
+              - img [ref=e31]
+              - generic [ref=e36]: Reportes diarios
+        - generic [ref=e37]:
+          - generic [ref=e38]: Integraciones
+          - link "GitHub" [ref=e40] [cursor=pointer]:
+            - /url: /github/workspace
+            - img [ref=e41]
+            - generic [ref=e45]: GitHub
+        - generic [ref=e46]:
+          - generic [ref=e47]: Configuracion
+          - generic [ref=e48]:
+            - link "Repositorio ECS" [ref=e49] [cursor=pointer]:
+              - /url: /configuracion/ecs
+              - img [ref=e50]
+              - generic [ref=e53]: Repositorio ECS
+            - link "Versiones" [ref=e54] [cursor=pointer]:
+              - /url: /configuracion/versiones
+              - img [ref=e55]
+              - generic [ref=e59]: Versiones
+        - generic [ref=e60]:
+          - generic [ref=e61]: Cambios
+          - link "Solicitudes" [ref=e63] [cursor=pointer]:
+            - /url: /cambios/solicitudes
+            - img [ref=e64]
+            - generic [ref=e67]: Solicitudes
+        - generic [ref=e68]:
+          - generic [ref=e69]: Desarrollo
+          - generic [ref=e70]:
+            - link "Mis ordenes" [ref=e71] [cursor=pointer]:
+              - /url: /desarrollo/mis-ordenes
+              - img [ref=e72]
+              - generic [ref=e76]: Mis ordenes
+            - link "Pruebas unitarias" [ref=e77] [cursor=pointer]:
+              - /url: /desarrollo/pruebas-unitarias
+              - img [ref=e78]
+              - generic [ref=e82]: Pruebas unitarias
+        - generic [ref=e83]:
+          - generic [ref=e84]: Soporte
+          - link "Incidencias" [ref=e86] [cursor=pointer]:
+            - /url: /soporte/incidencias
+            - img [ref=e87]
+            - generic [ref=e90]: Incidencias
+      - generic [ref=e91]:
+        - generic [ref=e92]: Desarrollador Asignado
+        - generic [ref=e93]: MANUAL-001 - Portal SGCSW Manual
+        - generic [ref=e94]: desarrollador@gmail.com
+    - main [ref=e95]:
+      - generic [ref=e97]:
+        - generic [ref=e98]:
+          - generic [ref=e99]: Desarrollador Demo
+          - generic [ref=e100]: Desarrollador Asignado en MANUAL-001
+        - generic [ref=e101]:
+          - link "Cambiar proyecto" [ref=e102] [cursor=pointer]:
+            - /url: /seleccionar-proyecto
+            - img [ref=e103]
+            - text: Cambiar proyecto
+          - button "Salir" [ref=e114] [cursor=pointer]:
+            - img [ref=e115]
+            - text: Salir
+      - generic [ref=e118]:
+        - generic [ref=e120]:
+          - heading "Control de versiones" [level=1] [ref=e121]
+          - paragraph [ref=e122]: Check-out, check-in, rama y commit
+        - generic [ref=e123]:
+          - generic [ref=e124]:
+            - generic [ref=e125]:
+              - heading "Check-out" [level=2] [ref=e127]
+              - generic [ref=e128]:
+                - generic [ref=e129]:
+                  - generic [ref=e130]: ECS *
+                  - combobox "ECS *" [ref=e131]:
+                    - option "Seleccionar" [selected]
+                    - option "MFA-QA-UNIT-001 - Evidencia pruebas unitarias MFA"
+                    - option "MFA-CO-AUTH-001 - auth-mfa-service.ts"
+                    - option "MFA-DI-SEQ-001 - Diagrama de secuencia MFA"
+                    - option "MFA-DI-CLS-001 - Diagrama de clases MFA"
+                    - option "MFA-DI-SAD-001 - SAD MFA"
+                    - option "MFA-AN-CU-001 - Casos de uso MFA"
+                    - option "MFA-AN-SRS-001 - SRS MFA"
+                    - option "MFA-AN-ENT-001 - Entrevista interesado MFA"
+                - generic [ref=e132]:
+                  - generic [ref=e133]: Motivo
+                  - textbox "Motivo" [ref=e134]
+                - button "Bloquear" [ref=e135] [cursor=pointer]
+            - generic [ref=e136]:
+              - heading "Check-in" [level=2] [ref=e138]
+              - generic [ref=e139]:
+                - generic [ref=e140]:
+                  - generic [ref=e141]:
+                    - generic [ref=e142]: ECS *
+                    - combobox "ECS *" [ref=e143]:
+                      - option "Seleccionar" [selected]
+                      - option "MFA-QA-UNIT-001 - Evidencia pruebas unitarias MFA"
+                      - option "MFA-CO-AUTH-001 - auth-mfa-service.ts"
+                      - option "MFA-DI-SEQ-001 - Diagrama de secuencia MFA"
+                      - option "MFA-DI-CLS-001 - Diagrama de clases MFA"
+                      - option "MFA-DI-SAD-001 - SAD MFA"
+                      - option "MFA-AN-CU-001 - Casos de uso MFA"
+                      - option "MFA-AN-SRS-001 - SRS MFA"
+                      - option "MFA-AN-ENT-001 - Entrevista interesado MFA"
+                  - generic [ref=e144]:
+                    - generic [ref=e145]: Version *
+                    - textbox "Version *" [ref=e146]:
+                      - /placeholder: 1.0.1
+                  - generic [ref=e147]:
+                    - generic [ref=e148]: Work item
+                    - combobox "Work item" [ref=e149]:
+                      - option "Seleccionar" [selected]
+                      - option "WI-0001 - MFA en login con trazabilidad documental"
+                  - generic [ref=e150]:
+                    - generic [ref=e151]: Artefacto requerido
+                    - combobox "Artefacto requerido" [ref=e152]:
+                      - option "Seleccionar" [selected]
+                      - option "WI-0001 - Analisis - Entrevista del interesado"
+                      - option "WI-0001 - Analisis - Requisitos afectados"
+                      - option "WI-0001 - Analisis - Casos de uso afectados"
+                      - option "WI-0001 - Diseno - Diseno arquitectonico afectado"
+                      - option "WI-0001 - Diseno - Diagrama de clases"
+                      - option "WI-0001 - Diseno - Diagrama de secuencia"
+                      - option "WI-0001 - Diseno - Modelo de datos"
+                      - option "WI-0001 - En implementacion - Codigo implementado"
+                      - option "WI-0001 - En implementacion - Evidencia de pruebas unitarias"
+                  - generic [ref=e153]:
+                    - generic [ref=e154]: Solicitud
+                    - combobox "Solicitud" [ref=e155]:
+                      - option "Seleccionar" [selected]
+                      - option "SC-0001 - Implementar autenticacion MFA con documentacion RUP"
+                  - generic [ref=e156]:
+                    - generic [ref=e157]: Orden
+                    - combobox "Orden" [ref=e158]:
+                      - option "Seleccionar" [selected]
+                      - option "OC-0001 - Implementar autenticacion MFA con documentacion RUP"
+                  - generic [ref=e159]:
+                    - generic [ref=e160]: Rama Git
+                    - textbox "Rama Git" [ref=e161]
+                  - generic [ref=e162]:
+                    - generic [ref=e163]: Commit
+                    - textbox "Commit" [ref=e164]
+                  - generic [ref=e165]:
+                    - generic [ref=e166]: Push ref
+                    - textbox "Push ref" [ref=e167]
+                  - generic [ref=e168]:
+                    - generic [ref=e169]: Archivo *
+                    - button "Archivo *" [ref=e170]
+                - generic [ref=e171]:
+                  - generic [ref=e172]: Comentario *
+                  - textbox "Comentario *" [ref=e173]
+                - button "Registrar check-in" [ref=e174] [cursor=pointer]
+          - generic [ref=e175]:
+            - heading "Historial de versiones" [level=2] [ref=e177]
+            - table [ref=e179]:
+              - rowgroup [ref=e180]:
+                - row "ECS Version Comentario Usuario Rama Commit Hash" [ref=e181]:
+                  - columnheader "ECS" [ref=e182]
+                  - columnheader "Version" [ref=e183]
+                  - columnheader "Comentario" [ref=e184]
+                  - columnheader "Usuario" [ref=e185]
+                  - columnheader "Rama" [ref=e186]
+                  - columnheader "Commit" [ref=e187]
+                  - columnheader "Hash" [ref=e188]
+              - rowgroup [ref=e189]:
+                - row "MFA-QA-UNIT-001 1.0.0 Evidencia de pruebas unitarias MFA. Desarrollador Demo feature/wi-0001-mfa-login manual-mfa-qa-unit-001 7ee40ffc7793..." [ref=e190]:
+                  - cell "MFA-QA-UNIT-001" [ref=e191]
+                  - cell "1.0.0" [ref=e192]
+                  - cell "Evidencia de pruebas unitarias MFA." [ref=e193]
+                  - cell "Desarrollador Demo" [ref=e194]
+                  - cell "feature/wi-0001-mfa-login" [ref=e195]
+                  - cell "manual-mfa-qa-unit-001" [ref=e196]
+                  - cell "7ee40ffc7793..." [ref=e197]
+                - row "MFA-CO-AUTH-001 1.0.0 Codigo fuente inicial del servicio MFA. Desarrollador Demo feature/wi-0001-mfa-login manual-mfa-co-auth-001 4c410d8a4ec7..." [ref=e198]:
+                  - cell "MFA-CO-AUTH-001" [ref=e199]
+                  - cell "1.0.0" [ref=e200]
+                  - cell "Codigo fuente inicial del servicio MFA." [ref=e201]
+                  - cell "Desarrollador Demo" [ref=e202]
+                  - cell "feature/wi-0001-mfa-login" [ref=e203]
+                  - cell "manual-mfa-co-auth-001" [ref=e204]
+                  - cell "4c410d8a4ec7..." [ref=e205]
+                - row "MFA-DI-SEQ-001 1.0.0 Diagrama de secuencia del flujo MFA. Desarrollador Demo feature/wi-0001-mfa-login manual-mfa-di-seq-001 a50402116842..." [ref=e206]:
+                  - cell "MFA-DI-SEQ-001" [ref=e207]
+                  - cell "1.0.0" [ref=e208]
+                  - cell "Diagrama de secuencia del flujo MFA." [ref=e209]
+                  - cell "Desarrollador Demo" [ref=e210]
+                  - cell "feature/wi-0001-mfa-login" [ref=e211]
+                  - cell "manual-mfa-di-seq-001" [ref=e212]
+                  - cell "a50402116842..." [ref=e213]
+                - row "MFA-DI-CLS-001 1.0.0 Diagrama de clases del modulo MFA. Desarrollador Demo feature/wi-0001-mfa-login manual-mfa-di-cls-001 29c541083abf..." [ref=e214]:
+                  - cell "MFA-DI-CLS-001" [ref=e215]
+                  - cell "1.0.0" [ref=e216]
+                  - cell "Diagrama de clases del modulo MFA." [ref=e217]
+                  - cell "Desarrollador Demo" [ref=e218]
+                  - cell "feature/wi-0001-mfa-login" [ref=e219]
+                  - cell "manual-mfa-di-cls-001" [ref=e220]
+                  - cell "29c541083abf..." [ref=e221]
+                - row "MFA-DI-SAD-001 1.0.0 Diseno arquitectonico afectado. Desarrollador Demo feature/wi-0001-mfa-login manual-mfa-di-sad-001 dd6a0a8f68ca..." [ref=e222]:
+                  - cell "MFA-DI-SAD-001" [ref=e223]
+                  - cell "1.0.0" [ref=e224]
+                  - cell "Diseno arquitectonico afectado." [ref=e225]
+                  - cell "Desarrollador Demo" [ref=e226]
+                  - cell "feature/wi-0001-mfa-login" [ref=e227]
+                  - cell "manual-mfa-di-sad-001" [ref=e228]
+                  - cell "dd6a0a8f68ca..." [ref=e229]
+                - row "MFA-AN-CU-001 1.0.0 Casos de uso afectados por MFA. Desarrollador Demo feature/wi-0001-mfa-login manual-mfa-an-cu-001 3dda882df8df..." [ref=e230]:
+                  - cell "MFA-AN-CU-001" [ref=e231]
+                  - cell "1.0.0" [ref=e232]
+                  - cell "Casos de uso afectados por MFA." [ref=e233]
+                  - cell "Desarrollador Demo" [ref=e234]
+                  - cell "feature/wi-0001-mfa-login" [ref=e235]
+                  - cell "manual-mfa-an-cu-001" [ref=e236]
+                  - cell "3dda882df8df..." [ref=e237]
+                - row "MFA-AN-SRS-001 1.0.0 Requisitos afectados por MFA. Desarrollador Demo feature/wi-0001-mfa-login manual-mfa-an-srs-001 eca710e0a23f..." [ref=e238]:
+                  - cell "MFA-AN-SRS-001" [ref=e239]
+                  - cell "1.0.0" [ref=e240]
+                  - cell "Requisitos afectados por MFA." [ref=e241]
+                  - cell "Desarrollador Demo" [ref=e242]
+                  - cell "feature/wi-0001-mfa-login" [ref=e243]
+                  - cell "manual-mfa-an-srs-001" [ref=e244]
+                  - cell "eca710e0a23f..." [ref=e245]
+                - row "MFA-AN-ENT-001 1.0.0 Entrevista inicial del interesado para MFA. Desarrollador Demo feature/wi-0001-mfa-login manual-mfa-an-ent-001 3e9759bc2856..." [ref=e246]:
+                  - cell "MFA-AN-ENT-001" [ref=e247]
+                  - cell "1.0.0" [ref=e248]
+                  - cell "Entrevista inicial del interesado para MFA." [ref=e249]
+                  - cell "Desarrollador Demo" [ref=e250]
+                  - cell "feature/wi-0001-mfa-login" [ref=e251]
+                  - cell "manual-mfa-an-ent-001" [ref=e252]
+                  - cell "3e9759bc2856..." [ref=e253]
+  - button "Open Next.js Dev Tools" [ref=e259] [cursor=pointer]:
+    - img [ref=e260]

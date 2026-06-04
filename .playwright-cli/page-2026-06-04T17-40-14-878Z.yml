@@ -1,0 +1,162 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]: SGCSW
+        - generic [ref=e6]: Sistema de Gestion de Configuracion
+      - navigation [ref=e7]:
+        - generic [ref=e8]:
+          - generic [ref=e9]: Operacion
+          - link "Mi Panel de Trabajo" [ref=e11] [cursor=pointer]:
+            - /url: /dashboard
+            - img [ref=e12]
+            - generic [ref=e17]: Mi Panel de Trabajo
+        - generic [ref=e18]:
+          - generic [ref=e19]: Boards
+          - generic [ref=e20]:
+            - link "Backlog" [ref=e21] [cursor=pointer]:
+              - /url: /boards/backlog
+              - img [ref=e22]
+              - generic [ref=e25]: Backlog
+            - link "Sprints" [ref=e26] [cursor=pointer]:
+              - /url: /boards/sprints
+              - img [ref=e27]
+              - generic [ref=e29]: Sprints
+            - link "Reportes diarios" [ref=e30] [cursor=pointer]:
+              - /url: /boards/reportes-diarios
+              - img [ref=e31]
+              - generic [ref=e36]: Reportes diarios
+        - generic [ref=e37]:
+          - generic [ref=e38]: Integraciones
+          - link "GitHub" [ref=e40] [cursor=pointer]:
+            - /url: /github/workspace
+            - img [ref=e41]
+            - generic [ref=e45]: GitHub
+        - generic [ref=e46]:
+          - generic [ref=e47]: Configuracion
+          - link "Trazabilidad" [ref=e49] [cursor=pointer]:
+            - /url: /configuracion/trazabilidad
+            - img [ref=e50]
+            - generic [ref=e55]: Trazabilidad
+        - generic [ref=e56]:
+          - generic [ref=e57]: Calidad
+          - generic [ref=e58]:
+            - link "Pruebas QA" [ref=e59] [cursor=pointer]:
+              - /url: /qa/pruebas
+              - img [ref=e60]
+              - generic [ref=e63]: Pruebas QA
+            - link "Defectos" [ref=e64] [cursor=pointer]:
+              - /url: /qa/defectos
+              - img [ref=e65]
+              - generic [ref=e68]: Defectos
+            - link "UAT" [ref=e69] [cursor=pointer]:
+              - /url: /qa/uat
+              - img [ref=e70]
+              - generic [ref=e73]: UAT
+            - link "Validacion final" [ref=e74] [cursor=pointer]:
+              - /url: /qa/validacion-final
+              - img [ref=e75]
+              - generic [ref=e78]: Validacion final
+        - generic [ref=e79]:
+          - generic [ref=e80]: Liberacion
+          - link "Releases" [ref=e82] [cursor=pointer]:
+            - /url: /liberacion/releases
+            - img [ref=e83]
+            - generic [ref=e88]: Releases
+        - generic [ref=e89]:
+          - generic [ref=e90]: Reportes
+          - link "Reportes" [ref=e92] [cursor=pointer]:
+            - /url: /reportes
+            - img [ref=e93]
+            - generic [ref=e96]: Reportes
+      - generic [ref=e97]:
+        - generic [ref=e98]: Equipo QA / Tester
+        - generic [ref=e99]: MANUAL-001 - Portal SGCSW Manual
+        - generic [ref=e100]: qa@gmail.com
+    - main [ref=e101]:
+      - generic [ref=e103]:
+        - generic [ref=e104]:
+          - generic [ref=e105]: QA Tester Demo
+          - generic [ref=e106]: Equipo QA / Tester en MANUAL-001
+        - generic [ref=e107]:
+          - link "Cambiar proyecto" [ref=e108] [cursor=pointer]:
+            - /url: /seleccionar-proyecto
+            - img [ref=e109]
+            - text: Cambiar proyecto
+          - button "Salir" [ref=e120] [cursor=pointer]:
+            - img [ref=e121]
+            - text: Salir
+      - generic [ref=e124]:
+        - generic [ref=e126]:
+          - heading "Pruebas QA" [level=1] [ref=e127]
+          - paragraph [ref=e128]: Funcionales, integracion y regresion
+        - generic [ref=e129]:
+          - generic [ref=e130]:
+            - generic [ref=e131]:
+              - heading "Puerta documental para QA" [level=2] [ref=e132]
+              - paragraph [ref=e133]: QA solo puede aprobar si los artefactos obligatorios de analisis, diseno e implementacion estan versionados y aprobados.
+            - table [ref=e135]:
+              - rowgroup [ref=e136]:
+                - row "Orden Work items Pendientes Listo" [ref=e137]:
+                  - columnheader "Orden" [ref=e138]
+                  - columnheader "Work items" [ref=e139]
+                  - columnheader "Pendientes" [ref=e140]
+                  - columnheader "Listo" [ref=e141]
+              - rowgroup [ref=e142]:
+                - row "OC-0001 WI-0001 - Listo para QA" [ref=e143]:
+                  - cell "OC-0001" [ref=e144]
+                  - cell "WI-0001" [ref=e145]
+                  - cell "-" [ref=e146]
+                  - cell "Listo para QA" [ref=e147]:
+                    - generic [ref=e148]: Listo para QA
+          - generic [ref=e149]:
+            - generic [ref=e150]:
+              - heading "Registrar prueba QA" [level=2] [ref=e152]
+              - generic [ref=e153]:
+                - generic [ref=e154]:
+                  - generic [ref=e155]: Orden lista para QA *
+                  - combobox "Orden lista para QA *" [ref=e156]:
+                    - option "Seleccionar"
+                    - option "OC-0001 - Implementar autenticacion MFA con documentacion RUP" [selected]
+                - generic [ref=e157]:
+                  - generic [ref=e158]: Tipo *
+                  - combobox "Tipo *" [ref=e159]:
+                    - option "Seleccionar" [selected]
+                    - option "Funcional"
+                    - option "En integracion"
+                    - option "Regresion"
+                - generic [ref=e160]:
+                  - generic [ref=e161]: Resultado *
+                  - combobox "Resultado *" [ref=e162]:
+                    - option "Seleccionar" [selected]
+                    - option "OK"
+                    - option "No OK"
+                - generic [ref=e163]:
+                  - generic [ref=e164]: Notas
+                  - textbox "Notas" [ref=e165]
+                - generic [ref=e166]:
+                  - generic [ref=e167]: Severidad defecto
+                  - combobox "Severidad defecto" [ref=e168]:
+                    - option "Seleccionar" [selected]
+                    - option "Baja"
+                    - option "Media"
+                    - option "Alta"
+                    - option "Critica"
+                - generic [ref=e169]:
+                  - generic [ref=e170]: Descripcion defecto
+                  - textbox "Descripcion defecto" [ref=e171]
+                - button "Registrar QA" [ref=e172] [cursor=pointer]
+            - generic [ref=e173]:
+              - heading "Pruebas QA" [level=2] [ref=e175]
+              - table [ref=e177]:
+                - rowgroup [ref=e178]:
+                  - row "Orden Tipo Resultado QA Defectos" [ref=e179]:
+                    - columnheader "Orden" [ref=e180]
+                    - columnheader "Tipo" [ref=e181]
+                    - columnheader "Resultado" [ref=e182]
+                    - columnheader "QA" [ref=e183]
+                    - columnheader "Defectos" [ref=e184]
+                - rowgroup
+  - button "Open Next.js Dev Tools" [ref=e190] [cursor=pointer]:
+    - img [ref=e191]
+  - alert [ref=e194]

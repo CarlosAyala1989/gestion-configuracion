@@ -1,0 +1,10 @@
+{
+  "/(protected)/[...segments]/page": "app/(protected)/[...segments]/page.js",
+  "/(protected)/seleccionar-proyecto/page": "app/(protected)/seleccionar-proyecto/page.js",
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/github/webhook/route": "app/api/github/webhook/route.js",
+  "/api/reportes/export/route": "app/api/reportes/export/route.js",
+  "/login/page": "app/login/page.js",
+  "/page": "app/page.js"
+}

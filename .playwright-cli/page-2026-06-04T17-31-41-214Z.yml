@@ -1,0 +1,268 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]: SGCSW
+        - generic [ref=e6]: Sistema de Gestion de Configuracion
+      - navigation [ref=e7]:
+        - generic [ref=e8]:
+          - generic [ref=e9]: Operacion
+          - link "Mi Panel de Trabajo" [ref=e11] [cursor=pointer]:
+            - /url: /dashboard
+            - img [ref=e12]
+            - generic [ref=e17]: Mi Panel de Trabajo
+        - generic [ref=e18]:
+          - generic [ref=e19]: Boards
+          - generic [ref=e20]:
+            - link "Backlog" [ref=e21] [cursor=pointer]:
+              - /url: /boards/backlog
+              - img [ref=e22]
+              - generic [ref=e25]: Backlog
+            - link "Sprints" [ref=e26] [cursor=pointer]:
+              - /url: /boards/sprints
+              - img [ref=e27]
+              - generic [ref=e29]: Sprints
+            - link "Metodologia" [ref=e30] [cursor=pointer]:
+              - /url: /boards/metodologia
+              - img [ref=e31]
+              - generic [ref=e36]: Metodologia
+            - link "Reportes diarios" [ref=e37] [cursor=pointer]:
+              - /url: /boards/reportes-diarios
+              - img [ref=e38]
+              - generic [ref=e43]: Reportes diarios
+        - generic [ref=e44]:
+          - generic [ref=e45]: Administracion
+          - link "Proyectos" [ref=e47] [cursor=pointer]:
+            - /url: /admin/proyectos
+            - img [ref=e48]
+            - generic [ref=e58]: Proyectos
+        - generic [ref=e59]:
+          - generic [ref=e60]: Integraciones
+          - link "GitHub" [ref=e62] [cursor=pointer]:
+            - /url: /github/workspace
+            - img [ref=e63]
+            - generic [ref=e67]: GitHub
+        - generic [ref=e68]:
+          - generic [ref=e69]: Configuracion
+          - link "Trazabilidad" [ref=e71] [cursor=pointer]:
+            - /url: /configuracion/trazabilidad
+            - img [ref=e72]
+            - generic [ref=e77]: Trazabilidad
+        - generic [ref=e78]:
+          - generic [ref=e79]: Cambios
+          - generic [ref=e80]:
+            - link "Solicitudes" [ref=e81] [cursor=pointer]:
+              - /url: /cambios/solicitudes
+              - img [ref=e82]
+              - generic [ref=e85]: Solicitudes
+            - link "Evaluacion de impacto" [ref=e86] [cursor=pointer]:
+              - /url: /cambios/evaluacion-impacto
+              - img [ref=e87]
+              - generic [ref=e91]: Evaluacion de impacto
+            - link "Ordenes de cambio" [ref=e92] [cursor=pointer]:
+              - /url: /cambios/ordenes
+              - img [ref=e93]
+              - generic [ref=e97]: Ordenes de cambio
+        - generic [ref=e98]:
+          - generic [ref=e99]: Reportes
+          - link "Reportes" [ref=e101] [cursor=pointer]:
+            - /url: /reportes
+            - img [ref=e102]
+            - generic [ref=e105]: Reportes
+      - generic [ref=e106]:
+        - generic [ref=e107]: Director / Jefe de Proyecto
+        - generic [ref=e108]: MANUAL-001 - Portal SGCSW Manual
+        - generic [ref=e109]: jefeproyecto@gmail.com
+    - main [ref=e110]:
+      - generic [ref=e112]:
+        - generic [ref=e113]:
+          - generic [ref=e114]: Jefe de Proyecto Demo
+          - generic [ref=e115]: Director / Jefe de Proyecto en MANUAL-001
+        - generic [ref=e116]:
+          - link "Cambiar proyecto" [ref=e117] [cursor=pointer]:
+            - /url: /seleccionar-proyecto
+            - img [ref=e118]
+            - text: Cambiar proyecto
+          - button "Salir" [ref=e129] [cursor=pointer]:
+            - img [ref=e130]
+            - text: Salir
+      - generic [ref=e133]:
+        - generic [ref=e135]:
+          - heading "Backlog" [level=1] [ref=e136]
+          - paragraph [ref=e137]: Work items, jerarquia, ramas, issues, PRs y trazabilidad GitHub
+        - generic [ref=e138]:
+          - generic [ref=e139]:
+            - generic [ref=e140]:
+              - heading "Crear work item" [level=2] [ref=e142]
+              - generic [ref=e143]:
+                - generic [ref=e144]:
+                  - generic [ref=e145]: Proyecto *
+                  - combobox "Proyecto *" [ref=e146]:
+                    - option "Seleccionar"
+                    - option "MANUAL-001 - Portal SGCSW Manual" [selected]
+                - generic [ref=e147]:
+                  - generic [ref=e148]:
+                    - generic [ref=e149]: Tipo *
+                    - combobox "Tipo *" [ref=e150]:
+                      - option "Seleccionar" [selected]
+                      - option "Epic"
+                      - option "Feature"
+                      - option "Historia"
+                      - option "Tarea"
+                      - option "Bug"
+                      - option "Issue"
+                  - generic [ref=e151]:
+                    - generic [ref=e152]: Prioridad
+                    - combobox "Prioridad" [ref=e153]:
+                      - option "Seleccionar"
+                      - option "Baja"
+                      - option "Media" [selected]
+                      - option "Alta"
+                      - option "Critica"
+                  - generic [ref=e154]:
+                    - generic [ref=e155]: Estado
+                    - combobox "Estado" [ref=e156]:
+                      - option "Seleccionar"
+                      - option "Nuevo" [selected]
+                      - option "Activo"
+                      - option "Resuelta"
+                      - option "Cerrada"
+                  - generic [ref=e157]:
+                    - generic [ref=e158]: Story points
+                    - spinbutton "Story points" [ref=e159]
+                - generic [ref=e160]:
+                  - generic [ref=e161]: Titulo *
+                  - textbox "Titulo *" [ref=e162]
+                - generic [ref=e163]:
+                  - generic [ref=e164]: Descripcion *
+                  - textbox "Descripcion *" [ref=e165]
+                - generic [ref=e166]:
+                  - generic [ref=e167]:
+                    - generic [ref=e168]: Asignado a
+                    - combobox "Asignado a" [ref=e169]:
+                      - option "Seleccionar" [selected]
+                      - option "QA Tester Demo (Equipo QA / Tester)"
+                      - option "Desarrollador Demo (Desarrollador Asignado)"
+                      - option "Bibliotecario Demo (Administrador de Configuracion / Bibliotecario)"
+                      - option "Miembro CCB Demo (Comite de Control de Cambios)"
+                      - option "Lider Tecnico Demo (Lider Tecnico / Analista)"
+                      - option "Jefe de Proyecto Demo (Director / Jefe de Proyecto)"
+                      - option "Solicitante Demo (Solicitante / Cliente / Usuario Final)"
+                      - option "Carlos Daniel Administrador (Administrador del Sistema)"
+                  - generic [ref=e170]:
+                    - generic [ref=e171]: Sprint
+                    - combobox "Sprint" [ref=e172]:
+                      - option "Seleccionar" [selected]
+                  - generic [ref=e173]:
+                    - generic [ref=e174]: Actividad
+                    - combobox "Actividad" [ref=e175]:
+                      - option "Seleccionar" [selected]
+                      - option "MANUAL-001 - Levantamiento y validacion de requerimientos"
+                      - option "MANUAL-001 - Modelado de analisis y diseno"
+                      - option "MANUAL-001 - Implementacion y versionamiento"
+                      - option "MANUAL-001 - QA, UAT, linea base y liberacion"
+                  - generic [ref=e176]:
+                    - generic [ref=e177]: Vence
+                    - textbox "Vence" [ref=e178]
+                  - generic [ref=e179]:
+                    - generic [ref=e180]: Solicitud
+                    - combobox "Solicitud" [ref=e181]:
+                      - option "Seleccionar" [selected]
+                      - option "SC-0001 - Implementar autenticacion MFA con documentacion RUP"
+                  - generic [ref=e182]:
+                    - generic [ref=e183]: Orden
+                    - combobox "Orden" [ref=e184]:
+                      - option "Seleccionar" [selected]
+                      - option "OC-0001 - Implementar autenticacion MFA con documentacion RUP"
+                - generic [ref=e185]:
+                  - generic [ref=e186]:
+                    - generic [ref=e187]: Rama GitHub
+                    - textbox "Rama GitHub" [ref=e188]:
+                      - /placeholder: feature/wi-0001-login
+                  - generic [ref=e189]:
+                    - generic [ref=e190]: Rama base
+                    - textbox "Rama base" [ref=e191]:
+                      - /placeholder: main
+                  - generic [ref=e192]:
+                    - checkbox "Crear rama GitHub" [ref=e193]
+                    - text: Crear rama GitHub
+                  - generic [ref=e194]:
+                    - checkbox "Crear issue GitHub" [ref=e195]
+                    - text: Crear issue GitHub
+                - button "Crear work item" [ref=e196] [cursor=pointer]:
+                  - img [ref=e197]
+                  - text: Crear work item
+            - generic [ref=e198]:
+              - generic [ref=e199]:
+                - generic [ref=e200]:
+                  - generic [ref=e201]: Proyecto
+                  - combobox "Proyecto" [ref=e202]:
+                    - option "Todos" [selected]
+                    - option "MANUAL-001 - Portal SGCSW Manual"
+                - generic [ref=e203]:
+                  - generic [ref=e204]: Estado
+                  - textbox "Estado" [ref=e205]
+                - generic [ref=e206]:
+                  - generic [ref=e207]: Buscar
+                  - textbox "Buscar" [ref=e208]:
+                    - /placeholder: Texto
+                - button "Filtrar" [ref=e209] [cursor=pointer]:
+                  - img [ref=e210]
+                  - text: Filtrar
+              - generic [ref=e212]:
+                - heading "Backlog" [level=2] [ref=e214]
+                - table [ref=e216]:
+                  - rowgroup [ref=e217]:
+                    - row "ID Tipo Titulo Estado Asignado Sprint GitHub Actualizar" [ref=e218]:
+                      - columnheader "ID" [ref=e219]
+                      - columnheader "Tipo" [ref=e220]
+                      - columnheader "Titulo" [ref=e221]
+                      - columnheader "Estado" [ref=e222]
+                      - columnheader "Asignado" [ref=e223]
+                      - columnheader "Sprint" [ref=e224]
+                      - columnheader "GitHub" [ref=e225]
+                      - columnheader "Actualizar" [ref=e226]
+                  - rowgroup
+          - generic [ref=e227]:
+            - heading "Matriz de analisis, diseno e implementacion" [level=2] [ref=e229]
+            - generic [ref=e230]: Cree un work item para generar automaticamente los artefactos requeridos segun la metodologia del proyecto.
+          - generic [ref=e231]:
+            - heading "Enlazar work items y evidencias" [level=2] [ref=e233]
+            - generic [ref=e234]:
+              - generic [ref=e235]:
+                - generic [ref=e236]: Origen *
+                - combobox "Origen *" [ref=e237]:
+                  - option "Seleccionar" [selected]
+              - generic [ref=e238]:
+                - generic [ref=e239]: Tipo *
+                - combobox "Tipo *" [ref=e240]:
+                  - option "Seleccionar" [selected]
+                  - option "Padre"
+                  - option "Hijo"
+                  - option "Relacionado"
+                  - option "Predecesor"
+                  - option "Sucesor"
+                  - option "Rama GitHub"
+                  - option "Commit GitHub"
+                  - option "Pull Request GitHub"
+                  - option "Issue GitHub"
+                  - option "Solicitud de cambio"
+                  - option "Orden de cambio"
+                  - option "ECS"
+                  - option "Release"
+              - generic [ref=e241]:
+                - generic [ref=e242]: Destino interno
+                - combobox "Destino interno" [ref=e243]:
+                  - option "Seleccionar" [selected]
+              - generic [ref=e244]:
+                - generic [ref=e245]: URL externa
+                - textbox "URL externa" [ref=e246]:
+                  - /placeholder: https://github.com/...
+              - generic [ref=e247]:
+                - generic [ref=e248]: ID externo
+                - textbox "ID externo" [ref=e249]:
+                  - /placeholder: SHA, rama o numero
+              - button "Enlazar" [ref=e250] [cursor=pointer]
+  - button "Open Next.js Dev Tools" [ref=e256] [cursor=pointer]:
+    - img [ref=e257]
+  - alert [ref=e260]

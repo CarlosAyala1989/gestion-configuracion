@@ -1,0 +1,367 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]: SGCSW
+        - generic [ref=e6]: Sistema de Gestion de Configuracion
+      - navigation [ref=e7]:
+        - generic [ref=e8]:
+          - generic [ref=e9]: Operacion
+          - link "Mi Panel de Trabajo" [ref=e11] [cursor=pointer]:
+            - /url: /dashboard
+            - img [ref=e12]
+            - generic [ref=e17]: Mi Panel de Trabajo
+        - generic [ref=e18]:
+          - generic [ref=e19]: Boards
+          - generic [ref=e20]:
+            - link "Backlog" [ref=e21] [cursor=pointer]:
+              - /url: /boards/backlog
+              - img [ref=e22]
+              - generic [ref=e25]: Backlog
+            - link "Sprints" [ref=e26] [cursor=pointer]:
+              - /url: /boards/sprints
+              - img [ref=e27]
+              - generic [ref=e29]: Sprints
+            - link "Metodologia" [ref=e30] [cursor=pointer]:
+              - /url: /boards/metodologia
+              - img [ref=e31]
+              - generic [ref=e36]: Metodologia
+            - link "Reportes diarios" [ref=e37] [cursor=pointer]:
+              - /url: /boards/reportes-diarios
+              - img [ref=e38]
+              - generic [ref=e43]: Reportes diarios
+        - generic [ref=e44]:
+          - generic [ref=e45]: Administracion
+          - generic [ref=e46]:
+            - link "Usuarios" [ref=e47] [cursor=pointer]:
+              - /url: /admin/usuarios
+              - img [ref=e48]
+              - generic [ref=e53]: Usuarios
+            - link "Roles y permisos" [ref=e54] [cursor=pointer]:
+              - /url: /admin/roles
+              - img [ref=e55]
+              - generic [ref=e67]: Roles y permisos
+            - link "Proyectos" [ref=e68] [cursor=pointer]:
+              - /url: /admin/proyectos
+              - img [ref=e69]
+              - generic [ref=e79]: Proyectos
+            - link "Auditoria" [ref=e80] [cursor=pointer]:
+              - /url: /admin/auditoria
+              - img [ref=e81]
+              - generic [ref=e86]: Auditoria
+            - link "Integridad" [ref=e87] [cursor=pointer]:
+              - /url: /admin/integridad
+              - img [ref=e88]
+              - generic [ref=e91]: Integridad
+        - generic [ref=e92]:
+          - generic [ref=e93]: Integraciones
+          - link "GitHub" [ref=e95] [cursor=pointer]:
+            - /url: /github/workspace
+            - img [ref=e96]
+            - generic [ref=e100]: GitHub
+        - generic [ref=e101]:
+          - generic [ref=e102]: Configuracion
+          - link "Trazabilidad" [ref=e104] [cursor=pointer]:
+            - /url: /configuracion/trazabilidad
+            - img [ref=e105]
+            - generic [ref=e110]: Trazabilidad
+        - generic [ref=e111]:
+          - generic [ref=e112]: Reportes
+          - link "Reportes" [ref=e114] [cursor=pointer]:
+            - /url: /reportes
+            - img [ref=e115]
+            - generic [ref=e118]: Reportes
+      - generic [ref=e119]:
+        - generic [ref=e120]: Administrador del Sistema
+        - generic [ref=e121]: Contexto global
+        - generic [ref=e122]: carlosdaniel@gmail.com
+    - main [ref=e123]:
+      - generic [ref=e125]:
+        - generic [ref=e126]:
+          - generic [ref=e127]: Carlos Daniel Administrador
+          - generic [ref=e128]: Administrador del Sistema - Global
+        - generic [ref=e129]:
+          - link "Cambiar proyecto" [ref=e130] [cursor=pointer]:
+            - /url: /seleccionar-proyecto
+            - img [ref=e131]
+            - text: Cambiar proyecto
+          - button "Salir" [ref=e142] [cursor=pointer]:
+            - img [ref=e143]
+            - text: Salir
+      - generic [ref=e146]:
+        - generic [ref=e148]:
+          - heading "Gestion de usuarios" [level=1] [ref=e149]
+          - paragraph [ref=e150]: Usuarios activos, roles y credenciales GitHub cifradas
+        - generic [ref=e151]:
+          - generic [ref=e152]:
+            - generic [ref=e153]:
+              - heading "Crear usuario" [level=2] [ref=e155]
+              - generic [ref=e156]:
+                - generic [ref=e157]:
+                  - generic [ref=e158]: Nombre *
+                  - textbox "Nombre *" [ref=e159]
+                - generic [ref=e160]:
+                  - generic [ref=e161]: Email *
+                  - textbox "Email *" [ref=e162]
+                - generic [ref=e163]:
+                  - generic [ref=e164]: Contrasena *
+                  - textbox "Contrasena *" [ref=e165]
+                - generic [ref=e166]:
+                  - generic [ref=e167]: Rol base *
+                  - combobox "Rol base *" [ref=e168]:
+                    - option "Seleccionar" [selected]
+                    - option "Administrador de Configuracion / Bibliotecario"
+                    - option "Administrador del Sistema"
+                    - option "Comite de Control de Cambios"
+                    - option "Desarrollador Asignado"
+                    - option "Director / Jefe de Proyecto"
+                    - option "Equipo QA / Tester"
+                    - option "Lider Tecnico / Analista"
+                    - option "Solicitante / Cliente / Usuario Final"
+                - generic [ref=e169]:
+                  - generic [ref=e170]: Token GitHub respaldo
+                  - textbox "Token GitHub respaldo" [ref=e171]:
+                    - /placeholder: Opcional; se usa si no hay token compartido
+                - button "Crear usuario" [ref=e172] [cursor=pointer]:
+                  - img [ref=e173]
+                  - text: Crear usuario
+            - generic [ref=e174]:
+              - heading "Usuarios" [level=2] [ref=e176]
+              - table [ref=e178]:
+                - rowgroup [ref=e179]:
+                  - row "Nombre Email Rol base Roles por proyecto GitHub Estado Accion" [ref=e180]:
+                    - columnheader "Nombre" [ref=e181]
+                    - columnheader "Email" [ref=e182]
+                    - columnheader "Rol base" [ref=e183]
+                    - columnheader "Roles por proyecto" [ref=e184]
+                    - columnheader "GitHub" [ref=e185]
+                    - columnheader "Estado" [ref=e186]
+                    - columnheader "Accion" [ref=e187]
+                - rowgroup [ref=e188]:
+                  - row "Sistema Liberacion Demo sistemaliberacion@gmail.com Sistema Gestor de Liberacion - ****xOg2 Activo Desactivar" [ref=e189]:
+                    - cell "Sistema Liberacion Demo" [ref=e190]
+                    - cell "sistemaliberacion@gmail.com" [ref=e191]
+                    - cell "Sistema Gestor de Liberacion" [ref=e192]
+                    - cell "-" [ref=e193]
+                    - cell "****xOg2" [ref=e194]
+                    - cell "Activo" [ref=e195]:
+                      - generic [ref=e196]: Activo
+                    - cell "Desactivar" [ref=e197]:
+                      - button "Desactivar" [ref=e199] [cursor=pointer]
+                  - row "Sistema Configuracion Demo sistemaconfiguracion@gmail.com Sistema Gestor de Configuracion - ****xOg2 Activo Desactivar" [ref=e200]:
+                    - cell "Sistema Configuracion Demo" [ref=e201]
+                    - cell "sistemaconfiguracion@gmail.com" [ref=e202]
+                    - cell "Sistema Gestor de Configuracion" [ref=e203]
+                    - cell "-" [ref=e204]
+                    - cell "****xOg2" [ref=e205]
+                    - cell "Activo" [ref=e206]:
+                      - generic [ref=e207]: Activo
+                    - cell "Desactivar" [ref=e208]:
+                      - button "Desactivar" [ref=e210] [cursor=pointer]
+                  - 'row "QA Tester Demo qa@gmail.com Equipo QA / Tester MANUAL-001: Equipo QA / Tester ****xOg2 Activo Desactivar" [ref=e211]':
+                    - cell "QA Tester Demo" [ref=e212]
+                    - cell "qa@gmail.com" [ref=e213]
+                    - cell "Equipo QA / Tester" [ref=e214]
+                    - 'cell "MANUAL-001: Equipo QA / Tester" [ref=e215]'
+                    - cell "****xOg2" [ref=e216]
+                    - cell "Activo" [ref=e217]:
+                      - generic [ref=e218]: Activo
+                    - cell "Desactivar" [ref=e219]:
+                      - button "Desactivar" [ref=e221] [cursor=pointer]
+                  - 'row "Desarrollador Demo desarrollador@gmail.com Desarrollador Asignado MANUAL-001: Desarrollador Asignado ****xOg2 Activo Desactivar" [ref=e222]':
+                    - cell "Desarrollador Demo" [ref=e223]
+                    - cell "desarrollador@gmail.com" [ref=e224]
+                    - cell "Desarrollador Asignado" [ref=e225]
+                    - 'cell "MANUAL-001: Desarrollador Asignado" [ref=e226]'
+                    - cell "****xOg2" [ref=e227]
+                    - cell "Activo" [ref=e228]:
+                      - generic [ref=e229]: Activo
+                    - cell "Desactivar" [ref=e230]:
+                      - button "Desactivar" [ref=e232] [cursor=pointer]
+                  - 'row "Bibliotecario Demo bibliotecario@gmail.com Administrador de Configuracion / Bibliotecario MANUAL-001: Administrador de Configuracion / Bibliotecario ****xOg2 Activo Desactivar" [ref=e233]':
+                    - cell "Bibliotecario Demo" [ref=e234]
+                    - cell "bibliotecario@gmail.com" [ref=e235]
+                    - cell "Administrador de Configuracion / Bibliotecario" [ref=e236]
+                    - 'cell "MANUAL-001: Administrador de Configuracion / Bibliotecario" [ref=e237]'
+                    - cell "****xOg2" [ref=e238]
+                    - cell "Activo" [ref=e239]:
+                      - generic [ref=e240]: Activo
+                    - cell "Desactivar" [ref=e241]:
+                      - button "Desactivar" [ref=e243] [cursor=pointer]
+                  - 'row "Miembro CCB Demo ccb@gmail.com Comite de Control de Cambios MANUAL-001: Comite de Control de Cambios ****xOg2 Activo Desactivar" [ref=e244]':
+                    - cell "Miembro CCB Demo" [ref=e245]
+                    - cell "ccb@gmail.com" [ref=e246]
+                    - cell "Comite de Control de Cambios" [ref=e247]
+                    - 'cell "MANUAL-001: Comite de Control de Cambios" [ref=e248]'
+                    - cell "****xOg2" [ref=e249]
+                    - cell "Activo" [ref=e250]:
+                      - generic [ref=e251]: Activo
+                    - cell "Desactivar" [ref=e252]:
+                      - button "Desactivar" [ref=e254] [cursor=pointer]
+                  - 'row "Lider Tecnico Demo lidertecnico@gmail.com Lider Tecnico / Analista MANUAL-001: Lider Tecnico / Analista ****xOg2 Activo Desactivar" [ref=e255]':
+                    - cell "Lider Tecnico Demo" [ref=e256]
+                    - cell "lidertecnico@gmail.com" [ref=e257]
+                    - cell "Lider Tecnico / Analista" [ref=e258]
+                    - 'cell "MANUAL-001: Lider Tecnico / Analista" [ref=e259]'
+                    - cell "****xOg2" [ref=e260]
+                    - cell "Activo" [ref=e261]:
+                      - generic [ref=e262]: Activo
+                    - cell "Desactivar" [ref=e263]:
+                      - button "Desactivar" [ref=e265] [cursor=pointer]
+                  - 'row "Jefe de Proyecto Demo jefeproyecto@gmail.com Director / Jefe de Proyecto MANUAL-001: Director / Jefe de Proyecto ****xOg2 Activo Desactivar" [ref=e266]':
+                    - cell "Jefe de Proyecto Demo" [ref=e267]
+                    - cell "jefeproyecto@gmail.com" [ref=e268]
+                    - cell "Director / Jefe de Proyecto" [ref=e269]
+                    - 'cell "MANUAL-001: Director / Jefe de Proyecto" [ref=e270]'
+                    - cell "****xOg2" [ref=e271]
+                    - cell "Activo" [ref=e272]:
+                      - generic [ref=e273]: Activo
+                    - cell "Desactivar" [ref=e274]:
+                      - button "Desactivar" [ref=e276] [cursor=pointer]
+                  - 'row "Solicitante Demo solicitante@gmail.com Solicitante / Cliente / Usuario Final MANUAL-001: Solicitante / Cliente / Usuario Final ****xOg2 Activo Desactivar" [ref=e277]':
+                    - cell "Solicitante Demo" [ref=e278]
+                    - cell "solicitante@gmail.com" [ref=e279]
+                    - cell "Solicitante / Cliente / Usuario Final" [ref=e280]
+                    - 'cell "MANUAL-001: Solicitante / Cliente / Usuario Final" [ref=e281]'
+                    - cell "****xOg2" [ref=e282]
+                    - cell "Activo" [ref=e283]:
+                      - generic [ref=e284]: Activo
+                    - cell "Desactivar" [ref=e285]:
+                      - button "Desactivar" [ref=e287] [cursor=pointer]
+                  - 'row "Carlos Daniel Administrador carlosdaniel@gmail.com Administrador del Sistema MANUAL-001: Administrador del Sistema ****xOg2 Activo Desactivar" [ref=e288]':
+                    - cell "Carlos Daniel Administrador" [ref=e289]
+                    - cell "carlosdaniel@gmail.com" [ref=e290]
+                    - cell "Administrador del Sistema" [ref=e291]
+                    - 'cell "MANUAL-001: Administrador del Sistema" [ref=e292]'
+                    - cell "****xOg2" [ref=e293]
+                    - cell "Activo" [ref=e294]:
+                      - generic [ref=e295]: Activo
+                    - cell "Desactivar" [ref=e296]:
+                      - button "Desactivar" [ref=e298] [cursor=pointer]
+          - generic [ref=e299]:
+            - generic [ref=e300]:
+              - heading "Roles por proyecto" [level=2] [ref=e301]
+              - paragraph [ref=e302]: Un mismo usuario puede tener roles distintos en proyectos distintos.
+            - generic [ref=e303]:
+              - generic [ref=e304]:
+                - generic [ref=e305]: Proyecto *
+                - combobox "Proyecto *" [ref=e306]:
+                  - option "Seleccionar" [selected]
+                  - option "MANUAL-001 - Portal SGCSW Manual"
+              - generic [ref=e307]:
+                - generic [ref=e308]: Usuario *
+                - combobox "Usuario *" [ref=e309]:
+                  - option "Seleccionar" [selected]
+                  - option "Sistema Liberacion Demo (Sistema Gestor de Liberacion)"
+                  - option "Sistema Configuracion Demo (Sistema Gestor de Configuracion)"
+                  - option "QA Tester Demo (Equipo QA / Tester)"
+                  - option "Desarrollador Demo (Desarrollador Asignado)"
+                  - option "Bibliotecario Demo (Administrador de Configuracion / Bibliotecario)"
+                  - option "Miembro CCB Demo (Comite de Control de Cambios)"
+                  - option "Lider Tecnico Demo (Lider Tecnico / Analista)"
+                  - option "Jefe de Proyecto Demo (Director / Jefe de Proyecto)"
+                  - option "Solicitante Demo (Solicitante / Cliente / Usuario Final)"
+                  - option "Carlos Daniel Administrador (Administrador del Sistema)"
+              - generic [ref=e310]:
+                - generic [ref=e311]: Rol en proyecto *
+                - combobox "Rol en proyecto *" [ref=e312]:
+                  - option "Seleccionar" [selected]
+                  - option "Administrador de Configuracion / Bibliotecario"
+                  - option "Administrador del Sistema"
+                  - option "Comite de Control de Cambios"
+                  - option "Desarrollador Asignado"
+                  - option "Director / Jefe de Proyecto"
+                  - option "Equipo QA / Tester"
+                  - option "Lider Tecnico / Analista"
+                  - option "Solicitante / Cliente / Usuario Final"
+              - generic [ref=e313]:
+                - generic [ref=e314]: Nota
+                - textbox "Nota" [ref=e315]:
+                  - /placeholder: Equipo, guardia o responsabilidad
+              - button "Asignar" [ref=e317] [cursor=pointer]:
+                - img [ref=e318]
+                - text: Asignar
+            - table [ref=e320]:
+              - rowgroup [ref=e321]:
+                - row "Proyecto Usuario Rol en proyecto Rol base Estado Accion" [ref=e322]:
+                  - columnheader "Proyecto" [ref=e323]
+                  - columnheader "Usuario" [ref=e324]
+                  - columnheader "Rol en proyecto" [ref=e325]
+                  - columnheader "Rol base" [ref=e326]
+                  - columnheader "Estado" [ref=e327]
+                  - columnheader "Accion" [ref=e328]
+              - rowgroup [ref=e329]:
+                - row "MANUAL-001 Carlos Daniel Administrador Administrador del Sistema Administrador del Sistema Activo Desactivar" [ref=e330]:
+                  - cell "MANUAL-001" [ref=e331]
+                  - cell "Carlos Daniel Administrador" [ref=e332]
+                  - cell "Administrador del Sistema" [ref=e333]
+                  - cell "Administrador del Sistema" [ref=e334]
+                  - cell "Activo" [ref=e335]:
+                    - generic [ref=e336]: Activo
+                  - cell "Desactivar" [ref=e337]:
+                    - button "Desactivar" [ref=e339] [cursor=pointer]
+                - row "MANUAL-001 QA Tester Demo Equipo QA / Tester Equipo QA / Tester Activo Desactivar" [ref=e340]:
+                  - cell "MANUAL-001" [ref=e341]
+                  - cell "QA Tester Demo" [ref=e342]
+                  - cell "Equipo QA / Tester" [ref=e343]
+                  - cell "Equipo QA / Tester" [ref=e344]
+                  - cell "Activo" [ref=e345]:
+                    - generic [ref=e346]: Activo
+                  - cell "Desactivar" [ref=e347]:
+                    - button "Desactivar" [ref=e349] [cursor=pointer]
+                - row "MANUAL-001 Desarrollador Demo Desarrollador Asignado Desarrollador Asignado Activo Desactivar" [ref=e350]:
+                  - cell "MANUAL-001" [ref=e351]
+                  - cell "Desarrollador Demo" [ref=e352]
+                  - cell "Desarrollador Asignado" [ref=e353]
+                  - cell "Desarrollador Asignado" [ref=e354]
+                  - cell "Activo" [ref=e355]:
+                    - generic [ref=e356]: Activo
+                  - cell "Desactivar" [ref=e357]:
+                    - button "Desactivar" [ref=e359] [cursor=pointer]
+                - row "MANUAL-001 Bibliotecario Demo Administrador de Configuracion / Bibliotecario Administrador de Configuracion / Bibliotecario Activo Desactivar" [ref=e360]:
+                  - cell "MANUAL-001" [ref=e361]
+                  - cell "Bibliotecario Demo" [ref=e362]
+                  - cell "Administrador de Configuracion / Bibliotecario" [ref=e363]
+                  - cell "Administrador de Configuracion / Bibliotecario" [ref=e364]
+                  - cell "Activo" [ref=e365]:
+                    - generic [ref=e366]: Activo
+                  - cell "Desactivar" [ref=e367]:
+                    - button "Desactivar" [ref=e369] [cursor=pointer]
+                - row "MANUAL-001 Miembro CCB Demo Comite de Control de Cambios Comite de Control de Cambios Activo Desactivar" [ref=e370]:
+                  - cell "MANUAL-001" [ref=e371]
+                  - cell "Miembro CCB Demo" [ref=e372]
+                  - cell "Comite de Control de Cambios" [ref=e373]
+                  - cell "Comite de Control de Cambios" [ref=e374]
+                  - cell "Activo" [ref=e375]:
+                    - generic [ref=e376]: Activo
+                  - cell "Desactivar" [ref=e377]:
+                    - button "Desactivar" [ref=e379] [cursor=pointer]
+                - row "MANUAL-001 Lider Tecnico Demo Lider Tecnico / Analista Lider Tecnico / Analista Activo Desactivar" [ref=e380]:
+                  - cell "MANUAL-001" [ref=e381]
+                  - cell "Lider Tecnico Demo" [ref=e382]
+                  - cell "Lider Tecnico / Analista" [ref=e383]
+                  - cell "Lider Tecnico / Analista" [ref=e384]
+                  - cell "Activo" [ref=e385]:
+                    - generic [ref=e386]: Activo
+                  - cell "Desactivar" [ref=e387]:
+                    - button "Desactivar" [ref=e389] [cursor=pointer]
+                - row "MANUAL-001 Solicitante Demo Solicitante / Cliente / Usuario Final Solicitante / Cliente / Usuario Final Activo Desactivar" [ref=e390]:
+                  - cell "MANUAL-001" [ref=e391]
+                  - cell "Solicitante Demo" [ref=e392]
+                  - cell "Solicitante / Cliente / Usuario Final" [ref=e393]
+                  - cell "Solicitante / Cliente / Usuario Final" [ref=e394]
+                  - cell "Activo" [ref=e395]:
+                    - generic [ref=e396]: Activo
+                  - cell "Desactivar" [ref=e397]:
+                    - button "Desactivar" [ref=e399] [cursor=pointer]
+                - row "MANUAL-001 Jefe de Proyecto Demo Director / Jefe de Proyecto Director / Jefe de Proyecto Activo Desactivar" [ref=e400]:
+                  - cell "MANUAL-001" [ref=e401]
+                  - cell "Jefe de Proyecto Demo" [ref=e402]
+                  - cell "Director / Jefe de Proyecto" [ref=e403]
+                  - cell "Director / Jefe de Proyecto" [ref=e404]
+                  - cell "Activo" [ref=e405]:
+                    - generic [ref=e406]: Activo
+                  - cell "Desactivar" [ref=e407]:
+                    - button "Desactivar" [ref=e409] [cursor=pointer]
+  - button "Open Next.js Dev Tools" [ref=e415] [cursor=pointer]:
+    - img [ref=e416]

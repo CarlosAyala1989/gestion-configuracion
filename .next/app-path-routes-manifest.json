@@ -1,0 +1,10 @@
+{
+  "/(protected)/[...segments]/page": "/[...segments]",
+  "/(protected)/seleccionar-proyecto/page": "/seleccionar-proyecto",
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/api/github/webhook/route": "/api/github/webhook",
+  "/api/reportes/export/route": "/api/reportes/export",
+  "/login/page": "/login",
+  "/page": "/"
+}

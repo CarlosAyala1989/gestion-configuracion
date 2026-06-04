@@ -1,0 +1,274 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]: SGCSW
+        - generic [ref=e6]: Sistema de Gestion de Configuracion
+      - navigation [ref=e7]:
+        - generic [ref=e8]:
+          - generic [ref=e9]: Operacion
+          - link "Mi Panel de Trabajo" [ref=e11] [cursor=pointer]:
+            - /url: /dashboard
+            - img [ref=e12]
+            - generic [ref=e17]: Mi Panel de Trabajo
+        - generic [ref=e18]:
+          - generic [ref=e19]: Boards
+          - generic [ref=e20]:
+            - link "Backlog" [ref=e21] [cursor=pointer]:
+              - /url: /boards/backlog
+              - img [ref=e22]
+              - generic [ref=e25]: Backlog
+            - link "Sprints" [ref=e26] [cursor=pointer]:
+              - /url: /boards/sprints
+              - img [ref=e27]
+              - generic [ref=e29]: Sprints
+            - link "Metodologia" [ref=e30] [cursor=pointer]:
+              - /url: /boards/metodologia
+              - img [ref=e31]
+              - generic [ref=e36]: Metodologia
+            - link "Reportes diarios" [ref=e37] [cursor=pointer]:
+              - /url: /boards/reportes-diarios
+              - img [ref=e38]
+              - generic [ref=e43]: Reportes diarios
+        - generic [ref=e44]:
+          - generic [ref=e45]: Administracion
+          - generic [ref=e46]:
+            - link "Usuarios" [ref=e47] [cursor=pointer]:
+              - /url: /admin/usuarios
+              - img [ref=e48]
+              - generic [ref=e53]: Usuarios
+            - link "Roles y permisos" [ref=e54] [cursor=pointer]:
+              - /url: /admin/roles
+              - img [ref=e55]
+              - generic [ref=e67]: Roles y permisos
+            - link "Proyectos" [ref=e68] [cursor=pointer]:
+              - /url: /admin/proyectos
+              - img [ref=e69]
+              - generic [ref=e79]: Proyectos
+            - link "Auditoria" [ref=e80] [cursor=pointer]:
+              - /url: /admin/auditoria
+              - img [ref=e81]
+              - generic [ref=e86]: Auditoria
+            - link "Integridad" [ref=e87] [cursor=pointer]:
+              - /url: /admin/integridad
+              - img [ref=e88]
+              - generic [ref=e91]: Integridad
+        - generic [ref=e92]:
+          - generic [ref=e93]: Integraciones
+          - link "GitHub" [ref=e95] [cursor=pointer]:
+            - /url: /github/workspace
+            - img [ref=e96]
+            - generic [ref=e100]: GitHub
+        - generic [ref=e101]:
+          - generic [ref=e102]: Configuracion
+          - link "Trazabilidad" [ref=e104] [cursor=pointer]:
+            - /url: /configuracion/trazabilidad
+            - img [ref=e105]
+            - generic [ref=e110]: Trazabilidad
+        - generic [ref=e111]:
+          - generic [ref=e112]: Reportes
+          - link "Reportes" [ref=e114] [cursor=pointer]:
+            - /url: /reportes
+            - img [ref=e115]
+            - generic [ref=e118]: Reportes
+      - generic [ref=e119]:
+        - generic [ref=e120]: Administrador del Sistema
+        - generic [ref=e121]: Contexto global
+        - generic [ref=e122]: carlosdaniel@gmail.com
+    - main [ref=e123]:
+      - generic [ref=e125]:
+        - generic [ref=e126]:
+          - generic [ref=e127]: Carlos Daniel Administrador
+          - generic [ref=e128]: Administrador del Sistema - Global
+        - generic [ref=e129]:
+          - link "Cambiar proyecto" [ref=e130] [cursor=pointer]:
+            - /url: /seleccionar-proyecto
+            - img [ref=e131]
+            - text: Cambiar proyecto
+          - button "Salir" [ref=e142] [cursor=pointer]:
+            - img [ref=e143]
+            - text: Salir
+      - generic [ref=e146]:
+        - generic [ref=e148]:
+          - heading "Metodologia y Cronograma" [level=1] [ref=e149]
+          - paragraph [ref=e150]: Fases, actividades, responsables y entregables obligatorios por metodologia
+        - generic [ref=e151]:
+          - generic [ref=e152]:
+            - generic [ref=e153]:
+              - heading "Configurar metodologia" [level=2] [ref=e155]
+              - generic [ref=e156]:
+                - generic [ref=e157]:
+                  - generic [ref=e158]: Proyecto *
+                  - combobox "Proyecto *" [ref=e159]:
+                    - option "Seleccionar"
+                    - option "MANUAL-001 - Portal SGCSW Manual" [selected]
+                - generic [ref=e160]:
+                  - generic [ref=e161]: Metodologia *
+                  - combobox "Metodologia *" [ref=e162]:
+                    - option "Seleccionar"
+                    - option "RUP" [selected]
+                    - option "Scrum"
+                    - option "Kanban"
+                    - option "Cascada"
+                    - option "XP"
+                    - option "Personalizada"
+                - generic [ref=e163]:
+                  - generic [ref=e164]: Notas
+                  - textbox "Notas" [ref=e165]
+                - generic [ref=e166]:
+                  - checkbox "Crear fases base" [checked] [ref=e167]
+                  - text: Crear fases base
+                - button "Guardar metodologia" [ref=e168] [cursor=pointer]
+            - generic [ref=e169]:
+              - heading "Metodologias por proyecto" [level=2] [ref=e171]
+              - table [ref=e173]:
+                - rowgroup [ref=e174]:
+                  - row "Proyecto Metodologia Fases Actividades Configurada" [ref=e175]:
+                    - columnheader "Proyecto" [ref=e176]
+                    - columnheader "Metodologia" [ref=e177]
+                    - columnheader "Fases" [ref=e178]
+                    - columnheader "Actividades" [ref=e179]
+                    - columnheader "Configurada" [ref=e180]
+                - rowgroup [ref=e181]:
+                  - row "MANUAL-001 - 0 0 -" [ref=e182]:
+                    - cell "MANUAL-001" [ref=e183]
+                    - cell "-" [ref=e184]
+                    - cell "0" [ref=e185]
+                    - cell "0" [ref=e186]
+                    - cell "-" [ref=e187]
+          - generic [ref=e188]:
+            - generic [ref=e189]:
+              - heading "Agregar fase" [level=2] [ref=e191]
+              - generic [ref=e192]:
+                - generic [ref=e193]:
+                  - generic [ref=e194]: Proyecto *
+                  - combobox "Proyecto *" [ref=e195]:
+                    - option "Seleccionar" [selected]
+                    - option "MANUAL-001 - Portal SGCSW Manual"
+                - generic [ref=e196]:
+                  - generic [ref=e197]: Metodologia
+                  - combobox "Metodologia" [ref=e198]:
+                    - option "Seleccionar" [selected]
+                    - option "RUP"
+                    - option "Scrum"
+                    - option "Kanban"
+                    - option "Cascada"
+                    - option "XP"
+                    - option "Personalizada"
+                - generic [ref=e199]:
+                  - generic [ref=e200]: Fase *
+                  - textbox "Fase *" [ref=e201]
+                - generic [ref=e202]:
+                  - generic [ref=e203]:
+                    - generic [ref=e204]: Orden
+                    - spinbutton "Orden" [ref=e205]
+                  - generic [ref=e206]:
+                    - generic [ref=e207]: Responsable
+                    - combobox "Responsable" [ref=e208]:
+                      - option "Seleccionar" [selected]
+                      - option "Sistema Liberacion Demo (Sistema Gestor de Liberacion)"
+                      - option "Sistema Configuracion Demo (Sistema Gestor de Configuracion)"
+                      - option "QA Tester Demo (Equipo QA / Tester)"
+                      - option "Desarrollador Demo (Desarrollador Asignado)"
+                      - option "Bibliotecario Demo (Administrador de Configuracion / Bibliotecario)"
+                      - option "Miembro CCB Demo (Comite de Control de Cambios)"
+                      - option "Lider Tecnico Demo (Lider Tecnico / Analista)"
+                      - option "Jefe de Proyecto Demo (Director / Jefe de Proyecto)"
+                      - option "Solicitante Demo (Solicitante / Cliente / Usuario Final)"
+                      - option "Carlos Daniel Administrador (Administrador del Sistema)"
+                  - generic [ref=e209]:
+                    - generic [ref=e210]: Inicio
+                    - textbox "Inicio" [ref=e211]
+                  - generic [ref=e212]:
+                    - generic [ref=e213]: Fin
+                    - textbox "Fin" [ref=e214]
+                - generic [ref=e215]:
+                  - generic [ref=e216]: Entregables obligatorios *
+                  - textbox "Entregables obligatorios *" [ref=e217]
+                - generic [ref=e218]:
+                  - generic [ref=e219]: Criterios de aceptacion
+                  - textbox "Criterios de aceptacion" [ref=e220]
+                - button "Agregar fase" [ref=e221] [cursor=pointer]
+            - generic [ref=e222]:
+              - heading "Fases y cumplimiento" [level=2] [ref=e224]
+              - table [ref=e226]:
+                - rowgroup [ref=e227]:
+                  - row "Fase Metodologia Responsable Entregables Avance Estado" [ref=e228]:
+                    - columnheader "Fase" [ref=e229]
+                    - columnheader "Metodologia" [ref=e230]
+                    - columnheader "Responsable" [ref=e231]
+                    - columnheader "Entregables" [ref=e232]
+                    - columnheader "Avance" [ref=e233]
+                    - columnheader "Estado" [ref=e234]
+                - rowgroup
+          - generic [ref=e235]:
+            - generic [ref=e236]:
+              - heading "Registrar actividad" [level=2] [ref=e238]
+              - generic [ref=e239]:
+                - generic [ref=e240]:
+                  - generic [ref=e241]: Proyecto *
+                  - combobox "Proyecto *" [ref=e242]:
+                    - option "Seleccionar" [selected]
+                    - option "MANUAL-001 - Portal SGCSW Manual"
+                - generic [ref=e243]:
+                  - generic [ref=e244]: Fase
+                  - combobox "Fase" [ref=e245]:
+                    - option "Seleccionar" [selected]
+                - generic [ref=e246]:
+                  - generic [ref=e247]: Actividad *
+                  - textbox "Actividad *" [ref=e248]
+                - generic [ref=e249]:
+                  - generic [ref=e250]: Responsable *
+                  - combobox "Responsable *" [ref=e251]:
+                    - option "Seleccionar" [selected]
+                    - option "Sistema Liberacion Demo (Sistema Gestor de Liberacion)"
+                    - option "Sistema Configuracion Demo (Sistema Gestor de Configuracion)"
+                    - option "QA Tester Demo (Equipo QA / Tester)"
+                    - option "Desarrollador Demo (Desarrollador Asignado)"
+                    - option "Bibliotecario Demo (Administrador de Configuracion / Bibliotecario)"
+                    - option "Miembro CCB Demo (Comite de Control de Cambios)"
+                    - option "Lider Tecnico Demo (Lider Tecnico / Analista)"
+                    - option "Jefe de Proyecto Demo (Director / Jefe de Proyecto)"
+                    - option "Solicitante Demo (Solicitante / Cliente / Usuario Final)"
+                    - option "Carlos Daniel Administrador (Administrador del Sistema)"
+                - generic [ref=e252]:
+                  - generic [ref=e253]:
+                    - generic [ref=e254]: Inicio *
+                    - textbox "Inicio *" [ref=e255]
+                  - generic [ref=e256]:
+                    - generic [ref=e257]: Fin *
+                    - textbox "Fin *" [ref=e258]
+                  - generic [ref=e259]:
+                    - generic [ref=e260]: Avance %
+                    - spinbutton "Avance %" [ref=e261]
+                  - generic [ref=e262]:
+                    - generic [ref=e263]: Estado
+                    - combobox "Estado" [ref=e264]:
+                      - option "Seleccionar"
+                      - option "Planificada" [selected]
+                      - option "En progreso"
+                      - option "Hecho"
+                      - option "Bloqueada"
+                - generic [ref=e265]:
+                  - generic [ref=e266]: Entregable ECS/documento *
+                  - textbox "Entregable ECS/documento *" [ref=e267]
+                - generic [ref=e268]:
+                  - generic [ref=e269]: Descripcion
+                  - textbox "Descripcion" [ref=e270]
+                - button "Agregar actividad" [ref=e271] [cursor=pointer]
+            - generic [ref=e272]:
+              - heading "Cronograma por actividades" [level=2] [ref=e274]
+              - table [ref=e276]:
+                - rowgroup [ref=e277]:
+                  - row "Actividad Fase Responsable Fechas Entregable Avance Cumplimiento" [ref=e278]:
+                    - columnheader "Actividad" [ref=e279]
+                    - columnheader "Fase" [ref=e280]
+                    - columnheader "Responsable" [ref=e281]
+                    - columnheader "Fechas" [ref=e282]
+                    - columnheader "Entregable" [ref=e283]
+                    - columnheader "Avance" [ref=e284]
+                    - columnheader "Cumplimiento" [ref=e285]
+                - rowgroup
+  - button "Open Next.js Dev Tools" [ref=e291] [cursor=pointer]:
+    - img [ref=e292]
+  - alert [ref=e295]

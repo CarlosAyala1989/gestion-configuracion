@@ -1,0 +1,404 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]: SGCSW
+        - generic [ref=e6]: Sistema de Gestion de Configuracion
+      - navigation [ref=e7]:
+        - generic [ref=e8]:
+          - generic [ref=e9]: Operacion
+          - link "Mi Panel de Trabajo" [ref=e11] [cursor=pointer]:
+            - /url: /dashboard
+            - img [ref=e12]
+            - generic [ref=e17]: Mi Panel de Trabajo
+        - generic [ref=e18]:
+          - generic [ref=e19]: Boards
+          - generic [ref=e20]:
+            - link "Backlog" [ref=e21] [cursor=pointer]:
+              - /url: /boards/backlog
+              - img [ref=e22]
+              - generic [ref=e25]: Backlog
+            - link "Sprints" [ref=e26] [cursor=pointer]:
+              - /url: /boards/sprints
+              - img [ref=e27]
+              - generic [ref=e29]: Sprints
+            - link "Metodologia" [ref=e30] [cursor=pointer]:
+              - /url: /boards/metodologia
+              - img [ref=e31]
+              - generic [ref=e36]: Metodologia
+            - link "Reportes diarios" [ref=e37] [cursor=pointer]:
+              - /url: /boards/reportes-diarios
+              - img [ref=e38]
+              - generic [ref=e43]: Reportes diarios
+        - generic [ref=e44]:
+          - generic [ref=e45]: Administracion
+          - generic [ref=e46]:
+            - link "Usuarios" [ref=e47] [cursor=pointer]:
+              - /url: /admin/usuarios
+              - img [ref=e48]
+              - generic [ref=e53]: Usuarios
+            - link "Roles y permisos" [ref=e54] [cursor=pointer]:
+              - /url: /admin/roles
+              - img [ref=e55]
+              - generic [ref=e67]: Roles y permisos
+            - link "Proyectos" [ref=e68] [cursor=pointer]:
+              - /url: /admin/proyectos
+              - img [ref=e69]
+              - generic [ref=e79]: Proyectos
+            - link "Auditoria" [ref=e80] [cursor=pointer]:
+              - /url: /admin/auditoria
+              - img [ref=e81]
+              - generic [ref=e86]: Auditoria
+            - link "Integridad" [ref=e87] [cursor=pointer]:
+              - /url: /admin/integridad
+              - img [ref=e88]
+              - generic [ref=e91]: Integridad
+        - generic [ref=e92]:
+          - generic [ref=e93]: Integraciones
+          - link "GitHub" [ref=e95] [cursor=pointer]:
+            - /url: /github/workspace
+            - img [ref=e96]
+            - generic [ref=e100]: GitHub
+        - generic [ref=e101]:
+          - generic [ref=e102]: Configuracion
+          - link "Trazabilidad" [ref=e104] [cursor=pointer]:
+            - /url: /configuracion/trazabilidad
+            - img [ref=e105]
+            - generic [ref=e110]: Trazabilidad
+        - generic [ref=e111]:
+          - generic [ref=e112]: Reportes
+          - link "Reportes" [ref=e114] [cursor=pointer]:
+            - /url: /reportes
+            - img [ref=e115]
+            - generic [ref=e118]: Reportes
+      - generic [ref=e119]:
+        - generic [ref=e120]: Administrador del Sistema
+        - generic [ref=e121]: Contexto global
+        - generic [ref=e122]: carlosdaniel@gmail.com
+    - main [ref=e123]:
+      - generic [ref=e125]:
+        - generic [ref=e126]:
+          - generic [ref=e127]: Carlos Daniel Administrador
+          - generic [ref=e128]: Administrador del Sistema - Global
+        - generic [ref=e129]:
+          - link "Cambiar proyecto" [ref=e130] [cursor=pointer]:
+            - /url: /seleccionar-proyecto
+            - img [ref=e131]
+            - text: Cambiar proyecto
+          - button "Salir" [ref=e142] [cursor=pointer]:
+            - img [ref=e143]
+            - text: Salir
+      - generic [ref=e146]:
+        - generic [ref=e148]:
+          - heading "Metodologia y Cronograma" [level=1] [ref=e149]
+          - paragraph [ref=e150]: Fases, actividades, responsables y entregables obligatorios por metodologia
+        - generic [ref=e151]:
+          - img [ref=e152]
+          - generic [ref=e155]: Metodologia configurada con fases trazables.
+        - generic [ref=e156]:
+          - generic [ref=e157]:
+            - generic [ref=e158]:
+              - heading "Configurar metodologia" [level=2] [ref=e160]
+              - generic [ref=e161]:
+                - generic [ref=e162]:
+                  - generic [ref=e163]: Proyecto *
+                  - combobox "Proyecto *" [ref=e164]:
+                    - option "Seleccionar" [selected]
+                    - option "MANUAL-001 - Portal SGCSW Manual"
+                - generic [ref=e165]:
+                  - generic [ref=e166]: Metodologia *
+                  - combobox "Metodologia *" [ref=e167]:
+                    - option "Seleccionar" [selected]
+                    - option "RUP"
+                    - option "Scrum"
+                    - option "Kanban"
+                    - option "Cascada"
+                    - option "XP"
+                    - option "Personalizada"
+                - generic [ref=e168]:
+                  - generic [ref=e169]: Notas
+                  - textbox "Notas" [ref=e170]
+                - generic [ref=e171]:
+                  - checkbox "Crear fases base" [checked] [ref=e172]
+                  - text: Crear fases base
+                - button "Guardar metodologia" [ref=e173] [cursor=pointer]
+            - generic [ref=e174]:
+              - heading "Metodologias por proyecto" [level=2] [ref=e176]
+              - table [ref=e178]:
+                - rowgroup [ref=e179]:
+                  - row "Proyecto Metodologia Fases Actividades Configurada" [ref=e180]:
+                    - columnheader "Proyecto" [ref=e181]
+                    - columnheader "Metodologia" [ref=e182]
+                    - columnheader "Fases" [ref=e183]
+                    - columnheader "Actividades" [ref=e184]
+                    - columnheader "Configurada" [ref=e185]
+                - rowgroup [ref=e186]:
+                  - row "MANUAL-001 RUP 4 4 4/6/2026" [ref=e187]:
+                    - cell "MANUAL-001" [ref=e188]
+                    - cell "RUP" [ref=e189]
+                    - cell "4" [ref=e190]
+                    - cell "4" [ref=e191]
+                    - cell "4/6/2026" [ref=e192]
+          - generic [ref=e193]:
+            - generic [ref=e194]:
+              - heading "Agregar fase" [level=2] [ref=e196]
+              - generic [ref=e197]:
+                - generic [ref=e198]:
+                  - generic [ref=e199]: Proyecto *
+                  - combobox "Proyecto *" [ref=e200]:
+                    - option "Seleccionar" [selected]
+                    - option "MANUAL-001 - Portal SGCSW Manual"
+                - generic [ref=e201]:
+                  - generic [ref=e202]: Metodologia
+                  - combobox "Metodologia" [ref=e203]:
+                    - option "Seleccionar" [selected]
+                    - option "RUP"
+                    - option "Scrum"
+                    - option "Kanban"
+                    - option "Cascada"
+                    - option "XP"
+                    - option "Personalizada"
+                - generic [ref=e204]:
+                  - generic [ref=e205]: Fase *
+                  - textbox "Fase *" [ref=e206]
+                - generic [ref=e207]:
+                  - generic [ref=e208]:
+                    - generic [ref=e209]: Orden
+                    - spinbutton "Orden" [ref=e210]
+                  - generic [ref=e211]:
+                    - generic [ref=e212]: Responsable
+                    - combobox "Responsable" [ref=e213]:
+                      - option "Seleccionar" [selected]
+                      - option "Sistema Liberacion Demo (Sistema Gestor de Liberacion)"
+                      - option "Sistema Configuracion Demo (Sistema Gestor de Configuracion)"
+                      - option "QA Tester Demo (Equipo QA / Tester)"
+                      - option "Desarrollador Demo (Desarrollador Asignado)"
+                      - option "Bibliotecario Demo (Administrador de Configuracion / Bibliotecario)"
+                      - option "Miembro CCB Demo (Comite de Control de Cambios)"
+                      - option "Lider Tecnico Demo (Lider Tecnico / Analista)"
+                      - option "Jefe de Proyecto Demo (Director / Jefe de Proyecto)"
+                      - option "Solicitante Demo (Solicitante / Cliente / Usuario Final)"
+                      - option "Carlos Daniel Administrador (Administrador del Sistema)"
+                  - generic [ref=e214]:
+                    - generic [ref=e215]: Inicio
+                    - textbox "Inicio" [ref=e216]
+                  - generic [ref=e217]:
+                    - generic [ref=e218]: Fin
+                    - textbox "Fin" [ref=e219]
+                - generic [ref=e220]:
+                  - generic [ref=e221]: Entregables obligatorios *
+                  - textbox "Entregables obligatorios *" [ref=e222]
+                - generic [ref=e223]:
+                  - generic [ref=e224]: Criterios de aceptacion
+                  - textbox "Criterios de aceptacion" [ref=e225]
+                - button "Agregar fase" [ref=e226] [cursor=pointer]
+            - generic [ref=e227]:
+              - heading "Fases y cumplimiento" [level=2] [ref=e229]
+              - table [ref=e231]:
+                - rowgroup [ref=e232]:
+                  - row "Fase Metodologia Responsable Entregables Avance Estado" [ref=e233]:
+                    - columnheader "Fase" [ref=e234]
+                    - columnheader "Metodologia" [ref=e235]
+                    - columnheader "Responsable" [ref=e236]
+                    - columnheader "Entregables" [ref=e237]
+                    - columnheader "Avance" [ref=e238]
+                    - columnheader "Estado" [ref=e239]
+                - rowgroup [ref=e240]:
+                  - row "MANUAL-001 - Inicio RUP Carlos Daniel Administrador Vision del producto; alcance inicial; casos de uso de alto nivel; plan SCM inicial; lista preliminar de ECS. 0% Pendiente Guardar" [ref=e241]:
+                    - cell "MANUAL-001 - Inicio" [ref=e242]
+                    - cell "RUP" [ref=e243]
+                    - cell "Carlos Daniel Administrador" [ref=e244]
+                    - cell "Vision del producto; alcance inicial; casos de uso de alto nivel; plan SCM inicial; lista preliminar de ECS." [ref=e245]
+                    - cell "0%" [ref=e246]
+                    - cell "Pendiente Guardar" [ref=e247]:
+                      - generic [ref=e248]:
+                        - combobox [ref=e249]:
+                          - option "Pendiente" [selected]
+                          - option "En progreso"
+                          - option "Hecho"
+                          - option "Bloqueada"
+                        - button "Guardar" [ref=e250] [cursor=pointer]
+                  - row "MANUAL-001 - Elaboracion RUP Carlos Daniel Administrador SRS; diagramas de caso de uso; narrativas de caso de uso; diagramas de secuencia; diagramas de clase; SAD. 0% Pendiente Guardar" [ref=e251]:
+                    - cell "MANUAL-001 - Elaboracion" [ref=e252]
+                    - cell "RUP" [ref=e253]
+                    - cell "Carlos Daniel Administrador" [ref=e254]
+                    - cell "SRS; diagramas de caso de uso; narrativas de caso de uso; diagramas de secuencia; diagramas de clase; SAD." [ref=e255]
+                    - cell "0%" [ref=e256]
+                    - cell "Pendiente Guardar" [ref=e257]:
+                      - generic [ref=e258]:
+                        - combobox [ref=e259]:
+                          - option "Pendiente" [selected]
+                          - option "En progreso"
+                          - option "Hecho"
+                          - option "Bloqueada"
+                        - button "Guardar" [ref=e260] [cursor=pointer]
+                  - row "MANUAL-001 - Construccion RUP Carlos Daniel Administrador Incrementos implementados; pruebas unitarias; cambios versionados; lineas base por incremento. 0% Pendiente Guardar" [ref=e261]:
+                    - cell "MANUAL-001 - Construccion" [ref=e262]
+                    - cell "RUP" [ref=e263]
+                    - cell "Carlos Daniel Administrador" [ref=e264]
+                    - cell "Incrementos implementados; pruebas unitarias; cambios versionados; lineas base por incremento." [ref=e265]
+                    - cell "0%" [ref=e266]
+                    - cell "Pendiente Guardar" [ref=e267]:
+                      - generic [ref=e268]:
+                        - combobox [ref=e269]:
+                          - option "Pendiente" [selected]
+                          - option "En progreso"
+                          - option "Hecho"
+                          - option "Bloqueada"
+                        - button "Guardar" [ref=e270] [cursor=pointer]
+                  - row "MANUAL-001 - Transicion RUP Carlos Daniel Administrador UAT; acta de aceptacion; release; tag de GitHub; cierre de solicitud. 0% Pendiente Guardar" [ref=e271]:
+                    - cell "MANUAL-001 - Transicion" [ref=e272]
+                    - cell "RUP" [ref=e273]
+                    - cell "Carlos Daniel Administrador" [ref=e274]
+                    - cell "UAT; acta de aceptacion; release; tag de GitHub; cierre de solicitud." [ref=e275]
+                    - cell "0%" [ref=e276]
+                    - cell "Pendiente Guardar" [ref=e277]:
+                      - generic [ref=e278]:
+                        - combobox [ref=e279]:
+                          - option "Pendiente" [selected]
+                          - option "En progreso"
+                          - option "Hecho"
+                          - option "Bloqueada"
+                        - button "Guardar" [ref=e280] [cursor=pointer]
+          - generic [ref=e281]:
+            - generic [ref=e282]:
+              - heading "Registrar actividad" [level=2] [ref=e284]
+              - generic [ref=e285]:
+                - generic [ref=e286]:
+                  - generic [ref=e287]: Proyecto *
+                  - combobox "Proyecto *" [ref=e288]:
+                    - option "Seleccionar" [selected]
+                    - option "MANUAL-001 - Portal SGCSW Manual"
+                - generic [ref=e289]:
+                  - generic [ref=e290]: Fase
+                  - combobox "Fase" [ref=e291]:
+                    - option "Seleccionar" [selected]
+                    - option "MANUAL-001 - Inicio"
+                    - option "MANUAL-001 - Elaboracion"
+                    - option "MANUAL-001 - Construccion"
+                    - option "MANUAL-001 - Transicion"
+                - generic [ref=e292]:
+                  - generic [ref=e293]: Actividad *
+                  - textbox "Actividad *" [ref=e294]
+                - generic [ref=e295]:
+                  - generic [ref=e296]: Responsable *
+                  - combobox "Responsable *" [ref=e297]:
+                    - option "Seleccionar" [selected]
+                    - option "Sistema Liberacion Demo (Sistema Gestor de Liberacion)"
+                    - option "Sistema Configuracion Demo (Sistema Gestor de Configuracion)"
+                    - option "QA Tester Demo (Equipo QA / Tester)"
+                    - option "Desarrollador Demo (Desarrollador Asignado)"
+                    - option "Bibliotecario Demo (Administrador de Configuracion / Bibliotecario)"
+                    - option "Miembro CCB Demo (Comite de Control de Cambios)"
+                    - option "Lider Tecnico Demo (Lider Tecnico / Analista)"
+                    - option "Jefe de Proyecto Demo (Director / Jefe de Proyecto)"
+                    - option "Solicitante Demo (Solicitante / Cliente / Usuario Final)"
+                    - option "Carlos Daniel Administrador (Administrador del Sistema)"
+                - generic [ref=e298]:
+                  - generic [ref=e299]:
+                    - generic [ref=e300]: Inicio *
+                    - textbox "Inicio *" [ref=e301]
+                  - generic [ref=e302]:
+                    - generic [ref=e303]: Fin *
+                    - textbox "Fin *" [ref=e304]
+                  - generic [ref=e305]:
+                    - generic [ref=e306]: Avance %
+                    - spinbutton "Avance %" [ref=e307]
+                  - generic [ref=e308]:
+                    - generic [ref=e309]: Estado
+                    - combobox "Estado" [ref=e310]:
+                      - option "Seleccionar"
+                      - option "Planificada" [selected]
+                      - option "En progreso"
+                      - option "Hecho"
+                      - option "Bloqueada"
+                - generic [ref=e311]:
+                  - generic [ref=e312]: Entregable ECS/documento *
+                  - textbox "Entregable ECS/documento *" [ref=e313]
+                - generic [ref=e314]:
+                  - generic [ref=e315]: Descripcion
+                  - textbox "Descripcion" [ref=e316]
+                - button "Agregar actividad" [ref=e317] [cursor=pointer]
+            - generic [ref=e318]:
+              - heading "Cronograma por actividades" [level=2] [ref=e320]
+              - table [ref=e322]:
+                - rowgroup [ref=e323]:
+                  - row "Actividad Fase Responsable Fechas Entregable Avance Cumplimiento" [ref=e324]:
+                    - columnheader "Actividad" [ref=e325]
+                    - columnheader "Fase" [ref=e326]
+                    - columnheader "Responsable" [ref=e327]
+                    - columnheader "Fechas" [ref=e328]
+                    - columnheader "Entregable" [ref=e329]
+                    - columnheader "Avance" [ref=e330]
+                    - columnheader "Cumplimiento" [ref=e331]
+                - rowgroup [ref=e332]:
+                  - row "Levantamiento y validacion de requerimientos Inicio Jefe de Proyecto Demo 5/6/2026 - 7/6/2026 SRS inicial, casos de uso y plan SCM 0 Planificada Guardar Pendiente" [ref=e333]:
+                    - cell "Levantamiento y validacion de requerimientos" [ref=e334]
+                    - cell "Inicio" [ref=e335]
+                    - cell "Jefe de Proyecto Demo" [ref=e336]
+                    - cell "5/6/2026 - 7/6/2026" [ref=e337]
+                    - cell "SRS inicial, casos de uso y plan SCM" [ref=e338]
+                    - cell "0 Planificada Guardar" [ref=e339]:
+                      - generic [ref=e340]:
+                        - spinbutton [ref=e341]: "0"
+                        - combobox [ref=e342]:
+                          - option "Planificada" [selected]
+                          - option "En progreso"
+                          - option "Hecho"
+                          - option "Bloqueada"
+                        - button "Guardar" [ref=e343] [cursor=pointer]
+                    - cell "Pendiente" [ref=e344]:
+                      - generic [ref=e345]: Pendiente
+                  - row "Modelado de analisis y diseno Elaboracion Lider Tecnico Demo 8/6/2026 - 10/6/2026 Diagramas de secuencia, clases y SAD 0 Planificada Guardar Pendiente" [ref=e346]:
+                    - cell "Modelado de analisis y diseno" [ref=e347]
+                    - cell "Elaboracion" [ref=e348]
+                    - cell "Lider Tecnico Demo" [ref=e349]
+                    - cell "8/6/2026 - 10/6/2026" [ref=e350]
+                    - cell "Diagramas de secuencia, clases y SAD" [ref=e351]
+                    - cell "0 Planificada Guardar" [ref=e352]:
+                      - generic [ref=e353]:
+                        - spinbutton [ref=e354]: "0"
+                        - combobox [ref=e355]:
+                          - option "Planificada" [selected]
+                          - option "En progreso"
+                          - option "Hecho"
+                          - option "Bloqueada"
+                        - button "Guardar" [ref=e356] [cursor=pointer]
+                    - cell "Pendiente" [ref=e357]:
+                      - generic [ref=e358]: Pendiente
+                  - row "Implementacion y versionamiento Construccion Desarrollador Demo 11/6/2026 - 14/6/2026 Codigo versionado, pruebas unitarias y artefactos ECS 0 Planificada Guardar Pendiente" [ref=e359]:
+                    - cell "Implementacion y versionamiento" [ref=e360]
+                    - cell "Construccion" [ref=e361]
+                    - cell "Desarrollador Demo" [ref=e362]
+                    - cell "11/6/2026 - 14/6/2026" [ref=e363]
+                    - cell "Codigo versionado, pruebas unitarias y artefactos ECS" [ref=e364]
+                    - cell "0 Planificada Guardar" [ref=e365]:
+                      - generic [ref=e366]:
+                        - spinbutton [ref=e367]: "0"
+                        - combobox [ref=e368]:
+                          - option "Planificada" [selected]
+                          - option "En progreso"
+                          - option "Hecho"
+                          - option "Bloqueada"
+                        - button "Guardar" [ref=e369] [cursor=pointer]
+                    - cell "Pendiente" [ref=e370]:
+                      - generic [ref=e371]: Pendiente
+                  - row "QA, UAT, linea base y liberacion Transicion QA Tester Demo 15/6/2026 - 17/6/2026 Pruebas QA, acta UAT, linea base y release 0 Planificada Guardar Pendiente" [ref=e372]:
+                    - cell "QA, UAT, linea base y liberacion" [ref=e373]
+                    - cell "Transicion" [ref=e374]
+                    - cell "QA Tester Demo" [ref=e375]
+                    - cell "15/6/2026 - 17/6/2026" [ref=e376]
+                    - cell "Pruebas QA, acta UAT, linea base y release" [ref=e377]
+                    - cell "0 Planificada Guardar" [ref=e378]:
+                      - generic [ref=e379]:
+                        - spinbutton [ref=e380]: "0"
+                        - combobox [ref=e381]:
+                          - option "Planificada" [selected]
+                          - option "En progreso"
+                          - option "Hecho"
+                          - option "Bloqueada"
+                        - button "Guardar" [ref=e382] [cursor=pointer]
+                    - cell "Pendiente" [ref=e383]:
+                      - generic [ref=e384]: Pendiente
+  - button "Open Next.js Dev Tools" [ref=e390] [cursor=pointer]:
+    - img [ref=e391]

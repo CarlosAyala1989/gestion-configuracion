@@ -1,0 +1,98 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]: SGCSW
+        - generic [ref=e6]: Sistema de Gestion de Configuracion
+      - navigation [ref=e7]:
+        - generic [ref=e8]:
+          - generic [ref=e9]: Operacion
+          - link "Mi Panel de Trabajo" [ref=e11] [cursor=pointer]:
+            - /url: /dashboard
+            - img [ref=e12]
+            - generic [ref=e17]: Mi Panel de Trabajo
+        - generic [ref=e18]:
+          - generic [ref=e19]: Boards
+          - link "Backlog" [ref=e21] [cursor=pointer]:
+            - /url: /boards/backlog
+            - img [ref=e22]
+            - generic [ref=e25]: Backlog
+        - generic [ref=e26]:
+          - generic [ref=e27]: Integraciones
+          - link "GitHub" [ref=e29] [cursor=pointer]:
+            - /url: /github/workspace
+            - img [ref=e30]
+            - generic [ref=e34]: GitHub
+        - generic [ref=e35]:
+          - generic [ref=e36]: Configuracion
+          - link "Trazabilidad" [ref=e38] [cursor=pointer]:
+            - /url: /configuracion/trazabilidad
+            - img [ref=e39]
+            - generic [ref=e44]: Trazabilidad
+        - generic [ref=e45]:
+          - generic [ref=e46]: Cambios
+          - generic [ref=e47]:
+            - link "Solicitudes" [ref=e48] [cursor=pointer]:
+              - /url: /cambios/solicitudes
+              - img [ref=e49]
+              - generic [ref=e52]: Solicitudes
+            - link "Comite CCB" [ref=e53] [cursor=pointer]:
+              - /url: /cambios/ccb
+              - img [ref=e54]
+              - generic [ref=e59]: Comite CCB
+        - generic [ref=e60]:
+          - generic [ref=e61]: Reportes
+          - link "Reportes" [ref=e63] [cursor=pointer]:
+            - /url: /reportes
+            - img [ref=e64]
+            - generic [ref=e67]: Reportes
+      - generic [ref=e68]:
+        - generic [ref=e69]: Comite de Control de Cambios
+        - generic [ref=e70]: MANUAL-001 - Portal SGCSW Manual
+        - generic [ref=e71]: ccb@gmail.com
+    - main [ref=e72]:
+      - generic [ref=e74]:
+        - generic [ref=e75]:
+          - generic [ref=e76]: Miembro CCB Demo
+          - generic [ref=e77]: Comite de Control de Cambios en MANUAL-001
+        - generic [ref=e78]:
+          - link "Cambiar proyecto" [ref=e79] [cursor=pointer]:
+            - /url: /seleccionar-proyecto
+            - img [ref=e80]
+            - text: Cambiar proyecto
+          - button "Salir" [ref=e91] [cursor=pointer]:
+            - img [ref=e92]
+            - text: Salir
+      - generic [ref=e95]:
+        - generic [ref=e97]:
+          - heading "Comite de Control de Cambios" [level=1] [ref=e98]
+          - paragraph [ref=e99]: Revision formal de alto impacto
+        - generic [ref=e100]:
+          - img [ref=e101]
+          - generic [ref=e104]: Resolucion CCB registrada.
+        - generic [ref=e105]:
+          - heading "Revisiones CCB" [level=2] [ref=e107]
+          - table [ref=e109]:
+            - rowgroup [ref=e110]:
+              - row "Solicitud Estado Votos Resolucion" [ref=e111]:
+                - columnheader "Solicitud" [ref=e112]
+                - columnheader "Estado" [ref=e113]
+                - columnheader "Votos" [ref=e114]
+                - columnheader "Resolucion" [ref=e115]
+            - rowgroup [ref=e116]:
+              - 'row "SC-0001 - Implementar autenticacion MFA con documentacion RUP Aprobada Miembro CCB Demo: Aprobada Aprobar Emitir resolucion" [ref=e117]':
+                - cell "SC-0001 - Implementar autenticacion MFA con documentacion RUP" [ref=e118]
+                - cell "Aprobada" [ref=e119]:
+                  - generic [ref=e120]: Aprobada
+                - 'cell "Miembro CCB Demo: Aprobada" [ref=e121]'
+                - cell "Aprobar Emitir resolucion" [ref=e122]:
+                  - generic [ref=e123]:
+                    - combobox [ref=e124]:
+                      - option "Aprobar" [selected]
+                      - option "Rechazar"
+                      - option "Aplazar"
+                    - textbox "Resolucion formal o motivo" [ref=e125]
+                    - textbox "Voto o comentario" [ref=e126]
+                    - button "Emitir resolucion" [ref=e127] [cursor=pointer]
+  - button "Open Next.js Dev Tools" [ref=e133] [cursor=pointer]:
+    - img [ref=e134]

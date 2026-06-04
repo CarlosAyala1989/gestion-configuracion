@@ -1,0 +1,151 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]: SGCSW
+        - generic [ref=e6]: Sistema de Gestion de Configuracion
+      - navigation [ref=e7]:
+        - generic [ref=e8]:
+          - generic [ref=e9]: Operacion
+          - link "Mi Panel de Trabajo" [ref=e11] [cursor=pointer]:
+            - /url: /dashboard
+            - img [ref=e12]
+            - generic [ref=e17]: Mi Panel de Trabajo
+        - generic [ref=e18]:
+          - generic [ref=e19]: Boards
+          - generic [ref=e20]:
+            - link "Backlog" [ref=e21] [cursor=pointer]:
+              - /url: /boards/backlog
+              - img [ref=e22]
+              - generic [ref=e25]: Backlog
+            - link "Sprints" [ref=e26] [cursor=pointer]:
+              - /url: /boards/sprints
+              - img [ref=e27]
+              - generic [ref=e29]: Sprints
+            - link "Metodologia" [ref=e30] [cursor=pointer]:
+              - /url: /boards/metodologia
+              - img [ref=e31]
+              - generic [ref=e36]: Metodologia
+            - link "Reportes diarios" [ref=e37] [cursor=pointer]:
+              - /url: /boards/reportes-diarios
+              - img [ref=e38]
+              - generic [ref=e43]: Reportes diarios
+        - generic [ref=e44]:
+          - generic [ref=e45]: Administracion
+          - link "Proyectos" [ref=e47] [cursor=pointer]:
+            - /url: /admin/proyectos
+            - img [ref=e48]
+            - generic [ref=e58]: Proyectos
+        - generic [ref=e59]:
+          - generic [ref=e60]: Integraciones
+          - link "GitHub" [ref=e62] [cursor=pointer]:
+            - /url: /github/workspace
+            - img [ref=e63]
+            - generic [ref=e67]: GitHub
+        - generic [ref=e68]:
+          - generic [ref=e69]: Configuracion
+          - link "Trazabilidad" [ref=e71] [cursor=pointer]:
+            - /url: /configuracion/trazabilidad
+            - img [ref=e72]
+            - generic [ref=e77]: Trazabilidad
+        - generic [ref=e78]:
+          - generic [ref=e79]: Cambios
+          - generic [ref=e80]:
+            - link "Solicitudes" [ref=e81] [cursor=pointer]:
+              - /url: /cambios/solicitudes
+              - img [ref=e82]
+              - generic [ref=e85]: Solicitudes
+            - link "Evaluacion de impacto" [ref=e86] [cursor=pointer]:
+              - /url: /cambios/evaluacion-impacto
+              - img [ref=e87]
+              - generic [ref=e91]: Evaluacion de impacto
+            - link "Ordenes de cambio" [ref=e92] [cursor=pointer]:
+              - /url: /cambios/ordenes
+              - img [ref=e93]
+              - generic [ref=e97]: Ordenes de cambio
+        - generic [ref=e98]:
+          - generic [ref=e99]: Reportes
+          - link "Reportes" [ref=e101] [cursor=pointer]:
+            - /url: /reportes
+            - img [ref=e102]
+            - generic [ref=e105]: Reportes
+      - generic [ref=e106]:
+        - generic [ref=e107]: Director / Jefe de Proyecto
+        - generic [ref=e108]: MANUAL-001 - Portal SGCSW Manual
+        - generic [ref=e109]: jefeproyecto@gmail.com
+    - main [ref=e110]:
+      - generic [ref=e112]:
+        - generic [ref=e113]:
+          - generic [ref=e114]: Jefe de Proyecto Demo
+          - generic [ref=e115]: Director / Jefe de Proyecto en MANUAL-001
+        - generic [ref=e116]:
+          - link "Cambiar proyecto" [ref=e117] [cursor=pointer]:
+            - /url: /seleccionar-proyecto
+            - img [ref=e118]
+            - text: Cambiar proyecto
+          - button "Salir" [ref=e129] [cursor=pointer]:
+            - img [ref=e130]
+            - text: Salir
+      - generic [ref=e133]:
+        - generic [ref=e135]:
+          - heading "Evaluacion de impacto" [level=1] [ref=e136]
+          - paragraph [ref=e137]: Costo, ROI, riesgo, recursos y ruta de aprobacion
+        - generic [ref=e138]:
+          - img [ref=e139]
+          - generic [ref=e142]: Impacto alto derivado a CCB.
+        - generic [ref=e143]:
+          - generic [ref=e144]:
+            - heading "Registrar evaluacion" [level=2] [ref=e146]
+            - generic [ref=e147]:
+              - generic [ref=e148]:
+                - generic [ref=e149]: Solicitud clasificada *
+                - combobox "Solicitud clasificada *" [ref=e150]:
+                  - option "Seleccionar" [selected]
+              - generic [ref=e151]:
+                - generic [ref=e152]:
+                  - generic [ref=e153]: Costo estimado *
+                  - spinbutton "Costo estimado *" [ref=e154]
+                - generic [ref=e155]:
+                  - generic [ref=e156]: Horas estimadas *
+                  - spinbutton "Horas estimadas *" [ref=e157]
+              - generic [ref=e158]:
+                - checkbox "Alto impacto" [ref=e159]
+                - text: Alto impacto
+              - generic [ref=e160]:
+                - generic [ref=e161]: Riesgos *
+                - textbox "Riesgos *" [ref=e162]
+              - generic [ref=e163]:
+                - generic [ref=e164]: Recursos necesarios *
+                - textbox "Recursos necesarios *" [ref=e165]
+              - generic [ref=e166]:
+                - generic [ref=e167]: Impacto tecnico *
+                - textbox "Impacto tecnico *" [ref=e168]
+              - generic [ref=e169]:
+                - generic [ref=e170]: Impacto funcional *
+                - textbox "Impacto funcional *" [ref=e171]
+              - generic [ref=e172]:
+                - generic [ref=e173]: ECS afectados *
+                - textbox "ECS afectados *" [ref=e174]
+              - generic [ref=e175]:
+                - generic [ref=e176]: Beneficio o ROI *
+                - textbox "Beneficio o ROI *" [ref=e177]
+              - button "Derivar aprobacion" [ref=e178] [cursor=pointer]
+          - generic [ref=e179]:
+            - heading "Evaluaciones" [level=2] [ref=e181]
+            - table [ref=e183]:
+              - rowgroup [ref=e184]:
+                - row "Solicitud Costo Horas Ruta Alto impacto" [ref=e185]:
+                  - columnheader "Solicitud" [ref=e186]
+                  - columnheader "Costo" [ref=e187]
+                  - columnheader "Horas" [ref=e188]
+                  - columnheader "Ruta" [ref=e189]
+                  - columnheader "Alto impacto" [ref=e190]
+              - rowgroup [ref=e191]:
+                - row "SC-0001 1200 32 CCB Si" [ref=e192]:
+                  - cell "SC-0001" [ref=e193]
+                  - cell "1200" [ref=e194]
+                  - cell "32" [ref=e195]
+                  - cell "CCB" [ref=e196]
+                  - cell "Si" [ref=e197]
+  - button "Open Next.js Dev Tools" [ref=e203] [cursor=pointer]:
+    - img [ref=e204]
